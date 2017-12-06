@@ -3,6 +3,9 @@ from wtforms import Form, StringField, TextAreaField, RadioField, SelectField, v
 
 app = Flask(__name__)
 
+@app.route("/")
+def main():
+    return render_template("main.html")
 
 @app.route('/home')
 def home():
