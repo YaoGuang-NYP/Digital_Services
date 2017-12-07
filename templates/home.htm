@@ -1,11 +1,48 @@
-﻿ {{ username }}
- {{ firstname }}
- {{ lastname }}
- {{ age }}
- {{ email }}
- {{ skillset }}
- {{ country }}
- {{ highestqualification }}
- {{ workexperiences }}
- {{ awards }}
- {{ biography }}
+﻿{% extends 'index.html' %}
+
+{% block inlinecss %}
+<style>
+    .home {
+        padding-top: 100px;
+    }
+
+    .box3 {
+        height: 300px;
+        border-color: black!important;
+        border-width: 2px;
+    }
+
+    .box2 {
+        height: 500px;
+        border-color: black!important;
+        border-width: 2px;
+    }
+
+    .box1 {
+        height: 1000px;
+        border-color: black!important;
+        border-width: 2px;
+    }
+</style>
+
+{% endblock %}
+
+{% block body %}
+    <main id="main">
+        <div class="container home">
+            <div class="row">
+                <div class="col-lg-7 col-md-10 box1">
+                </div>
+                <div class="col-lg-1"></div>
+                <div class="col-lg-4 col-md-10">
+                    <div class="row box2">
+                        <h1>No new notifications</h1>
+                    </div>
+                    <div class="row box3">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+{% endblock %}
