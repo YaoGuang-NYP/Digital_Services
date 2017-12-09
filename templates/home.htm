@@ -1,4 +1,4 @@
-﻿{% extends 'index.html' %}
+﻿﻿{% extends 'index.html' %}
 
 {% block inlinecss %}
 <style>
@@ -8,21 +8,43 @@
 
     .box3 {
         height: 300px;
-        border-color: black!important;
-        border-width: 2px;
+        border : 3px black solid;
+        margin-top : 70px;
+        margin-bottom : 50px;
     }
 
     .box2 {
         height: 500px;
-        border-color: black!important;
-        border-width: 2px;
+        border : 3px black solid;
+        margin-top : 50px;
     }
 
     .box1 {
-        height: 1000px;
-        border-color: black!important;
-        border-width: 2px;
+        margin-top : 50px;
+        margin-bottom : 50px;
+        height: 870px;
+        border : 3px black solid;
     }
+
+    .home-header {
+        height : 50px;
+        border-bottom-color: #000;
+        border-bottom-style : solid;
+        float : left;
+        vertical-align: middle;
+    }
+
+    /*@media (max-width: 576px) {
+        .container {
+            width: 50%;
+            height: 50px;
+            border-bottom-color: #000;
+            border-bottom-style: solid;
+            float: left;
+            vertical-align: middle;
+        }
+    }
+*/
 </style>
 
 {% endblock %}
@@ -31,14 +53,31 @@
     <main id="main">
         <div class="container home">
             <div class="row">
-                <div class="col-lg-7 col-md-10 box1">
+                <div class="col-lg-7 col-md-10">
+                    <div class="container box1">
+
+                    </div>
                 </div>
                 <div class="col-lg-1"></div>
                 <div class="col-lg-4 col-md-10">
-                    <div class="row box2">
-                        <h1>No new notifications</h1>
+                    <div class="row">
+                        <div class="container box2">
+                            <div class="row">
+                                <div class="container-fluid home-header">
+                                    Notifications
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="container">
+                                    No New Notifications
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="row box3">
+                    <div class="row">
+                        <div class="container box3">
+
+                        </div>
                     </div>
                 </div>
             </div>
