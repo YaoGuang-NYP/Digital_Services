@@ -7,9 +7,12 @@ app = Flask(__name__)
 def main():
     return render_template("main.html")
 
-@app.route("/login_register")
-def login_register():
-    return render_template("login_register.html")
+@app.route("/login_register", methods = ['POST'])
+def login_register(username="" , email=""):
+    if request.method == "POST" :
+        username_ = request.form["register_username"]
+        email_ = request.form["register_email"]
+        return render_template("login_register.html", username = username_, email = email_)
 
 @app.route('/home', methods = ['POST'])
 def home(username = "", password=""):

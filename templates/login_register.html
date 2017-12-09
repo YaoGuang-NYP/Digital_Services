@@ -24,6 +24,14 @@
 
     <!-- Main Stylesheet File -->
     <link href="../static/css/style.css" rel="stylesheet">
+
+    <style>
+        form-control {
+            text-align: center;
+        }
+    </style>
+
+
 </head>
 <body>
 
@@ -31,24 +39,49 @@
     <div class="container">
         <div class="row">
             <form class="container">
+
                 <div class="row">
-                    <div class="col-md-6 col-xs-12">
+                    <div class="col-12">
+                        <h1>We require you to fill up some more information.</h1>
+                    </div>
+                </div>
+                <br>
+                <br>
+
+
+                <div class="row">
+                    <div class="col-md-5 col-xs-12">
+                        <label>User name : {{ username }}</label>
+                        <br>
+                    </div>
+                    <div class="col-md-2 col-xs-12"><br></div>
+                    <div class="col-md-5 col-xs-12">
+                        <label>Email : {{ email }}</label>
+                    </div>
+                </div>
+                <br>
+                <br>
+
+                <div class="row">
+                    <div class="col-md-5 col-xs-12">
                         <label>First Name:</label>
                         <input type="text" class="form-control">
                     </div>
-                    <div class="col-md-6 col-xs-12">
+                    <div class="col-md-2"><br></div>
+                    <div class="col-md-5 col-xs-12">
                         <label>Last Name:</label>
                         <input type="text" class="form-control">
                     </div>
                 </div>
                 <br>
-                <br>
+
                 <div class="row">
-                    <div class="col-md-6 col-xs-12">
+                    <div class="col-md-5 col-xs-12">
                         <label>Age:</label>
                         <input type="number" class="form-control" value="18">
                     </div>
-                    <div class="col-md-6 col-xs-12">
+                    <div class="col-md-2 col-xs-12"><br></div>
+                    <div class="col-md-5 col-xs-12">
                         <label>Country:</label>
                         <select class="form-control">
                             <option value="Afghanistan">Afghanistan</option>
@@ -297,43 +330,53 @@
                     </div>
                 </div>
                 <br>
-                <br>
+
                 <div class="row">
-                    <div class="col-md-6 col-xs-12">
+                    <div class="col-md-5 col-xs-12">
                         <label>Highest Qualification:</label>
                         <input type="text" class="form-control">
-                        <br>
                     </div>
-                    <div class="col-md-6 col-xs-12">
+                    <div class="col-md-2 col-xs-12"><br></div>
+                    <div class="col-md-5 col-xs-12">
                         <label>Work Experiences:</label>
                         <input type="text" class="form-control">
                         <br>
                     </div>
                 </div>
-                <br>
-                <br>
+
                 <div class="row">
-                    <div class="col-md-6 col-xs-12">
+                    <div class="col-md-5 col-xs-12">
                         <label>Skillsets:</label>
                         <input type="text" class="form-control">
+                    </div>
+                    <div class="col-md-2 col-xs-12">
                         <br>
                     </div>
-                    <div class="col-md-6 col-xs-12">
+                    <div class="col-md-5 col-xs-12">
                         <label>Awards:</label>
                         <input type="text" class="form-control">
                         <br>
                     </div>
                 </div>
                 <br>
-                <br>
+
                 <div class="row">
-                    <div class="col-1"></div>
-                    <div class="col-10">
+                    <div class="col-12">
                         <label>Biography(Less than 500 words):</label>
-                        <textarea rows="10" cols="50" class="form-control"></textarea>
+                        <textarea rows="10" cols="40" class="form-control"></textarea>
                     </div>
-                    <div class="col-1"></div>
                 </div>
+                <br>
+                <br>
+
+                <div class="row">
+                    <div class="col-4"></div>
+                    <div class="col-4">
+                        <button type="submit" class="btn btn-primary" style="width:100%">Continue</button>
+                    </div>
+                    <div class="col-4"></div>
+                </div>
+
             </form>
         </div>
     </div>
