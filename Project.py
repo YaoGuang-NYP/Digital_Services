@@ -7,14 +7,23 @@ app = Flask(__name__)
 def main():
     return render_template("main.html")
 
-@app.route('/home')
-def home():
-    return render_template('home.htm')
+@app.route("/login_register")
+def login_register():
+    return render_template("login_register.html")
+
+@app.route('/home', methods = ['POST'])
+def home(username = "", password=""):
+    if request.method == "POST" :
+        username_ = request.form['login_username']
+        password_ = request.form['login_password']
+        if username_ == "user" and password_ == "pass" :
+            return render_template("home.htm", username = username_ , password = password_)
+        else :
+            return '<script> alert("Wrong Login Credentials!"); window.location.href = "/";</script>'
 
 @app.route('/register')
 def register():
     return render_template('register.html')
 
-
 if __name__ == '__main__':
-    app.run()
+    app.run(debug = True)
