@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="" name="keywords">
+    <meta content="" name="description">
+
+    <!-- Favicons -->
+    <link href="../static/images/MyPortfolioLogo.png" rel="icon">
+    <link href="../static/images/apple-touch-icon.png" rel="apple-touch-icon">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,700,700i|Poppins:300,400,500,700"
+          rel="stylesheet">
+
+    <!-- Bootstrap CSS File -->
+    <link href="../static/css/bootstrap/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Libraries CSS Files -->
+    <link href="../static/css/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <link href="../static/css/animate/animate.min.css" rel="stylesheet">
+
+    <!-- Main Stylesheet File -->
+    <link href="../static/css/style.css" rel="stylesheet">
+
+
+</head>
+<body>
+
+<section id="contact">
+    <div class="container">
+        <div class="row">
+            <form class="container" action="login_register" method="post">
+                <div class="row">
+                    <div class="col-12">
+                        <h1>We require you to fill up some information about you.</h1>
+                    </div>
+                </div>
+                <br>
+                <br>
+
+
+                <div class="row">
+                    <div class="col-md-6 col-xs-12">
+                        {{ register.username.label(class="wow fadeInUp") }}
+                        {{ register.username(class="form-control wow fadeInUp ", placeholder="Username") }}
+                        {% for message in register.username.errors %}
+                            <h6 style="color:red">{{ message }}</h6>
+                        {% endfor %}
+                        <br>
+                    </div>
+
+                    <!--<div class="col-md-2 col-xs-12"><br></div>-->
+                    <div class="col-md-6 col-xs-12">
+                        {{ register.password.label(class="wow fadeInUp") }}
+                        {{ register.password(class="form-control wow fadeInUp", placeholder="Password") }}
+                        {% for message in register.password.errors %}
+                            <h6 style="color:red">{{ message }}</h6>
+                        {% endfor %}
+                    </div>
+                </div>
+                <br>
+
+                <div class="row">
+                    <div class="col-md-4 col-xs-12">
+                        {{ register.firstname.label(class="wow fadeInUp") }}
+                        {{ register.firstname(class="form-control wow fadeInUp", placeholder="First Name") }}
+                        {% for message in register.firstname.errors %}
+                            <h6 style="color:red">{{ message }}</h6>
+                        {% endfor %}
+                        <br>
+                    </div>
+                    <div class="col-md-4 col-xs-12">
+                        {{ register.lastname.label(class="wow fadeInUp") }}
+                        {{ register.lastname(class="form-control wow fadeInUp", placeholder="Last Name") }}
+                        {% for message in register.lastname.errors %}
+                            <h6 style="color:red">{{ message }}</h6>
+                        {% endfor %}
+                        <br>
+                    </div>
+                    <div class="col-md-4 col-xs-12">
+                        {{ register.age.label(class="wow fadeInUp") }}
+                        {{ register.age(class="form-control wow fadeInUp", placeholder="18") }}
+                        {% for message in register.age.errors %}
+                            <h6 style="color:red">{{ message }}</h6>
+                        {% endfor %}
+                    </div>
+                </div>
+                <br>
+
+                <div class="row">
+                    <div class="col-md-4 col-xs-12">
+                        {{ register.email.label(class="wow fadeInUp") }}
+                        {{ register.email(class="form-control wow fadeInUp", placeholder="Email") }}
+                        {% for message in register.email.errors %}
+                            <h6 style="color:red">{{ message }}</h6>
+                        {% endfor %}
+                        <br>
+                    </div>
+                    <div class="col-md-4 col-xs-12">
+                        {{ register.skillsets.label(class="wow fadeInUp") }}
+                        {{ register.skillsets(class="form-control wow fadeInUp", placeholder="Skillsets") }}
+                        {% for message in register.skillsets.errors %}
+                            <h6 style="color:red">{{ message }}</h6>
+                        {% endfor %}
+                        <br>
+                    </div>
+                    <div class="col-md-4 col-xs-12">
+                        {{ register.country.label(class="wow fadeInUp") }}
+                        {{ register.country(class="form-control wow fadeInUp") }}
+                        {% for message in register.country.errors %}
+                            <h6 style="color:red">{{ message }}</h6>
+                        {% endfor %}
+                    </div>
+                </div>
+                <br>
+
+                <div class="row">
+                    <div class="col-md-4 col-xs-12">
+                        {{ register.highestqualification.label(class="wow fadeInUp") }}
+                        {{ register.highestqualification(class="form-control wow fadeInUp", placeholder="Highest Qualification") }}
+                        {% for message in register.highestqualification.errors %}
+                            <h6 style="color:red">{{ message }}</h6>
+                        {% endfor %}
+                        <br>
+                    </div>
+                    <div class="col-md-4 col-xs-12">
+                        {{ register.workexperiences.label(class="wow fadeInUp")}}
+                        {{ register.workexperiences(class="form-control wow fadeInUp", placeholder="Work Experience")}}
+                        {% for message in register.workexperiences.errors %}
+                        <h6 style="color:red">{{ message }}</h6>
+                        {% endfor %}
+                    <br>
+                    </div>
+                    <div class="col-md-4 col-xs-12">
+                        {{ register.awards.label(class="wow fadeInUp") }}
+                        {{ register.awards(class="form-control wow fadeInUp", placeholder="Awards") }}
+                        {% for message in register.awards.errors %}
+                            <h6 style="color:red">{{ message }}</h6>
+                        {% endfor %}
+                        <br>
+                    </div>
+                </div>
+                <br>
+
+                <div class="row">
+                    <div class="col-12">
+                        {{ register.bio.label(class="wow fadeInUp") }}
+                        {{ register.bio(class="form-control wow fadeInUp", rows="9", col="50") }}
+                        {% for message in register.bio.errors %}
+                            <h6 style="color:red">{{ message }}</h6>
+                        {% endfor %}
+                        <br>
+                    </div>
+                </div>
+                <br>
+
+                <div class="row">
+                    <div class="col-md-12 col-xs-12">{{ register.submit(class="wow fadeInUp btn btn-primary", style="width:150px") }}</div>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+
+<script src="../static/js/jquery/jquery.min.js"></script>
+<script src="../static/js/jquery/jquery-migrate.min.js"></script>
+<script src="../static/js/bootstrap/bootstrap.bundle.min.js"></script>
+<script src="../static/js/easing/easing.min.js"></script>
+<script src="../static/js/wow/wow.min.js"></script>
+
+<script src="../static/js/waypoints/waypoints.min.js"></script>
+<script src="../static/js/counterup/counterup.min.js"></script>
+<script src="../static/js/superfish/hoverIntent.js"></script>
+<script src="../static/js/superfish/superfish.min.js"></script>
+
+<!-- Contact Form JavaScript File -->
+<script src="../static/js/contactform.js"></script>
+
+<!-- Template Main Javascript File -->
+<script src="../static/js/main.js"></script>
+
+
+</body>
+</html>
