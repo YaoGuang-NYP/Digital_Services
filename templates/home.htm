@@ -1,87 +1,159 @@
-﻿﻿{% extends 'index.html' %}
+﻿{% extends 'index.html' %}
 
 {% block inlinecss %}
-<style>
-    .home {
-        padding-top: 100px;
-    }
-
-    .box3 {
-        height: 300px;
-        border : 3px black solid;
-        margin-top : 70px;
-        margin-bottom : 50px;
-    }
-
-    .box2 {
-        height: 500px;
-        border : 3px black solid;
-        margin-top : 50px;
-    }
-
-    .box1 {
-        margin-top : 50px;
-        margin-bottom : 50px;
-        height: 870px;
-        border : 3px black solid;
-    }
-
-    .home-header {
-        height : 50px;
-        border-bottom-color: #000;
-        border-bottom-style : solid;
-        float : left;
-        vertical-align: middle;
-    }
-
-    /*@media (max-width: 576px) {
-        .container {
-            width: 50%;
-            height: 50px;
-            border-bottom-color: #000;
-            border-bottom-style: solid;
-            float: left;
-            vertical-align: middle;
+    <style>
+        .box1 {
+            border : 2px black solid;
+            height : 870px;
+            margin-bottom : 50px;
+            margin-top : 100px;
         }
-    }
-*/
-</style>
 
+        .box2 {
+            border : 2px black solid;
+            height : 300px;
+            margin-bottom : 70px;
+            margin-top : 100px;
+        }
+
+        .box3 {
+            border : 2px black solid;
+            height : 500px;
+            margin-bottom : 50px;
+        }
+
+        .container-fluid.create {
+            background-color: gray;
+            margin-top : 90px;;
+            height:300px
+        }
+
+        #create {
+            margin-top : 50px;
+            border: none;
+            cursor: pointer;
+            color: white;
+            padding: 15px 40px;
+            border-radius: 2px;
+            font-size: 22px;
+            box-shadow: 2px 2px 4px rgba(0, 0, 0, .4);
+            background: green;
+            width:200px;
+        }
+
+        /* Ripple magic */
+        #create{
+            position: relative;
+            overflow: hidden;
+        }
+
+        #create:after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 5px;
+            height: 5px;
+            background: rgba(255, 255, 255, .5);
+            opacity: 0;
+            border-radius: 100%;
+            transform: scale(1, 1) translate(-50%);
+            transform-origin: 50% 50%;
+        }
+
+        @keyframes ripple {
+            0% {
+                transform: scale(0, 0);
+                opacity: 1;
+            }
+            20% {
+                transform: scale(25, 25);
+                opacity: 1;
+            }
+            100% {
+                opacity: 0;
+                transform: scale(60, 60);
+            }
+        }
+
+        #create:hover:not(:active)::after {
+            animation: ripple 1s ease-out;
+        }
+
+    </style>
 {% endblock %}
 
 {% block body %}
-    <main id="main">
-        <div class="container home">
+<main>
+    <section>
+        <div class="container-fluid create wow fadeInLeft" data-wow-delay="0.05s">
             <div class="row">
-                <div class="col-lg-7 col-md-10">
-                    <div class="container box1">
-
+                <div class="col" align="center">
+                    <p style="margin-top : 50px; color: white; font-weight: bold; font-size : 30px;">Looks like you haven't created a resume yet!</p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col" align="center">
+                    <button type="button" id="create">Create <i href="#" class="fa fa-plus" aria-hidden="true"></i></button>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-7">
+                    <div class="container box1 wow fadeInUp" data-wow-delay="0.05s">
+                        <div class="row" style="background-color : gray; color: white; height: 50px; border-bottom-color: black; border-bottom-style: solid; border-bottom-width: 2px;">
+                            <p style="margin-top : 10px; margin-left: 20px;">My Portfolio Details<button type="button" class="portfolioedit" style="border-radius: 5px; background-color : gray; color : white; border: 2px white solid; margin-left : 50px; cursor: pointer;">Edit<i class="fa fa-bars" style="margin-left : 10px;"></i></button></p>
+                        </div>
+                        <div class="row">
+                            <p>Name : <span class="homeusername">{{ username }}</span></p>
+                        </div>
                     </div>
                 </div>
-                <div class="col-lg-1"></div>
-                <div class="col-lg-4 col-md-10">
+                <div class="col-lg-1">
+                </div>
+                <div class="col-lg-4">
                     <div class="row">
-                        <div class="container box2">
-                            <div class="row">
-                                <div class="container-fluid home-header">
-                                    Notifications
-                                </div>
+                        <div class="container box2 wow fadeInUp" data-wow-delay="0.05s">
+                            <div class="row" style="background-color : gray; color: white; height: 50px; border-bottom-color: black; border-bottom-style: solid; border-bottom-width: 2px;">
+                                <p style="margin-top : 10px; margin-left: 20px;">Notifications</p>
                             </div>
                             <div class="row">
-                                <div class="container">
-                                    No New Notifications
-                                </div>
+                                <h3 style="margin-top : 60px;" align="center">No New Notfications</h3>
                             </div>
                         </div>
                     </div>
                     <div class="row">
-                        <div class="container box3">
-
+                        <div class="container box3 wow fadeInUp" data-wow-delay="0.05s">
+                            <div class="row" style="background-color : gray; color: white; height: 50px; border-bottom-color: black; border-bottom-style: solid; border-bottom-width: 2px;">
+                                <p style="margin-top : 10px; margin-left: 20px;">Notifications</p>
+                            </div>
+                            <div class="row">
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </main>
+    </section>
+</main>
+{% endblock %}
 
+{% block additionalscripts %}
+<script>
+    $(document).ready(function () {
+        $(".portfolioedit").click(function () {
+            $(".homeusername").attr('contenteditable', 'true');
+            $(".portfolioedit").html('Save<i class="fa fa-check" style="margin-left : 10px;"></i>');
+            $(".portfolioedit").attr('class', 'saveedit');
+        });
+        $(".saveedit").click(function () {
+            $(".homeusername").removeAttr('contenteditable');
+            $(".saveedit").html('Edit<i class="fa fa-bars" style="margin-left : 10px;"></i>');
+            $(".saveedit").attr('class', 'portfolioedit');
+        });
+    });
+</script>
 {% endblock %}

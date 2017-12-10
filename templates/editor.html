@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script src='../static/js/tinymce/tinymce.min.js'></script>
+    <script>
+        tinymce.init({
+            selector: "#textarea",  // change this value according to your HTML
+            plugins: "fullpage",
+            fullpage_hide_in_source_view: true
+        });
+    </script>
+</head>
+<style>
+    body {
+        background: rgb(204,204,204);
+    }
+    div.page {
+        background: white;
+        display: block;
+        margin: 0 auto;
+        margin-bottom: 0.5cm;
+        box-shadow: 0 0 0.5cm rgba(0,0,0,0.5);
+    }
+    div.page[data-size="A4"] {
+        width: 21cm;
+        height: 29.7cm;
+    }
+    div.page[data-size="A4"][layout="portrait"] {
+        width: 29.7cm;
+        height: 21cm;
+    }
+</style>
+<body>
+
+<form method="post">
+    <div class="page" data-size="A4">
+</form>
+</body>
+</html>

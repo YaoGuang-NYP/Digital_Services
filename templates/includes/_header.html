@@ -5,17 +5,25 @@ Header
     <div class="container">
 
         <div id="logo" class="pull-left">
-            <a href="#hero"><img src="../static/images/MyPortfolio_Logo.png" alt="" title="" /></img></a>
+            <!--<a href="#hero"><img src="../static/images/MyPortfolio_Logo_title.png" alt="" title="" /></a>
             <!-- Uncomment below if you prefer to use a text logo -->
-            <!--<h1><a href="#hero">Regna</a></h1>-->
+            <h1><a href="#hero">MyPortFolio</a></h1>
         </div>
 
         <nav id="nav-menu-container">
             <ul class="nav-menu">
                 <li class="menu-active"><a href="#hero">Home</a></li>
                 <li><a href="#about">Messages</a></li>
-                <li><a href="#services">Account Settings</a></li>
-                <li><a href="#portfolio">Username</a></li>
+                <li><a href="#portfolio">No New Notifications</a></li>
+                {% if username == 'user' %}
+                    <li class="dropdown-toggle" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><a href="#">{{ username }}</a></li>
+                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            <li class="dropdown-item"><a href="#">Account Settings</a></li>
+                            <li class="dropdown-item"><a href="#">Logout</a></li>
+                        </ul>
+                {% else %}
+                <li><a href="http://127.0.0.1:5000">Sign In or Register</a></li>
+                {% endif %}
             </ul>
         </nav><!-- #nav-menu-container -->
     </div>
