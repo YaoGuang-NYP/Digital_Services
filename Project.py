@@ -3,10 +3,17 @@ from wtforms import Form, StringField, TextAreaField, RadioField, SelectField, v
 
 app = Flask(__name__)
 
+@app.route("/")
+def main():
+    return render_template("main.html")
 
-@app.route('/index')
-def index():
-    return render_template('index.html')
+@app.route('/home')
+def home():
+    return render_template('home.htm')
+
+@app.route('/register')
+def register():
+    return render_template('register.html')
 
 
 if __name__ == '__main__':
