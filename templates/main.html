@@ -34,69 +34,33 @@
                 <div class="col-md-2"></div>
                 <div class="col-md-8 col-xs-12">
                     <div class="jumbotron" style="margin-top : 25px">
-                        <form action = "http://127.0.0.1:5000/home" method = "post" class="container" id="login_page" novalidate>
+                        <form action="/" method="post" class="container" id="login_page" novalidate>
                             <div class="row">
                                 <div class="col-12">
                                     <img src="../static/images/MyPortfolioLogo.png" style="height:35% ; width:35%">
                                     <br>
                                     <br>
-                                    <label class="wow fadeInUp" data-wow-delay="0.05s">User Name:</label>
-                                    <input type="text" class="form-control wow fadeInUp" data-wow-delay="0.1s"
-                                           name="login_username" placeholder="Username" required>
-                                    <div class="invalid-feedback">Invalid Username!</div>
+                                    {{ loginform.username.label(class="wow fadeInUp") }}
+                                    {{ loginform.username(class="form-control wow fadeInUp",placeholder="Username") }}
                                     <br>
-                                    <label class="wow fadeInUp" data-wow-delay="0.15s">Password:</label>
-                                    <input type="password" class="form-control wow fadeInUp" data-wow-delay="0.2s"
-                                           name="login_password" placeholder="Password" required>
-                                    <div class="invalid-feedback">Invalid Password!</div>
+                                    {% for message in loginform.username.errors %}
+                                        <h6 style="color:red">{{ message }}</h6>
+                                    {% endfor %}
                                     <br>
+                                    {{ loginform.password.label(class="wow fadeInUp") }}
+                                    {{ loginform.password(class="form-control wow fadeInUp", placeholder="Password") }}
                                     <br>
-                                    <button id="login_button" type="submit" class="btn btn-primary wow fadeInUp"
-                                            data-wow-delay="0.3s" style="width:30%">Submit
-                                    </button>
+                                    {% for message in loginform.password.errors %}
+                                        <h6 style="color:red">{{ message }}</h6>
+                                    {% endfor %}
                                     <br>
+                                    {{ loginform.submit(class="btn btn-primary wow fadeInUp", style="width:150px") }}
                                     <br>
-                                    <br>
+                                <br>
                                     <h6 class="wow fadeInUp" data-wow-delay="0.35s">Don't have an account? Register with
-                                        us <a id="register"><u style="cursor:pointer">here!</u></a></h6>
+                                        us <a href="login_register"><u style="cursor:pointer">here!</u></a></h6>
                                 </div>
                             </div>
-                        </form>
-
-                        <form action = "http://127.0.0.1:5000/login_register" method = "post" class="form box" id="register_page" style="display:none" novalidate>
-                            <div class="row">
-                                <div class="col-12">
-                                    <label class="wow fadeInUp" data-wow-delay="0.05s">User Name:</label>
-                                    <input type="text" class="form-control wow fadeInUp" data-wow-delay="0.10s"
-                                           name="register_username" placeholder="Username" required>
-                                    <div class="invalid-feedback">Invalid Username!</div>
-                                    <br>
-                                    <label class="wow fadeInUp" data-wow-delay="0.15s">Password:</label>
-                                    <input type="password" class="form-control wow fadeInUp" data-wow-delay="0.2s"
-                                           name="register_password" placeholder="Password" required>
-                                    <div class="invalid-feedback">Invalid Password!</div>
-                                    <br>
-                                    <label class="wow fadeInUp" data-wow-delay="0.15s">Confirm
-                                        Password:</label>
-                                    <input type="password" class="form-control wow fadeInUp" data-wow-delay="0.2s"
-                                           name="register_confirmpassword" placeholder="Confirm Password" required>
-                                    <div class="invalid-feedback">Invalid Password!</div>
-                                    <br>
-                                    <label class="wow fadeInUp" data-wow-delay="0.25s">Email:</label>
-                                    <input type="email" class="form-control wow fadeInUp" data-wow-delay="0.3s"
-                                           name="register_email" placeholder="Email" required>
-                                    <div class="invalid-feedback">Invalid Email!</div>
-                                    <br>
-                                    <button type="submit" class="btn btn-primary wow fadeInUp" data-wow-delay="0.35s"
-                                            style="width:30%">Register
-                                    </button>
-                                    <br>
-                                    <br>
-                                    <h6 id="back" class="wow fadeInUp" data-wow-delay="0.4s"><u
-                                            style="cursor:pointer">Back</u></h6>
-                                </div>
-                            </div>
-
                         </form>
                     </div>
                 </div>
@@ -122,52 +86,6 @@
 
 <!-- Template Main Javascript File -->
 <script src="../static/js/main.js"></script>
-<script>
-    $(document).ready(function () {
-        $("#header").remove();
-        $("#footer").remove();
-        $("#register_page").hide();
-        $("#login_page").preventDefault();
-    });
-    $("#register").click(function () {
-        $("#login_page").hide();
-        $("#register_page").fadeIn();
-    });
-    $("#back").click(function () {
-        $("#register_page").hide();
-        $("#login_page").fadeIn();
-    });
-    (function () {
-        'use strict';
-
-        window.addEventListener('load', function () {
-            var form = document.getElementById('login_page');
-            form.addEventListener('submit', function (event) {
-                if (form.checkValidity() === false) {
-                    event.preventDefault();
-                    event.stopPropagation();
-                }
-                form.classList.add('was-validated');
-            }, false);
-        }, false);
-    })();
-    (function () {
-        'use strict';
-
-        window.addEventListener('load', function () {
-            var form = document.getElementById('register_page');
-            form.addEventListener('submit', function (event) {
-                if (form.checkValidity() === false) {
-                    event.preventDefault();
-                    event.stopPropagation();
-                }
-                form.classList.add('was-validated');
-            }, false);
-        }, false);
-    })();
-
-</script>
-
 <a href="#" class="back-to-top"><i class="fa fa-chevron-up"></i></a>
 
 
