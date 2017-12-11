@@ -8,7 +8,7 @@
   <meta content="" name="description">
 
   <!-- Favicons -->
-  <link href="../static/images/MyPortfolioLogo.png" rel="icon">
+  <link href="../static/images/favicon.png" rel="icon">
   <link href="../static/images/apple-touch-icon.png" rel="apple-touch-icon">
 
   <!-- Google Fonts -->
@@ -529,56 +529,59 @@ select::-ms-expand {
     <!--==========================
       Contact Section
     ============================-->
-    <section id="contact">
+   <section id="contact">
       <div class="container wow fadeInUp">
-        <!--<div class="section-header">
-          <h3 class="section-title">Contact</h3>
-          <p class="section-description">Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque</p>
-        </div>-->
+
       </div>
 
-      <!--<div id="google-map" data-latitude="40.713732" data-longitude="-74.0092704"></div>-->
+
 
       <div class="container wow fadeInUp">
-        <div class="row justify-content-center">
-		<div class="container col-lg-4 col-md-4" align="center">
- <br>
- <br>
+        <!--<div class=" justify-content-center">-->
+		<div class="form">
 
- <h4 style="text-align:center;">Gender</h4>
- <div style="border:3px solid;background-color:#FFF;width:200px;">
-  <form align="center" style="padding-top:5px;">
-    <label class="radio-inline">
-      <input type="radio" name="optradio">Male
-    </label>
-    <label class="radio-inline">
-      <input type="radio" name="optradio">Female
-    </label>
-    <label class="radio-inline">
-      <input type="radio" name="optradio">Others
-    </label>
-  </form>
-  </div>
+		<div id="sendmessage">Your message has been sent. Thank you!</div>
+		 <div id="errormessage"></div>
+		<form action="" method="post" role="form" class="contactForm">
+		<div class='row'>
 
-  <br>
+			<div class="container col-lg-4 col-md-4" align="center">
 
-  <h4 style="text-align:center;">Qualification</h4>
-  <div style="border:3px solid;background-color:#FFF;width:250px;">
-  <form style="padding-top:5px;"align="center">
-    <label class="radio-inline">
-      <input type="radio" name="optradio">Pre-College
-    </label>
-    <label class="radio-inline">
-      <input type="radio" name="optradio">College
-    </label>
-    <label class="radio-inline">
-      <input type="radio" name="optradio">Others
-    </label>
-  </form>
-	</div>
-		</div>
+				  <h4 style="text-align:center;">Gender</h4>
 
-          <div class="col-lg-2 col-md-2">
+					<div style="border:3px solid;background-color:#FFF;width:200px;">
+
+					<label class="radio-inline">
+						<input type="radio" name="optradio" required>Male
+					</label>
+					<label class="radio-inline">
+						<input type="radio" name="optradio">Female
+					</label>
+					<label class="radio-inline">
+						<input type="radio" name="optradio">Others
+					</label>
+					</div>
+
+					<br>
+					<br>
+
+					<h4 style="text-align:center;">Qualification</h4>
+
+					<div style="border:3px solid;background-color:#FFF;width:250px;">
+					<label class="radio-inline">
+						<input type="radio" name="optradio1" required>Pre-College
+					</label>
+					<label class="radio-inline">
+						<input type="radio" name="optradio1">College
+					</label>
+					<label class="radio-inline">
+						<input type="radio" name="optradio1">Others
+					</label>
+					</div>
+			</div>
+
+
+			 <div class="col-lg-2 col-md-2">
 
             <div class="info">
               <div>
@@ -605,94 +608,59 @@ select::-ms-expand {
 
 
 
-          </div>
+			</div>
 
-          <div class="col-lg-6 col-md-6">
-            <div class="form">
-              <div id="sendmessage">Your message has been sent. Thank you!</div>
-              <div id="errormessage"></div>
-              <form action="" method="post" role="form" class="contactForm">
-			  <h3 style="text-align:center;">Security</h3>
+				<div class="col-lg-6 col-md-6">
 
-                <div class="form-group">
-                  <input type="text" name="name" class="form-control" id="name" placeholder="Full name" data-rule="minlen:4" data-msg="Please enter at least 4 chars" />
-                  <div class="validation"></div>
-                </div>
-                <div class="form-group">
-                  <input type="email" class="form-control" name="email" id="email" placeholder="Your Email" data-rule="email" data-msg="Please enter a valid email" />
-                  <div class="validation"></div>
-                </div>
-                <div class="form-group">
-                  <input type="text" class="form-control" name="subject" id="subject" placeholder="Password" data-rule="minlen:4" data-msg="Please enter at least 8 chars of subject" />
-                  <div class="validation"></div>
-                </div>
-                <div class="form-group">
-                  <input type="number" class="form-control" name="subject" id="subject" placeholder="Verification number" data-rule="minlen:4" data-msg="Please enter at least 8 chars of subject" />
-                  <div class="validation"></div>
-                </div>
-                <div class="text-center"><button type="submit">Submit</button></div>
-              </form>
+				  <h3 style="text-align:center;">Security</h3>
 
+					<div class="form-group">
+					  <input type="text" name="name" class="form-control" id="name" placeholder="Full name" data-rule="minlen:4" data-msg="Please enter at least 4 chars" />
+					  <div class="validation"></div>
+					</div>
+					<div class="form-group">
+					  <input type="email" class="form-control" name="email" id="email" placeholder="Your Email" data-rule="email" data-msg="Please enter a valid email" />
+					  <div class="validation"></div>
+					</div>
+					<div class="form-group">
+					  <input type="text" class="form-control" name="subject" id="subject" placeholder="Password" data-rule="minlen:4" data-msg="Please enter at least 8 chars of subject" />
+					  <div class="validation"></div>
+					</div>
+					<div class="form-group">
+					  <input type="number" class="form-control" name="subject" id="subject" placeholder="Verification number" data-rule="minlen:4" data-msg="Please enter at least 8 chars of subject" />
+					  <div class="validation"></div>
+					</div>
+					</div>
+			  </div>
+			  <div class="text-center"><button type="submit">Submit</button></div>
+			</form>
+			<!--</div>-->
 
-            </div>
-          </div>
-
-
-        </div>
-
-      </div>
+		  </div>
+		</div>
     </section>
 
 
 	<section id="contact">
       <div class="container wow fadeInUp">
-        <!--<div class="section-header">
-          <h3 class="section-title">Contact</h3>
-          <p class="section-description">Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque</p>
-        </div>-->
+
       </div>
 
-      <!--<div id="google-map" data-latitude="40.713732" data-longitude="-74.0092704"></div>-->
+
 
       <div class="container wow fadeInUp">
-        <div class="row justify-content-center">
+        <!--<div class=" justify-content-center">-->
+		<div class="form">
 
-         <!-- <div class="col-lg-3 col-md-4">
+		<div id="sendmessage">Your message has been sent. Thank you!</div>
+		 <div id="errormessage"></div>
+		<form action="" method="post" role="form" class="contactForm">
+		<div class='row'>
+			 <div class="col-lg-7 col-md-7">
 
-            <div class="info">
-              <div>
-                <i class="fa fa-map-marker"></i>
-                <p>A108 Adam Street<br>New York, NY 535022</p>
-              </div>
+				  <h3 style="text-align:center;">Resume for Submission</h3>
 
-              <div>
-                <i class="fa fa-envelope"></i>
-                <p>info@example.com</p>
-              </div>
-
-              <div>
-                <i class="fa fa-phone"></i>
-                <p>+1 5589 55488 55s</p>
-              </div>
-            </div>
-
-            <div class="social-links">
-              <a href="#" class="twitter"><i class="fa fa-twitter"></i></a>
-              <a href="#" class="facebook"><i class="fa fa-facebook"></i></a>
-              <a href="#" class="instagram"><i class="fa fa-instagram"></i></a>
-              <a href="#" class="google-plus"><i class="fa fa-google-plus"></i></a>
-              <a href="#" class="linkedin"><i class="fa fa-linkedin"></i></a>
-            </div>
-
-          </div>-->
-
-          <div class="col-lg-7 col-md-7">
-            <div class="form">
-              <div id="sendmessage">Your message has been sent. Thank you!</div>
-              <div id="errormessage"></div>
-              <form action="" method="post" role="form" class="contactForm">
-			  <h3 style="text-align:center;">Resume for Submission</h3>
-                <div class="form-group">
+					<div class="form-group">
                   <input type="text" name="name" class="form-control" id="name" placeholder="Your Name" data-rule="minlen:4" data-msg="Please enter at least 4 chars" />
                   <div class="validation"></div>
                 </div>
@@ -708,42 +676,37 @@ select::-ms-expand {
                   <textarea class="form-control" name="message" rows="8" data-rule="required" data-msg="Please write something for us" placeholder="About"></textarea>
                   <div class="validation"></div>
                 </div>
+					</div>
 
-              </form>
-            </div>
-          </div>
-		  <br>
-		  <div class="col-lg-5 col-md-5">
+				<div class="col-lg-5 col-md-5">
 		  <h2 style="padding-left:70px;">Status</h2>
-		  <div style="width:250px;"class="select" align="center">
-			<select name="slct" id="slct">
-			  <option>Unemployed</option>
-			  <option value="1">Studying</option>
-			  <option value="2">NSmen</option>
-			  <option value="3">Employed</option>
+		  <div class="select form-group"style="width:250px;" align="center">
+			<select name="slct" id="slct" required>
+			  <option value="">Select Option...</option>
+			  <option value="1">Unemployed</option>
+			  <option value="2">Studying</option>
+			  <option value="3">NSmen</option>
+			  <option value="4">Employed</option>
 			</select>
 		   </div>
 		   <div style="height:20px;font-size:1px;">&nbsp;</div>
 
 
-		    <input style="width:250px;font-size:15pt;padding:2px; border:3px solid;background-color:#FFF;" type='file' onchange="readURL(this);" />
+		    <input style="width:250px;font-size:15pt;padding:2px; border:3px solid;background-color:#FFF;" type='file' onchange="readURL(this);" accept="image/*" required />
 			<div style="width:250px;height:212px;border:2px solid;background-color:#FFF;">
 			<img id="Image" src="#" alt="" />
 			</div>
 
 
+		   </div>
+
+			  </div>
+			  <div class="text-center"><button type="submit">Send Application</button></div>
+			</form>
+			<!--</div>-->
 
 		  </div>
-		  <br>
-		  <br>
-
-		  <div class="col-lg-12 col-md-12 form">
-		  <div class="text-center"><button type="submit">Send Application</button></div>
-		  </div>
-
-        </div>
-
-      </div>
+		</div>
     </section>
   </main>
 
@@ -785,9 +748,9 @@ select::-ms-expand {
   <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD8HeI8o-c1NppZA-92oYlXakhDPYR7XMY"></script>
 
   <script src="../static/js/waypoints/waypoints.min.js"></script>
-  <script src=../static/js/counterup/counterup.min.js"></script>
+  <script src="../static/js/counterup/counterup.min.js"></script>
   <script src="../static/js/superfish/hoverIntent.js"></script>
-  <script src="lib/superfish/superfish.min.js"></script>
+  <script src="../static/js/superfish/superfish.min.js"></script>
 	<script>
 	function readURL(input) {
             if (input.files && input.files[0]) {
@@ -806,10 +769,11 @@ select::-ms-expand {
 
 	</script>
   <!-- Contact Form JavaScript File -->
-  <script src="contactform/contactform.js"></script>
+  <script src="../static/js/contactform.js"></script>
 
   <!-- Template Main Javascript File -->
-  <script src="js/main.js"></script>
+  <script src="../static/js/main.js"></script>
 
 </body>
 </html>
+
