@@ -60,6 +60,7 @@ def main():
 def login_register():
     register = register_form(request.form)
 
+
     if request.method == "GET" :
         return render_template("login_register.html", register = register)
 
@@ -67,11 +68,21 @@ def login_register():
         return render_template("login_register.html", register = register)
 
     elif request.method == "POST" and register.validate() == True:
-        return render_template("home.htm")
-
+        username = request.form["username"]
+        firstname = request.form["firstname"]
+        lastname = request.form["lastname"]
+        age = request.form["age"]
+        email = request.form["email"]
+        skillset = request.form["skillsets"]
+        country = request.form["country"]
+        highestqualification = request.form["highestqualification"]
+        workexperiences = request.form["workexperiences"]
+        awards = request.form["awards"]
+        biography = request.form["bio"]
+        return render_template("home.htm", username = username, firstname = firstname, lastname = lastname , age = age , email = email , skillset = skillset , country = country , highestqualification = highestqualification , workexperiences = workexperiences , awards = awards , biography = biography)
 
 @app.route('/home', methods = ['POST'])
-def home(username = "", password=""):
+def home(username = "" ,firstname = "" ,lastname = "" ,age ="" , email="" , skillset = "" , country = "", highestqualification = "", workexperiences = "", awards = "", biography = ""):
     if request.method == "POST" :
         username_ = request.form['login_username']
         password_ = request.form['login_password']
