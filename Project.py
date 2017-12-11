@@ -1,8 +1,22 @@
 from flask import Flask, render_template, request, flash, redirect, url_for
-from wtforms import Form, StringField, TextAreaField, RadioField, SelectField, validators, SubmitField, IntegerField
+from wtforms import Form, StringField, TextAreaField, RadioField, SelectField, validators, SubmitField, IntegerField, PasswordField
+from forms import Forms
+from registerform import RegisterForm
 
 app = Flask(__name__)
 app.secret_key = "development key"
+
+import firebase_admin
+from firebase_admin import credentials, db
+
+cred = credentials.Certificate('cred/digitalservices-d9e1c-firebase-adminsdk-3ms44-b4b21b1d32.json')
+default_app = firebase_admin.initialize_app(cred, {
+    'databaseURL': 'https://digitalservices-d9e1c.firebaseio.com/'
+})
+
+root = db.reference()
+
+
 countries =                 [("Afghanistan","Afghanistan"),("Albania","Albania"),("Algeria","Algeria"),("Andorra","Andorra"),("Angola","Angola"),("Anguilla","Anguilla"),("Anguilla","Anguilla"),("Argentina","Argentina"),("Armenia","Armenia"),("Aruba","Aruba"),("Australia","Australia"),("Austria","Austria"),("Azerbaijan","Azerbaijan"),("Bahamas"
 		,"Bahamas"),("Bahrain","Bahrain"),("Bangladesh","Bangladesh"),("Barbados","Barbados"),("Belarus","Belarus"),("Belgium","Belgium"),("Belize","Belize"),("Benin","Benin"),("Bermuda","Bermuda"),("Bhutan","Bhutan"),("Bolivia","Bolivia"),("Bosnia Herzegovina","Bosnia Herzegovina"),("Botswana","Botswana"),("Brazil","Brazil"),("British Virgin Islands"
 		,"British Virgin Islands"),("Brunei","Brunei"),("Bulgaria","Bulgaria"),("Burkina Faso","Burkina Faso"),("Burundi","Burundi"),("Cambodia","Cambodia"),("Cameroon","Cameroon"),("Canada","Canada"),("Cape Verde","Cape Verde"),("Cayman Islands","Cayman Islands"),("Chad","Chad"),("Chile","Chile"),("China","China"),("Colombia","Colombia"),("Congo","Congo"),("Cook Islands","Cook Islands"),("Costa Rica"
@@ -26,7 +40,7 @@ class login_form(Form):
 
 class register_form(Form):
     username = StringField("User Name : ",[validators.DataRequired("Please enter a username!")])
-    password = StringField("Password : ",[validators.DataRequired("Please enter a password!")])
+    password = PasswordField("Password : ",[validators.DataRequired("Please enter a password!")])
     email = StringField("Email : ",[validators.DataRequired("Please enter your email!")])
     firstname = StringField("First Name : ",[validators.DataRequired("Please enter your First Name!")])
     lastname = StringField("Last Name : ",[validators.DataRequired("Please enter your Last Name")])
@@ -39,6 +53,7 @@ class register_form(Form):
     bio = TextAreaField("Biography(Less than 500 words) : ")
     submit = SubmitField("Register")
 
+
 @app.route("/", methods = ["POST", "GET"])
 def main():
     loginform = login_form(request.form)
@@ -48,18 +63,24 @@ def main():
         return render_template("main.html", loginform = loginform)
 
     elif request.method == "POST" and loginform.validate() == False :
-            return render_template("main.html", loginform = loginform)
+        return render_template("main.html", loginform = loginform)
 
     elif request.method == "POST" and loginform.validate() == True:
-            return render_template("home.htm")
+        name = loginform.username.data
+        password = loginform.password.data
+        logindata = root.child('userdata').get()
+        for user in logindata :
+            uniqueuser = logindata[user]
+            if uniqueuser['username'] == loginform.username.data and uniqueuser['password'] == loginform.password.data :
+                data = RegisterForm(uniqueuser['username'], uniqueuser['password'], uniqueuser['email'], uniqueuser['firstname'], uniqueuser['lastname'], uniqueuser['age'], uniqueuser['country'], uniqueuser['highestqualification'], uniqueuser['workexperiences'], uniqueuser['skillsets'], uniqueuser['awards'], uniqueuser['bio'])
+                return render_template("home.htm", data = data)
+            else :
+                return '<script> alert("Wrong Login Credentials!"); window.location.href = "/";</script>'
 
-    else :
-        return render_template("home.htm")
 
 @app.route("/login_register", methods = ['POST', "GET"])
 def login_register():
     register = register_form(request.form)
-
 
     if request.method == "GET" :
         return render_template("login_register.html", register = register)
@@ -68,32 +89,39 @@ def login_register():
         return render_template("login_register.html", register = register)
 
     elif request.method == "POST" and register.validate() == True:
-        username = request.form["username"]
-        firstname = request.form["firstname"]
-        lastname = request.form["lastname"]
-        age = request.form["age"]
-        email = request.form["email"]
-        skillset = request.form["skillsets"]
-        country = request.form["country"]
-        highestqualification = request.form["highestqualification"]
-        workexperiences = request.form["workexperiences"]
-        awards = request.form["awards"]
-        biography = request.form["bio"]
-        return render_template("home.htm", username = username, firstname = firstname, lastname = lastname , age = age , email = email , skillset = skillset , country = country , highestqualification = highestqualification , workexperiences = workexperiences , awards = awards , biography = biography)
+        name = register.username.data
+        password = register.password.data
+        email = register.email.data
+        firstname = register.firstname.data
+        lastname = register.lastname.data
+        age = register.age.data
+        country = register.country.data
+        highestqualification = register.highestqualification.data
+        workexperiences = register.workexperiences.data
+        skillsets = register.skillsets.data
+        awards = register.awards.data
+        bio = register.bio.data
+        data = RegisterForm(name, password, email, firstname, lastname, age, country, highestqualification, workexperiences, skillsets, awards, bio)
+        data_db = root.child('userdata')
+        data_db.push({
+            'username' : data.get_username(),
+            'password' : data.get_password(),
+            'email' : data.get_email(),
+            'firstname' : data.get_firstname(),
+            'lastname' : data.get_lastname(),
+            'age' : data.get_age(),
+            'country' : data.get_country(),
+            'highestqualification' : data.get_highestqualification(),
+            'workexperiences' : data.get_workexperiences(),
+            'skillsets' : data.get_skillsets(),
+            'awards' : data.get_awards(),
+            'bio' : data.get_bio()
+        })
+        return render_template("home.htm", data = data)
 
-@app.route('/home', methods = ['POST'])
-def home(username = "" ,firstname = "" ,lastname = "" ,age ="" , email="" , skillset = "" , country = "", highestqualification = "", workexperiences = "", awards = "", biography = ""):
-    if request.method == "POST" :
-        username_ = request.form['login_username']
-        password_ = request.form['login_password']
-        if username_ == "user" and password_ == "pass" :
-            return render_template("home.htm", username = username_ , password = password_)
-        else :
-            return '<script> alert("Wrong Login Credentials!"); window.location.href = "/";</script>'
-
-@app.route('/register')
-def register():
-    return render_template('register.html')
+@app.route("/home")
+def home() :
+    return render_template('home.htm')
 
 if __name__ == '__main__':
     app.run(debug = True)
