@@ -75,13 +75,7 @@ def main():
         name = loginform.username.data
         password = loginform.password.data
         logindata = root.child('userdata').get()
-        print(logindata)
-        print(name)
-        print(password)
-        count = 0
         for user in logindata :
-            count += 1
-            print(count)
             uniqueuser = logindata[user]
             print(uniqueuser)
             if uniqueuser['username'] == name and uniqueuser['password'] == password :
