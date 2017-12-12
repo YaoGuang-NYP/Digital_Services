@@ -23,7 +23,7 @@ default_app = firebase_admin.initialize_app(cred, {
 root = db.reference()
 
 
-countries =                 [("Afghanistan","Afghanistan"),("Albania","Albania"),("Algeria","Algeria"),("Andorra","Andorra"),("Angola","Angola"),("Anguilla","Anguilla"),("Anguilla","Anguilla"),("Argentina","Argentina"),("Armenia","Armenia"),("Aruba","Aruba"),("Australia","Australia"),("Austria","Austria"),("Azerbaijan","Azerbaijan"),("Bahamas"
+countries = [("Afghanistan","Afghanistan"),("Albania","Albania"),("Algeria","Algeria"),("Andorra","Andorra"),("Angola","Angola"),("Anguilla","Anguilla"),("Anguilla","Anguilla"),("Argentina","Argentina"),("Armenia","Armenia"),("Aruba","Aruba"),("Australia","Australia"),("Austria","Austria"),("Azerbaijan","Azerbaijan"),("Bahamas"
 		,"Bahamas"),("Bahrain","Bahrain"),("Bangladesh","Bangladesh"),("Barbados","Barbados"),("Belarus","Belarus"),("Belgium","Belgium"),("Belize","Belize"),("Benin","Benin"),("Bermuda","Bermuda"),("Bhutan","Bhutan"),("Bolivia","Bolivia"),("Bosnia Herzegovina","Bosnia Herzegovina"),("Botswana","Botswana"),("Brazil","Brazil"),("British Virgin Islands"
 		,"British Virgin Islands"),("Brunei","Brunei"),("Bulgaria","Bulgaria"),("Burkina Faso","Burkina Faso"),("Burundi","Burundi"),("Cambodia","Cambodia"),("Cameroon","Cameroon"),("Canada","Canada"),("Cape Verde","Cape Verde"),("Cayman Islands","Cayman Islands"),("Chad","Chad"),("Chile","Chile"),("China","China"),("Colombia","Colombia"),("Congo","Congo"),("Cook Islands","Cook Islands"),("Costa Rica"
 		,"Costa Rica"),("Cote D Ivoire","Cote D Ivoire"),("Croatia","Croatia"),("Cruise Ship","Cruise Ship"),("Cuba","Cuba"),("Cyprus","Cyprus"),("Czech Republic","Czech Republic"),("Denmark","Denmark"),("Djibouti","Djibouti"),("Dominica","Dominica"),("Dominican Republic","Dominican Republic"),("Ecuador","Ecuador"),("Egypt","Egypt"),("El Salvador","El Salvador"),("Equatorial Guinea","Equatorial Guinea")
@@ -75,13 +75,21 @@ def main():
         name = loginform.username.data
         password = loginform.password.data
         logindata = root.child('userdata').get()
+        print(logindata)
+        print(name)
+        print(password)
+        count = 0
         for user in logindata :
+            count += 1
+            print(count)
             uniqueuser = logindata[user]
-            if uniqueuser['username'] == loginform.username.data and uniqueuser['password'] == loginform.password.data :
+            print(uniqueuser)
+            if uniqueuser['username'] == name and uniqueuser['password'] == password :
                 data = RegisterForm(uniqueuser['username'], uniqueuser['password'], uniqueuser['email'], uniqueuser['firstname'], uniqueuser['lastname'], uniqueuser['age'], uniqueuser['country'], uniqueuser['highestqualification'], uniqueuser['workexperiences'], uniqueuser['skillsets'], uniqueuser['awards'], uniqueuser['bio'])
                 return render_template("home.htm", data = data)
-            else :
-                return '<script> alert("Wrong Login Credentials!"); window.location.href = "/";</script>'
+
+        return '<script> alert("Wrong Login Credentials!"); window.location.href = "/";</script>'
+
 
 
 @app.route("/login_register", methods = ['POST', "GET"])
