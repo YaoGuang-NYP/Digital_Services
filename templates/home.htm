@@ -94,7 +94,7 @@
             </div>
             <div class="row">
                 <div class="col" align="center">
-                    <button type="button" id="create">Create <i href="#" class="fa fa-plus" aria-hidden="true"></i></button>
+                    <button type="button" id="create">Create      <i href="#" class="fa fa-plus" aria-hidden="false"></i></button>
                 </div>
             </div>
         </div>
@@ -108,7 +108,7 @@
                             <p style="margin-top : 10px; margin-left: 20px;">My Portfolio Details<button type="button" id="saveedit" class="portfolioedit" style="border-radius: 5px; background-color : gray; color : white; border: 2px white solid; margin-left : 50px; cursor: pointer;">Edit<i class="fa fa-bars" style="margin-left : 10px;"></i></button></p>
                         </div>
                         <div class="row alert-light">
-                            <p>Name : <span class="homeusername">{{ data.get_username() }}</span></p>
+                            <p>Name : <span class="homeusername">{{ session['data']['username']}}</span></p>
                         </div>
                     </div>
                 </div>

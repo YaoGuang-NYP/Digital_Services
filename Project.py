@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, flash, redirect, url_for
+from flask import Flask, render_template, request, flash, redirect, url_for, session
 from wtforms import Form, StringField, TextAreaField, RadioField, SelectField, validators, SubmitField, IntegerField, PasswordField
 from forms import Forms
 from registerform import RegisterForm
@@ -41,7 +41,7 @@ countries = [("Afghanistan","Afghanistan"),("Albania","Albania"),("Algeria","Alg
 
 class login_form(Form):
     username = StringField("Username : ",[validators.DataRequired("Please enter your username!")])
-    password = StringField("Password : ",[validators.DataRequired("Please enter your password!")])
+    password = PasswordField("Password : ",[validators.DataRequired("Please enter your password!")])
     submit = SubmitField("Submit")
 
 class register_form(Form):
@@ -77,10 +77,9 @@ def main():
         logindata = root.child('userdata').get()
         for user in logindata :
             uniqueuser = logindata[user]
-            print(uniqueuser)
             if uniqueuser['username'] == name and uniqueuser['password'] == password :
-                data = RegisterForm(uniqueuser['username'], uniqueuser['password'], uniqueuser['email'], uniqueuser['firstname'], uniqueuser['lastname'], uniqueuser['age'], uniqueuser['country'], uniqueuser['highestqualification'], uniqueuser['workexperiences'], uniqueuser['skillsets'], uniqueuser['awards'], uniqueuser['bio'])
-                return render_template("home.htm", data = data)
+                session['username'] = name
+                return redirect(url_for("home"))
 
         return '<script> alert("Wrong Login Credentials!"); window.location.href = "/";</script>'
 
@@ -125,10 +124,30 @@ def login_register():
             'awards' : data.get_awards(),
             'bio' : data.get_bio()
         })
-        return render_template("home.htm", data = data)
+        session['username'] = name
+        return redirect(url_for("home"))
 
 @app.route("/home")
 def home() :
+    name = session['username']
+    userdata = root.child('userdata').get()
+    for user in userdata :
+        uniqueuser = userdata[user]
+        if uniqueuser['username'] == name :
+            session['data'] = {
+                'username' : uniqueuser['username'],
+                'password': uniqueuser['password'],
+                'smail' : uniqueuser['email'],
+                'age' : uniqueuser['age'],
+                'firstname' : uniqueuser['firstname'],
+                'lastname' : uniqueuser['lastname'],
+                'country' : uniqueuser['country'],
+                'highestqualification' : uniqueuser['highestqualification'],
+                'workexperiences' : uniqueuser['workexperiences'],
+                'skillsets' : uniqueuser['skillsets'],
+                'awards' : uniqueuser['awards'],
+                'bio' : uniqueuser['bio']
+            }
     return render_template('home.htm')
 
 #Route to messenger
@@ -138,6 +157,17 @@ def hello():
 
 def messageRecived():
   print( 'message was received!!!' )
+
+@app.route('/account')
+def accountsettings() :
+    return render_template('AccountSettings.html')
+
+@app.route('/logout')
+def logout() :
+    session.pop('data', None)
+    session.pop('username', None)
+    return redirect(url_for('main'))
+
 
 @socketio.on( 'my event' )
 def handle_my_custom_event( json ):
