@@ -2,9 +2,15 @@ from flask import Flask, render_template, request, flash, redirect, url_for
 from wtforms import Form, StringField, TextAreaField, RadioField, SelectField, validators, SubmitField, IntegerField, PasswordField
 from forms import Forms
 from registerform import RegisterForm
+from flask_socketio import SocketIO, emit
+
 
 app = Flask(__name__)
 app.secret_key = "development key"
+
+#SocketIO
+app.config['SECRET KEY'] = ''
+socketio = SocketIO(app)
 
 import firebase_admin
 from firebase_admin import credentials, db
@@ -122,6 +128,19 @@ def login_register():
 @app.route("/home")
 def home() :
     return render_template('home.htm')
+
+#Route to messenger
+@app.route( '/messages' )
+def hello():
+  return render_template( './ChatApp.html' )
+
+def messageRecived():
+  print( 'message was received!!!' )
+
+@socketio.on( 'my event' )
+def handle_my_custom_event( json ):
+  print( 'recived my event: ' + str( json ) )
+  socketio.emit( 'my response', json, callback=messageRecived )
 
 if __name__ == '__main__':
     app.run(debug = True)
