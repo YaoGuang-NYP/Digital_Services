@@ -59,11 +59,10 @@ class register_form(Form):
     bio = TextAreaField("Biography(Less than 500 words) : ")
     submit = SubmitField("Register")
 
-
 @app.route("/", methods = ["POST", "GET"])
 def main():
     loginform = login_form(request.form)
-
+    session['loggedin'] = False
 
     if request.method == "GET":
         return render_template("main.html", loginform = loginform)
@@ -78,7 +77,22 @@ def main():
         for user in logindata :
             uniqueuser = logindata[user]
             if uniqueuser['username'] == name and uniqueuser['password'] == password :
-                session['username'] = name
+                session['data'] = {
+                    'username' : uniqueuser['username'],
+                    'password': uniqueuser['password'],
+                    'smail' : uniqueuser['email'],
+                    'age' : uniqueuser['age'],
+                    'firstname' : uniqueuser['firstname'],
+                    'lastname' : uniqueuser['lastname'],
+                    'country' : uniqueuser['country'],
+                    'highestqualification' : uniqueuser['highestqualification'],
+                    'workexperiences' : uniqueuser['workexperiences'],
+                    'skillsets' : uniqueuser['skillsets'],
+                    'awards' : uniqueuser['awards'],
+                    'bio' : uniqueuser['bio']
+                }
+                session['loggedin'] = True
+
                 return redirect(url_for("home"))
 
         return '<script> alert("Wrong Login Credentials!"); window.location.href = "/";</script>'
@@ -88,6 +102,7 @@ def main():
 @app.route("/login_register", methods = ['POST', "GET"])
 def login_register():
     register = register_form(request.form)
+    session['loggedin'] = False
 
     if request.method == "GET" :
         return render_template("login_register.html", register = register)
@@ -124,30 +139,11 @@ def login_register():
             'awards' : data.get_awards(),
             'bio' : data.get_bio()
         })
-        session['username'] = name
+        session['loggedin'] = True
         return redirect(url_for("home"))
 
 @app.route("/home")
 def home() :
-    name = session['username']
-    userdata = root.child('userdata').get()
-    for user in userdata :
-        uniqueuser = userdata[user]
-        if uniqueuser['username'] == name :
-            session['data'] = {
-                'username' : uniqueuser['username'],
-                'password': uniqueuser['password'],
-                'smail' : uniqueuser['email'],
-                'age' : uniqueuser['age'],
-                'firstname' : uniqueuser['firstname'],
-                'lastname' : uniqueuser['lastname'],
-                'country' : uniqueuser['country'],
-                'highestqualification' : uniqueuser['highestqualification'],
-                'workexperiences' : uniqueuser['workexperiences'],
-                'skillsets' : uniqueuser['skillsets'],
-                'awards' : uniqueuser['awards'],
-                'bio' : uniqueuser['bio']
-            }
     return render_template('home.htm')
 
 #Route to messenger
