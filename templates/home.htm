@@ -11,7 +11,7 @@
 
         .box2 {
             border : 2px black solid;
-            height : 300px;
+            height : 870px;
             margin-bottom : 70px;
             margin-top : 100px;
         }
@@ -85,59 +85,67 @@
 
 {% block body %}
 <main>
-    <section>
-        <div class="container-fluid create wow fadeInLeft" data-wow-delay="0.05s">
-            <div class="row">
-                <div class="col" align="center">
-                    <p style="margin-top : 50px; color: white; font-weight: bold; font-size : 30px;">Looks like you haven't created a resume yet!</p>
+    {% if session['loggedin'] == True %}
+        <section>
+            <div class="container-fluid create wow fadeInLeft" data-wow-delay="0.05s">
+                <div class="row">
+                    <div class="col" align="center">
+                        <p style="margin-top : 50px; color: white; font-weight: bold; font-size : 30px;">Looks like you haven't created a resume yet!</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col" align="center">
+                        <button type="button" id="create">Create      <i href="#" class="fa fa-plus" aria-hidden="false"></i></button>
+                    </div>
                 </div>
             </div>
-            <div class="row">
-                <div class="col" align="center">
-                    <button type="button" id="create">Create <i href="#" class="fa fa-plus" aria-hidden="true"></i></button>
-                </div>
-            </div>
-        </div>
-    </section>
-    <section>
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-7">
-                    <div class="container box1 wow fadeInUp" data-wow-delay="0.05s">
-                        <div class="row" style="background-color : gray; color: white; height: 50px; border-bottom-color: black; border-bottom-style: solid; border-bottom-width: 2px;">
-                            <p style="margin-top : 10px; margin-left: 20px;">My Portfolio Details<button type="button" id="saveedit" class="portfolioedit" style="border-radius: 5px; background-color : gray; color : white; border: 2px white solid; margin-left : 50px; cursor: pointer;">Edit<i class="fa fa-bars" style="margin-left : 10px;"></i></button></p>
+        </section>
+        <section class="alert-secondary">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-7">
+                        <div class="container box1 wow fadeInUp" data-wow-delay="0.05s">
+                            <div class="row" style="background-color : gray; color: white; height: 50px; border-bottom-color: black; border-bottom-style: solid; border-bottom-width: 2px;">
+                                <p style="margin-top : 10px; margin-left: 20px;">My Portfolio Details<button type="button" id="saveedit" class="portfolioedit" style="border-radius: 5px; background-color : gray; color : white; border: 2px white solid; margin-left : 50px; cursor: pointer;">Edit<i class="fa fa-bars" style="margin-left : 10px;"></i></button></p>
+                            </div>
+                            <div class="row alert-light">
+                                <p>Name : <span class="homeusername">{{ session['data']['username']}}</span></p>
+                            </div>
                         </div>
+                    </div>
+                    <div class="col-lg-1">
+                    </div>
+                    <div class="col-lg-4">
                         <div class="row">
-                            <p>Name : <span class="homeusername">{{ data.get_username() }}</span></p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-1">
-                </div>
-                <div class="col-lg-4">
-                    <div class="row">
-                        <div class="container box2 wow fadeInUp" data-wow-delay="0.05s">
-                            <div class="row" style="background-color : gray; color: white; height: 50px; border-bottom-color: black; border-bottom-style: solid; border-bottom-width: 2px;">
-                                <p style="margin-top : 10px; margin-left: 20px;">Notifications</p>
-                            </div>
-                            <div class="row">
-                                <h3 style="margin-top : 60px;" align="center">No New Notfications</h3>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="container box3 wow fadeInUp" data-wow-delay="0.05s">
-                            <div class="row" style="background-color : gray; color: white; height: 50px; border-bottom-color: black; border-bottom-style: solid; border-bottom-width: 2px;">
-                                <p style="margin-top : 10px; margin-left: 20px;">Notifications</p>
-                            </div>
-                            <div class="row">
+                            <div class="container box2 wow fadeInUp" data-wow-delay="0.05s">
+                                <div class="row" style="background-color : gray; color: white; height: 50px; border-bottom-color: black; border-bottom-style: solid; border-bottom-width: 2px;">
+                                    <p style="margin-top : 10px; margin-left: 20px;">Notifications</p>
+                                </div>
+                                <div class="row">
+                                    <h3 style="margin-top : 60px;" align="center">No New Notfications</h3>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
+    {% else %}
+        <section>
+            <div class="container-fluid create wow fadeInLeft" data-wow-delay="0.05s">
+                <div class="row">
+                    <div class="col" align="center">
+                        <p style="margin-top : 50px; color: white; font-weight: bold; font-size : 30px;">Looks like you haven't created a resume yet!</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col" align="center">
+                        <button type="button" id="create">Create      <i href="#" class="fa fa-plus" aria-hidden="false"></i></button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    {% endif %}
 </main>
 {% endblock %}
 

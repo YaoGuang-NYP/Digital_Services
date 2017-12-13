@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, flash, redirect, url_for
+from flask import Flask, render_template, request, flash, redirect, url_for, session
 from wtforms import Form, StringField, TextAreaField, RadioField, SelectField, validators, SubmitField, IntegerField, PasswordField
 from forms import Forms
 from registerform import RegisterForm
@@ -41,7 +41,7 @@ countries = [("Afghanistan","Afghanistan"),("Albania","Albania"),("Algeria","Alg
 
 class login_form(Form):
     username = StringField("Username : ",[validators.DataRequired("Please enter your username!")])
-    password = StringField("Password : ",[validators.DataRequired("Please enter your password!")])
+    password = PasswordField("Password : ",[validators.DataRequired("Please enter your password!")])
     submit = SubmitField("Submit")
 
 class register_form(Form):
@@ -59,11 +59,10 @@ class register_form(Form):
     bio = TextAreaField("Biography(Less than 500 words) : ")
     submit = SubmitField("Register")
 
-
 @app.route("/", methods = ["POST", "GET"])
 def main():
     loginform = login_form(request.form)
-
+    session['loggedin'] = False
 
     if request.method == "GET":
         return render_template("main.html", loginform = loginform)
@@ -75,18 +74,26 @@ def main():
         name = loginform.username.data
         password = loginform.password.data
         logindata = root.child('userdata').get()
-        print(logindata)
-        print(name)
-        print(password)
-        count = 0
         for user in logindata :
-            count += 1
-            print(count)
             uniqueuser = logindata[user]
-            print(uniqueuser)
             if uniqueuser['username'] == name and uniqueuser['password'] == password :
-                data = RegisterForm(uniqueuser['username'], uniqueuser['password'], uniqueuser['email'], uniqueuser['firstname'], uniqueuser['lastname'], uniqueuser['age'], uniqueuser['country'], uniqueuser['highestqualification'], uniqueuser['workexperiences'], uniqueuser['skillsets'], uniqueuser['awards'], uniqueuser['bio'])
-                return render_template("home.htm", data = data)
+                session['data'] = {
+                    'username' : uniqueuser['username'],
+                    'password': uniqueuser['password'],
+                    'smail' : uniqueuser['email'],
+                    'age' : uniqueuser['age'],
+                    'firstname' : uniqueuser['firstname'],
+                    'lastname' : uniqueuser['lastname'],
+                    'country' : uniqueuser['country'],
+                    'highestqualification' : uniqueuser['highestqualification'],
+                    'workexperiences' : uniqueuser['workexperiences'],
+                    'skillsets' : uniqueuser['skillsets'],
+                    'awards' : uniqueuser['awards'],
+                    'bio' : uniqueuser['bio']
+                }
+                session['loggedin'] = True
+
+                return redirect(url_for("home"))
 
         return '<script> alert("Wrong Login Credentials!"); window.location.href = "/";</script>'
 
@@ -95,6 +102,7 @@ def main():
 @app.route("/login_register", methods = ['POST', "GET"])
 def login_register():
     register = register_form(request.form)
+    session['loggedin'] = False
 
     if request.method == "GET" :
         return render_template("login_register.html", register = register)
@@ -131,7 +139,8 @@ def login_register():
             'awards' : data.get_awards(),
             'bio' : data.get_bio()
         })
-        return render_template("home.htm", data = data)
+        session['loggedin'] = True
+        return redirect(url_for("home"))
 
 @app.route("/home")
 def home() :
@@ -144,6 +153,17 @@ def hello():
 
 def messageRecived():
   print( 'message was received!!!' )
+
+@app.route('/account')
+def accountsettings() :
+    return render_template('AccountSettings.html')
+
+@app.route('/logout')
+def logout() :
+    session.pop('data', None)
+    session.pop('username', None)
+    return redirect(url_for('main'))
+
 
 @socketio.on( 'my event' )
 def handle_my_custom_event( json ):
