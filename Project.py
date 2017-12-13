@@ -62,7 +62,6 @@ class register_form(Form):
 @app.route("/", methods = ["POST", "GET"])
 def main():
     loginform = login_form(request.form)
-    session['loggedin'] = False
 
     if request.method == "GET":
         return render_template("main.html", loginform = loginform)
@@ -91,9 +90,8 @@ def main():
                     'awards' : uniqueuser['awards'],
                     'bio' : uniqueuser['bio']
                 }
-                session['loggedin'] = True
 
-                return redirect(url_for("home"))
+                return redirect(url_for("login"))
 
         return '<script> alert("Wrong Login Credentials!"); window.location.href = "/";</script>'
 
@@ -102,7 +100,6 @@ def main():
 @app.route("/login_register", methods = ['POST', "GET"])
 def login_register():
     register = register_form(request.form)
-    session['loggedin'] = False
 
     if request.method == "GET" :
         return render_template("login_register.html", register = register)
@@ -139,8 +136,7 @@ def login_register():
             'awards' : data.get_awards(),
             'bio' : data.get_bio()
         })
-        session['loggedin'] = True
-        return redirect(url_for("home"))
+        return redirect(url_for("login"))
 
 @app.route("/home")
 def home() :
@@ -158,10 +154,15 @@ def messageRecived():
 def accountsettings() :
     return render_template('AccountSettings.html')
 
+@app.route('/login')
+def login() :
+    session['loggedin'] = True
+    return redirect(url_for('home'))
+
 @app.route('/logout')
 def logout() :
     session.pop('data', None)
-    session.pop('username', None)
+    session['loggedin'] = False
     return redirect(url_for('main'))
 
 
