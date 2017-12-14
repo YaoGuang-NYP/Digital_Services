@@ -1,0 +1,100 @@
+{% extends 'index.html' %}
+
+{% block body %}
+<section id="team" style="margin-top:100px;">
+        <div class="container wow fadeInUp">
+        <div class="section-header">
+            <h3 class="section-title">Help</h3>
+            <p class="section-description">You can find FAQs and other Help toolbars from here!</p>
+        </div>
+        <div id="content">
+        <div id="introduction">
+            <div class="wrapper">
+                <h1 >Frequently Asked Questions</h1>
+                <h2>You ask, and we answer.</h2>				<p>Having a website built can be an overwhelming experience, even for the most IT savvy people. At Mity Digital, we are here to support you through the whole process to help create a website that will deliver results for your business.</p>
+            </div>
+        </div>
+            <div class="wrapper">
+                <div class="insite-wrapper insite-faqs"><div class="wrapper">
+                    <ol>
+                        <li>
+                            <div class="faq-question">How well does MyPortfolio help you?</div>
+                            <div class="faq-body"><p>This website allows you to find and associate good future options for you! Be it finding you a job, referring you to other employers.</p></div>
+                        </li>
+                        <li>
+                            <div class="faq-question">How long does does the course take?</div>
+                            <div class="faq-body"><p>The time it takes to produce a website depends on the size and complexity of your site. A basic website typically takes around 4-6 weeks from beginning to end. Some more custom and complex project may take longer.</p></div>
+                        </li>
+                        <li>
+                            <div class="faq-question">Will my website work on mobile devices?</div>
+                            <div class="faq-body"><p>Yes, we ensure our sites work on all devices, including desktops, laptops, tablets and mobiles.</p></div>
+                        </li>
+                        <li>
+                            <div class="faq-question">Do you build mobile apps?</div>
+                            <div class="faq-body"><p>No, we don't - but we do make our websites work on all devices. Developing an app for mobiles and tablets across the range of different platforms can be an expensive task, and in some cases can be resolved with a responsive website.</p></div>
+                        </li>
+                        <li>
+                            <div class="faq-question">Can I sell products on my website?</div>
+                            <div class="faq-body"><p>Sure thing - our content management system can build and host your online store, and we can set up all of the security necessary to ensure your customers' details remain safe and secure.</p></div>
+                        </li>
+                        <li>
+                            <div class="faq-question">What is a Content Management System (CMS)?</div>
+                            <div class="faq-body"><p>A content management system (CMS) enables you to maintain the content on your website without any additional software our technical skill. When using a CMS, you can add new pages, upload images and be in full control of your site - all you need is a web browser and an internet connection.</p></div>
+                        </li>
+
+
+                    </ol>
+
+
+                </div></div>
+            </div>
+        </div>
+        </div>
+
+
+        </section><!-- #team -->
+
+        <!--==========================
+          Contact Section
+        ============================-->
+        <section id="contact">
+        <div class="container wow fadeInUp">
+            <div class="section-header">
+                <h3 class="section-title">Contact</h3>
+                <p class="section-description">Send message for your inquiries to us! Our staffs would look at it shortly</p>
+            </div>
+        </div>
+
+        <div class="container wow fadeInUp">
+        <div class="row justify-content-center">
+            <div class="col-lg-5 col-md-8">
+                <div class="form">
+                    <div id="sendmessage">Your message has been sent. Thank you!</div>
+                    <div id="errormessage"></div>
+                    <form action="" method="post" role="form" class="contactForm">
+                        <div class="form-group">
+                            <input type="text" name="name" class="form-control" id="name" placeholder="Your Name" data-rule="minlen:4" data-msg="Please enter at least 4 chars" />
+                            <div class="validation"></div>
+                        </div>
+                        <div class="form-group">
+                            <input type="email" class="form-control" name="email" id="email" placeholder="Your Email" data-rule="email" data-msg="Please enter a valid email" />
+                            <div class="validation"></div>
+                        </div>
+                        <div class="form-group">
+                            <input type="text" class="form-control" name="subject" id="subject" placeholder="Subject" data-rule="minlen:4" data-msg="Please enter at least 8 chars of subject" />
+                            <div class="validation"></div>
+                        </div>
+                        <div class="form-group">
+                            <textarea class="form-control" name="message" rows="5" data-rule="required" data-msg="Please write something for us" placeholder="Message"></textarea>
+                            <div class="validation"></div>
+                        </div>
+                        <div class="text-center"><button type="submit">Send Message</button></div>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+
+        </div>
+    </section>
+{% endblock %}

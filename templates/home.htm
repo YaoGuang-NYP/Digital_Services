@@ -81,14 +81,70 @@
             animation: ripple 1s ease-out;
         }
 
+        p.details {
+            color: black;
+            margin: 0 auto;
+            margin-bottom: 20px;
+            font-size: 20px;
+        }
+
+        .button {
+              display: inline-block;
+              background-color: darkgreen;
+              border: none;
+              color: #FFFFFF;
+              text-align: center;
+              font-size: 16px;
+              padding: 20px;
+              width: 200px;
+              transition: all 0.5s;
+              cursor: pointer;
+              margin: 5px;
+              box-shadow: 0 9px #999;
+            }
+
+            .button span {
+              cursor: pointer;
+              display: inline-block;
+              position: relative;
+              transition: 0.5s;
+            }
+
+            .button span:after {
+              content: '\00bb';
+              position: absolute;
+              opacity: 0;
+              top: 0;
+              right: -20px;
+              transition: 0.5s;
+            }
+
+            .button:hover span {
+              padding-right: 25px;
+            }
+
+            .button:hover span:after {
+              opacity: 1;
+              right: 0;
+            }
+
+            .button:active {
+              background-color: #3e8e41;
+              box-shadow: 0 5px #666;
+              transform: translateY(4px);
+            }
+
+            a, a:hover, a:active {
+                color: white;
+            }
     </style>
 {% endblock %}
 
 {% block body %}
 <main>
     {% if session['loggedin'] == True %}
-        <section>
-            <div class="container-fluid create wow fadeInLeft" data-wow-delay="0.05s">
+        <section id="hero">
+            <div class="container-fluid hero-container wow fadeInLeft" data-wow-delay="0.05s">
                 <div class="row">
                     <div class="col" align="center">
                         <p style="margin-top : 50px; color: white; font-weight: bold; font-size : 30px;">Looks like you haven't created a resume yet!</p>
@@ -109,8 +165,43 @@
                             <div class="row" style="background-color : gray; color: white; height: 50px; border-bottom-color: black; border-bottom-style: solid; border-bottom-width: 2px;">
                                 <p style="margin-top : 10px; margin-left: 20px;">My Portfolio Details<button type="button" id="saveedit" class="portfolioedit" style="border-radius: 5px; background-color : gray; color : white; border: 2px white solid; margin-left : 50px; cursor: pointer;">Edit<i class="fa fa-bars" style="margin-left : 10px;"></i></button></p>
                             </div>
-                            <div class="row alert-light">
-                                <p>Name : <span class="homeusername">{{ session['data']['username']}}</span></p>
+                            <div class="row" style="text-align: center;">
+                                <div class="container" style="width: 200px; height: 200px; border-radius: 100px; border:5px black solid; margin-top : 20px; margin-bottom: 20px;">
+                                    <img src="https://image.flaticon.com/icons/png/128/118/118781.png" style="margin:auto; margin-top: 20px;">
+                                </div>
+                            </div>
+                            <div class="row" style="text-align: center;">
+                                <p class="details">Name : {{ session['data']['username']}}</p>
+                            </div>
+                            <div class="row" style="text-align: center;">
+                                <p class="details">Email : {{ session['data']['email']}}</p>
+                            </div>
+                            <div class="row" style="text-align: center;">
+                                <p class="details">First Name : {{ session['data']['firstname']}}</p>
+                             </div>
+                            <div class="row" style="text-align: center;">
+                                <p class="details">Last Name : {{ session['data']['lastname']}}</p>
+                             </div>
+                            <div class="row" style="text-align: center;">
+                                <p class="details">Age : {{ session['data']['age']}}</p>
+                             </div>
+                            <div class="row" style="text-align: center;">
+                                <p class="details">Country : {{ session['data']['country']}}</p>
+                             </div>
+                            <div class="row" style="text-align: center;">
+                                <p class="details">Highest Qualification : {{ session['data']['highestqualification']}}</p>
+                             </div>
+                            <div class="row" style="text-align: center;">
+                                <p class="details">Work Experiences : {{ session['data']['workexperiences']}}</p>
+                             </div>
+                            <div class="row" style="text-align: center;">
+                                <p class="details">Skill Sets : {{ session['data']['skillsets']}}</p>
+                             </div>
+                            <div class="row" style="text-align: center;">
+                                <p class="details">Awards : {{ session['data']['awards']}}</p>
+                             </div>
+                            <div class="row" style="text-align: center;">
+                                <p class="details">Biography : {{ session['data']['bio']}}</p>
                             </div>
                         </div>
                     </div>
@@ -119,11 +210,13 @@
                     <div class="col-lg-4">
                         <div class="row">
                             <div class="container box2 wow fadeInUp" data-wow-delay="0.05s">
-                                <div class="row" style="background-color : gray; color: white; height: 50px; border-bottom-color: black; border-bottom-style: solid; border-bottom-width: 2px;">
-                                    <p style="margin-top : 10px; margin-left: 20px;">Useful Links</p>
+                                <div class="row" style="text-align: center;">
+                                    <p style="margin:0 auto; margin-top: 30px; margin-bottom: 30px; font-size: 25px; font-weight: bold;">Useful Links</p>
                                 </div>
-                                <div class="row">
-                                    <h3 style="margin-top : 60px;" align="center"></h3>
+                                <div class="row" style="text-align: center">
+                                    <button class="button" style="vertical-align:middle; margin: 0 auto; margin-bottom : 100px; margin-top:30px;"><a href="{{ url_for('help') }}" style="padding: 50px;"><span>FAQ </span></a></button>
+                                    <br>
+                                    <button class="button" style="vertical-align:middle; margin: 0 auto;"><span>Search For Jobs </span></button>
                                 </div>
                             </div>
                         </div>
@@ -136,118 +229,48 @@
             <div class="hero-container">
                 <h1>Welcome to MyPortFolio</h1>
                 <h2>Where you can create resumes and search for jobs in this All-In-One website</h2>
-                <a href="#about" class="btn-get-started">Get Started</a>
+                <a href="#team" class="btn-get-started">Get Started</a>
             </div>
         </section>
-        <section>
-            <div class="container-fluid create wow fadeInLeft" data-wow-delay="0.05s">
-                <div class="row">
-                    <div class="col" align="center">
-                        <p style="margin-top : 50px; color: white; font-weight: bold; font-size : 30px;">Looks like you haven't created a resume yet!</p>
+        <section id="team" style="margin-top:100px; margin-bottom: 100px;">
+            <div class="container wow fadeInLeft">
+                <div class="section-header">
+                    <h3 class="section-title">About Us</h3>
+                    <p class="section-description">A Few Words About Us</p>
+                </div>
+                <div id="content">
+                    <div id="introduction">
+                        <div class="wrapper">
+                            MY PORTFOLIO is the brainchild of our 4 founders: Jia Jun, Zheng Ting, Argel and Yao Guang. Like many great ideas, it was  discovered through accidental fate (in a random classroom). While constructing a portfolio to bethe basis of a start-up idea, we quickly discovered that creating their own portfolio was difficult, frustrating and very time consuming.
+
+                            The team quickly went on to research and build a platform that empowered anyone to create their own portdolio with minimal skills needed.
+
+                            Better yet, make it free!
+                        </div>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col" align="center">
-                        <button type="button" id="create">Create      <i href="#" class="fa fa-plus" aria-hidden="false"></i></button>
-                    </div>
-                </div>
             </div>
-        </section>
-        <section id="team">
-        <div class="container wow fadeInUp">
-        <div class="section-header">
-            <h3 class="section-title">Help</h3>
-            <p class="section-description">You can find FAQs and other Help toolbars from here!</p>
-        </div>
-        <div id="content">
-        <div id="introduction">
-            <div class="wrapper">
-                <h1 >Frequently Asked Questions</h1>
-                <h2>You ask, and we answer.</h2>				<p>Having a website built can be an overwhelming experience, even for the most IT savvy people. At Mity Digital, we are here to support you through the whole process to help create a website that will deliver results for your business.</p>
-            </div>
-        </div>
-            <div class="wrapper">
-                <div class="insite-wrapper insite-faqs"><div class="wrapper">
-                    <ol>
-                        <li>
-                            <div class="faq-question">How well does MyPortfolio help you?</div>
-                            <div class="faq-body"><p>This website allows you to find and associate good future options for you! Be it finding you a job, referring you to other employers.</p></div>
-                        </li>
-                        <li>
-                            <div class="faq-question">How long does does the course take?</div>
-                            <div class="faq-body"><p>The time it takes to produce a website depends on the size and complexity of your site. A basic website typically takes around 4-6 weeks from beginning to end. Some more custom and complex project may take longer.</p></div>
-                        </li>
-                        <li>
-                            <div class="faq-question">Will my website work on mobile devices?</div>
-                            <div class="faq-body"><p>Yes, we ensure our sites work on all devices, including desktops, laptops, tablets and mobiles.</p></div>
-                        </li>
-                        <li>
-                            <div class="faq-question">Do you build mobile apps?</div>
-                            <div class="faq-body"><p>No, we don't - but we do make our websites work on all devices. Developing an app for mobiles and tablets across the range of different platforms can be an expensive task, and in some cases can be resolved with a responsive website.</p></div>
-                        </li>
-                        <li>
-                            <div class="faq-question">Can I sell products on my website?</div>
-                            <div class="faq-body"><p>Sure thing - our content management system can build and host your online store, and we can set up all of the security necessary to ensure your customers' details remain safe and secure.</p></div>
-                        </li>
-                        <li>
-                            <div class="faq-question">What is a Content Management System (CMS)?</div>
-                            <div class="faq-body"><p>A content management system (CMS) enables you to maintain the content on your website without any additional software our technical skill. When using a CMS, you can add new pages, upload images and be in full control of your site - all you need is a web browser and an internet connection.</p></div>
-                        </li>
-
-
-                    </ol>
-
-
-                </div></div>
-            </div>
-        </div>
-        </div>
-
 
         </section><!-- #team -->
-
-        <!--==========================
-          Contact Section
-        ============================-->
-        <section id="contact">
-        <div class="container wow fadeInUp">
-            <div class="section-header">
-                <h3 class="section-title">Contact</h3>
-                <p class="section-description">Send message for your inquiries to us! Our staffs would look at it shortly</p>
-            </div>
-        </div>
-
-        <div class="container wow fadeInUp">
-        <div class="row justify-content-center">
-            <div class="col-lg-5 col-md-8">
-                <div class="form">
-                    <div id="sendmessage">Your message has been sent. Thank you!</div>
-                    <div id="errormessage"></div>
-                    <form action="" method="post" role="form" class="contactForm">
-                        <div class="form-group">
-                            <input type="text" name="name" class="form-control" id="name" placeholder="Your Name" data-rule="minlen:4" data-msg="Please enter at least 4 chars" />
-                            <div class="validation"></div>
-                        </div>
-                        <div class="form-group">
-                            <input type="email" class="form-control" name="email" id="email" placeholder="Your Email" data-rule="email" data-msg="Please enter a valid email" />
-                            <div class="validation"></div>
-                        </div>
-                        <div class="form-group">
-                            <input type="text" class="form-control" name="subject" id="subject" placeholder="Subject" data-rule="minlen:4" data-msg="Please enter at least 8 chars of subject" />
-                            <div class="validation"></div>
-                        </div>
-                        <div class="form-group">
-                            <textarea class="form-control" name="message" rows="5" data-rule="required" data-msg="Please write something for us" placeholder="Message"></textarea>
-                            <div class="validation"></div>
-                        </div>
-                        <div class="text-center"><button type="submit">Send Message</button></div>
-                    </form>
+        <section id="hero">
+            <div class="container-fluid hero-container wow fadeInUp" data-wow-delay="0.05s">
+                <div class="row">
+                    <div class="col" align="center">
+                        <p style="margin-top : 50px; color: white; font-weight: bold; font-size : 30px;">What are you waiting for? Start Using It Now!</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-5" align="center">
+                        <button type="button" id="create" onclick="location.href='{{ url_for('main') }}'">Sign In</button>
+                    </div>
+                    <div class="col-lg-2" align="center">
+                        <strong style="position:relative; top:60%; color: white;">Or</strong>
+                    </div>
+                    <div class="col-lg-5" align="center">
+                        <button type="button" id="create" onclick="location.href='{{ url_for('login_register') }}'">Register</button>
+                    </div>
                 </div>
             </div>
-
-        </div>
-
-        </div>
         </section>
     {% endif %}
 </main>

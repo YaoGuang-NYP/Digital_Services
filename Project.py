@@ -79,7 +79,7 @@ def main():
                 session['data'] = {
                     'username' : uniqueuser['username'],
                     'password': uniqueuser['password'],
-                    'smail' : uniqueuser['email'],
+                    'email' : uniqueuser['email'],
                     'age' : uniqueuser['age'],
                     'firstname' : uniqueuser['firstname'],
                     'lastname' : uniqueuser['lastname'],
@@ -153,6 +153,10 @@ def messageRecived():
 @app.route('/account')
 def accountsettings() :
     return render_template('AccountSettings.html')
+
+@app.route('/help')
+def help() :
+    return render_template('help.html')
 
 @app.route('/login')
 def login() :
