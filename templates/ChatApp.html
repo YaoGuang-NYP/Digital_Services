@@ -68,16 +68,16 @@
       <div class="col-sm-4">
         <div class="no_message">
           <h1 style='color: #ccc'>No message yet..</h1>
-          <div class="message_holder"></div>
+          <div id="message_holder" class="message_holder"></div>
         </div>
       </div>
       <div id="chatbox" class="col-sm-4-lg-4">
         <form action="" method="POST">
             <h4><b>Type your message below<span class="glyphicon glyphicon-arrow-down"></span></b></h4>
           <div class="clearfix" style="margin-top: 5px;"></div>
-          <input type="text" class="username form-control input-lg" placeholder="User Name" required>
+          <input type="text" id="username" class="username form-control input-lg" placeholder="User Name" required>
           <div style="padding-top: 5px;"></div>
-          <input type="text" class="message form-control input-lg" placeholder="Messages" required>
+          <input type="text" id="message" class="message form-control input-lg" placeholder="Messages" required>
           <div style="padding-top: 5px;"></div>
           <button type="submit" id="button" class="btn btn-primary btn-block"><span class="glyphicon glyphicon-send"></span> Send</button>
         </form>
@@ -142,8 +142,8 @@
         } )
         var form = $( 'form' ).on( 'submit', function( e ) {
           e.preventDefault()
-          let user_name = $( 'input.username' ).val()
-          let user_input = $( 'input.message' ).val()
+          var user_name = $( 'input.username' ).val()
+          var user_input = $( 'input.message' ).val()
           socket.emit( 'my event', {
             user_name : user_name,
             message : user_input
@@ -156,10 +156,9 @@
       // capture message
       socket.on( 'my response', function( msg ) {
         console.log( msg )
-        if( typeof msg.user_name !== 'undefined' ) {
+        if( typeof msg.user_name !== 'undefined') {
           $( 'h1' ).remove()
           $( 'div.message_holder' ).append( '<div class="msg_bbl"><b style="color: #000">'+msg.user_name+'</b> '+msg.message+'</div>' )
-
         }
       } )
     </script>
