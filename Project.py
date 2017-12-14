@@ -144,7 +144,8 @@ def login_register():
             'workexperiences' : workexperiences,
             'skillsets' : skillsets,
             'awards' : awards,
-            'bio' : bio
+            'bio' : bio,
+            "status" : "user"
         }
         data_db = root.child('userdata')
         data_db.push({
@@ -159,7 +160,8 @@ def login_register():
             'workexperiences' : data.get_workexperiences(),
             'skillsets' : data.get_skillsets(),
             'awards' : data.get_awards(),
-            'bio' : data.get_bio()
+            'bio' : data.get_bio(),
+            "status" : "user"
         })
         return redirect(url_for("login"))
 
@@ -175,7 +177,41 @@ def login_register_employer():
         return render_template("login_register_employer.html", company = company)
 
     elif request.method == "POST" and company.validate() == True :
-        return redirect(url_for("home"))
+        username = company.username.data
+        password = company.password.data
+        company_name = company.company.data
+        email = company.email.data
+        telno = company.telno.data
+        address = company.address.data
+        industry = company.industry.data
+        bio = company.bio.data
+
+        session['data'] = {
+            'username': username,
+            'password': password,
+            "company_name" : company_name,
+            'email': email,
+            "telno" : telno,
+            "address" : address,
+            "industry" : industry,
+            'bio': bio,
+            "status": "user"
+        }
+
+        data_db = root.child("userdata")
+        data_db.push({
+            "username" : username,
+            "password" : password,
+            "company_name" : company_name,
+            "email" : email,
+            "telno" : telno,
+            "address" : address,
+            "industry" : industry,
+            "bio" : bio,
+            "status" : "employer"
+        })
+
+        return redirect(url_for("login"))
 
 @app.route("/home")
 def home() :
