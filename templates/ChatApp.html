@@ -17,10 +17,21 @@
             padding:75px;
             position: relative;
             top: 75px;
+            margin: auto;
         }
 
         #button{
             height: 60px;
+        }
+
+        #textbox{
+            border: 3px lightblue dotted;
+            width: 300px;
+            margin: auto;
+        }
+
+        #filterbox{
+            position: relative;
         }
     </style>
 {% endblock %}
@@ -28,8 +39,8 @@
 {% block body %}
   </head>
   <body>
-
-    <div class="text-center well"><b>Chat Messenger</b></div>
+    <br><br><br><br><br>
+    <div id="textbox" class="text-center well"><b>Chat Messenger</b></div><br>
 
     <div class="container">
       <div class="col-sm-8">
@@ -50,6 +61,8 @@
         </form>
       </div>
     </div>
+
+    <br><br><br><br>
 
     {% endblock %}
 

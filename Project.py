@@ -59,6 +59,17 @@ class register_form(Form):
     bio = TextAreaField("Biography(Less than 500 words) : ")
     submit = SubmitField("Register")
 
+class employer_register_form(Form):
+    username = StringField("User Name : ", [validators.DataRequired("Please enter a username!")])
+    password = PasswordField("Password : ", [validators.DataRequired("Please enter your password!")])
+    company = StringField("Company Name : ", [validators.DataRequired("Please enter your company name!")])
+    address = StringField("Company Address : ", [validators.DataRequired("Please enter your company address!")])
+    email = StringField("Company Email : ", [validators.DataRequired("Please enter your company email!")])
+    telno = IntegerField("Company Telephone : ", [validators.DataRequired("Please enter your company phone number!")])
+    industry = StringField("Company Industry : ", [validators.DataRequired("Please enter your company industry!")])
+    bio = TextAreaField("Company Biography(Tell us about your company) : ", [validators.DataRequired("Please enter your company biography")])
+    submit = SubmitField("Register")
+
 @app.route("/", methods = ["POST", "GET"])
 def main():
     loginform = login_form(request.form)
@@ -79,7 +90,7 @@ def main():
                 session['data'] = {
                     'username' : uniqueuser['username'],
                     'password': uniqueuser['password'],
-                    'smail' : uniqueuser['email'],
+                    'email' : uniqueuser['email'],
                     'age' : uniqueuser['age'],
                     'firstname' : uniqueuser['firstname'],
                     'lastname' : uniqueuser['lastname'],
@@ -138,6 +149,20 @@ def login_register():
         })
         return redirect(url_for("login"))
 
+@app.route("/login_register_employer", methods=["POST","GET"])
+def login_register_employer():
+
+    company = employer_register_form(request.form)
+
+    if request.method == "GET" :
+        return render_template("login_register_employer.html", company = company)
+
+    elif request.method == "POST" and company.validate() == False :
+        return render_template("login_register_employer.html", company = company)
+
+    elif request.method == "POST" and company.validate() == True :
+        return redirect(url_for("home"))
+
 @app.route("/home")
 def home() :
     return render_template('home.htm')
@@ -145,7 +170,7 @@ def home() :
 #Route to messenger
 @app.route( '/messages' )
 def hello():
-  return render_template( './ChatApp.html' )
+  return render_template( 'ChatApp.html' )
 
 def messageRecived():
   print( 'message was received!!!' )
@@ -153,6 +178,10 @@ def messageRecived():
 @app.route('/account')
 def accountsettings() :
     return render_template('AccountSettings.html')
+
+@app.route('/help')
+def help() :
+    return render_template('help.html')
 
 @app.route('/login')
 def login() :
@@ -172,4 +201,6 @@ def handle_my_custom_event( json ):
   socketio.emit( 'my response', json, callback=messageRecived )
 
 if __name__ == '__main__':
-    app.run(debug = True)
+    socketio.run(app, debug = True)
+
+#needed to refresh upload
