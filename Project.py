@@ -59,6 +59,16 @@ class register_form(Form):
     bio = TextAreaField("Biography(Less than 500 words) : ")
     submit = SubmitField("Register")
 
+class employer_register_form(Form):
+    username = StringField("User Name : ", [validators.DataRequired("Please enter a username!")])
+    password = PasswordField("Password : ", [validators.DataRequired("Please enter your password!")])
+    company = StringField("Company Name : ", [validators.DataRequired("Please enter your company name!")])
+    address = StringField("Company Address : ", [validators.DataRequired("Please enter your company address!")])
+    email = StringField("Company Email : ", [validators.DataRequired("Please enter your company email!")])
+    telno = IntegerField("Company Telephone : ", [validators.DataRequired("Please enter your company phone number!")])
+    industry = StringField("Company Industry : ", [validators.DataRequired("Please enter your company industry!")])
+    submit = SubmitField("Register")
+
 @app.route("/", methods = ["POST", "GET"])
 def main():
     loginform = login_form(request.form)
@@ -100,12 +110,13 @@ def main():
 @app.route("/login_register", methods = ['POST', "GET"])
 def login_register():
     register = register_form(request.form)
+    company = employer_register_form(request.form)
 
     if request.method == "GET" :
-        return render_template("login_register.html", register = register)
+        return render_template("login_register.html", register = register , company = company)
 
-    elif request.method == "POST" and register.validate() == False:
-        return render_template("login_register.html", register = register)
+    elif request.method == "POST" and register.validate() == False or request.method == "POST" and company.validate() == False:
+        return render_template("login_register.html", register = register , company = company)
 
     elif request.method == "POST" and register.validate() == True:
         name = register.username.data
@@ -137,6 +148,9 @@ def login_register():
             'bio' : data.get_bio()
         })
         return redirect(url_for("login"))
+
+    elif request.method == "POST" and company.validate() == True :
+        pass
 
 @app.route("/home")
 def home() :
