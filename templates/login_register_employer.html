@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Register</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="" name="keywords">
+    <meta content="" name="description">
+
+    <!-- Favicons -->
+    <link href="../static/images/MyPortfolioLogo.png" rel="icon">
+    <link href="../static/images/apple-touch-icon.png" rel="apple-touch-icon">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,700,700i|Poppins:300,400,500,700"
+          rel="stylesheet">
+
+    <!-- Bootstrap CSS File -->
+    <link href="../static/css/bootstrap/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Libraries CSS Files -->
+    <link href="../static/css/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <link href="../static/css/animate/animate.min.css" rel="stylesheet">
+
+    <!-- Main Stylesheet File -->
+    <link href="../static/css/style.css" rel="stylesheet">
+
+</head>
+<body>
+<section id="contact">
+    <form action="login_register_employer" method="post">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <h1>We require you to fill up some more information about your company.</h1>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6 col-xs-12">
+                    {{ company.username.label(class = "wow fadeInUp") }}
+                    {{ company.username(class = "form-control wow fadeInUp", placeholder = "Username") }}
+                    {% for message in company.username.errors %}
+                        {% print(message) %}
+                        <h6 style="color:red">{{ message }}</h6>
+                    {% endfor %}
+                </div>
+                <div class="col-md-6 col-xs-12">
+                    {{ company.password.label(class = "wow fadeInUp") }}
+                    {{ company.password(class = "form-control wow fadeInUp", placeholder = "Password") }}
+                    {% for message in company.password.errors %}
+                        <h6 style="color:red">{{ message }}</h6>
+                    {% endfor %}
+                </div>
+            </div>
+            <br>
+            <div class="row">
+                <div class="col-md-4 col-xs-12">
+                    {{ company.company.label(class = "wow fadeInUp") }}
+                    {{ company.company(class = "form-control wow fadeInUp", placeholder = "Company Name") }}
+                    {% for message in company.company.errors %}
+                        <h6 style="color:red">{{ message }}</h6>
+                    {% endfor %}
+                </div>
+                <div class="col-md-4 col-xs-12">
+                    {{ company.email.label(class = "wow fadeInUp") }}
+                    {{ company.email(class = "form-control wow fadeInUp ", placeholder = "Company Email") }}
+                    {% for message in company.email.errors %}
+                        <h6 style="color:red">{{ message }}</h6>
+                    {% endfor %}
+                </div>
+                <div class="col-md-4 col-xs-12">
+                    {{ company.telno.label(class = "wow fadeInUp") }}
+                    {{ company.telno(class = "form-control wow fadeInUp ", placeholder = "Company Telephone No.") }}
+                    {% for message in company.telno.errors %}
+                        <h6 style="color:red">{{ message }}</h6>
+                    {% endfor %}
+                </div>
+            </div>
+            <br>
+            <div class="row">
+                <div class="col-md-9 col-xs-12">
+                    {{ company.address.label(class="wow fadeInUp") }}
+                    {{ company.address(class = "form-control wow fadeInUp", placeholder = "Company Address") }}
+                    {% for message in company.address.errors %}
+                        <h6 style="color:red">{{ message }}</h6>
+                    {% endfor %}
+                </div>
+                <div class="col-md-3 col-xs-12">
+                    {{ company.industry.label(class="wow fadeInUp") }}
+                    {{ company.industry(class="form-control wow fadeInUp", placeholder = "Company Industry") }}
+                    {% for message in company.industry.errors %}
+                        <h6 style="color:red">{{ message }}</h6>
+                    {% endfor %}
+                </div>
+            </div>
+            <br>
+            <div class="row">
+                <div class="col-12">
+                    {{ company.bio.label(class="wow fadeInUp") }}
+                    {{ company.bio(class="form-control wow fadeInUp", rows = "9" , cols = "50") }}
+                    {% for message in company.bio.errors %}
+                        <h6 style="color:red">{{ message }}</h6>
+                    {% endfor %}
+                </div>
+            </div>
+            <br>
+            <div class="row">
+                <div class="col-12" style="text-align: center">
+                    {{ company.submit(class="wow fadeInUp btn btn-primary" , style = "width:150px") }}
+                </div>
+            </div>
+        </div>
+    </form>
+</section>
+<!--Comment-->
+
+<script src="../static/js/jquery/jquery.min.js"></script>
+<script src="../static/js/jquery/jquery-migrate.min.js"></script>
+<script src="../static/js/bootstrap/bootstrap.bundle.min.js"></script>
+<script src="../static/js/easing/easing.min.js"></script>
+<script src="../static/js/wow/wow.min.js"></script>
+
+<script src="../static/js/waypoints/waypoints.min.js"></script>
+<script src="../static/js/counterup/counterup.min.js"></script>
+<script src="../static/js/superfish/hoverIntent.js"></script>
+<script src="../static/js/superfish/superfish.min.js"></script>
+
+<!-- Contact Form JavaScript File -->
+<script src="../static/js/contactform.js"></script>
+
+<!-- Template Main Javascript File -->
+<script src="../static/js/main.js"></script>
+</body>
+</html>

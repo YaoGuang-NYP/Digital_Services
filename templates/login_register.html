@@ -28,43 +28,10 @@
 
 </head>
 <body>
-<section id="hero">
-    <div class="hero-container">
-        <div class="row">
-            <div class="container" id="register" >
-            <h1 class="wow fadeInUp" style="margin-top:2% ;margin-bottom:2% ; text-align:center">Who are you?</h1>
-            <div class="row">
-                <div class="col-md-5 col-xs-12 wow fadeInLeft" data-wow-delay="0.5s"
-                     style="text-align:center ; border:3px black solid ; border-radius:10px; margin-bottom : 5% ; background-color: #f7f7f7">
-                    <h2 style="margin-top:5%;color:#212529">Are you an employer?</h2>
-                    <img src="https://mit.jobs/img/key-features/employer_branding.svg"/>
-                    <h3>If you are an employer looking for potential employees, come register with us to see all the
-                        available applicants to scout!</h3>
-                    <button type="button" class="btn btn-success" id="employer_button"
-                            style="text-align:center ; margin-bottom:5% ; height:60px ; width:250px">Click Here!
-                    </button>
-                </div>
-                <div class="col-md-2"></div>
-                <div class="col-md-5 col-xs-12 wow fadeInRight" data-wow-delay="0.5s"
-                     style="text-align:center ; border:3px black solid ; border-radius:10px; margin-bottom : 5% ; background-color: #f7f7f7">
-                    <h2 style="margin-top:5%;color:#212529">Are you looking for a job?</h2>
-                    <img src="http://www.myiconfinder.com/uploads/iconsets/e3daf39a65e0872640c9b085d6d92d48.png"
-                         style="height:256px ; width:256px"/>
-                    <h3>If you are an individual finding a job, come register with us to be able to show potential
-                        employers what you have!</h3>
-                    <button type="button" class="btn btn-success" id="employee_button"
-                            style="text-align:center ; margin-bottom:5% ; height:60px ; width:250px" >Click Here!
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
-    </div>
-
-</section>
 
 
-<section id="facts" style="display:none">
+
+<section id="facts">
     <form action="login_register" method="post">
 
 
@@ -199,20 +166,8 @@
     </form>
 </section>
 
+<!--Comment-->
 
-<section id="contact" style="display:none">
-    <h1>We require you to fill up some more information about your company.</h1>
-    <form action="login_register" method = "POST" >
-        <div class="container">
-            <div class="row">
-                <div class="col-md-6 col-xs-12">
-                    {{ company.username.label(class = "wow fadeInUp") }}
-                    {{ company.username(class = "form-control wow fadeInUp") }}
-                </div>
-            </div>
-        </div>
-    </form>
-</section>
 
 <script src="../static/js/jquery/jquery.min.js"></script>
 <script src="../static/js/jquery/jquery-migrate.min.js"></script>
@@ -231,16 +186,6 @@
 <!-- Template Main Javascript File -->
 <script src="../static/js/main.js"></script>
 
-<script>
-    $("#employee_button").click(function(){
-        $("#hero").hide();
-        $("#facts").fadeIn();
-    })
-    $("#employer_button").click(function(){
-        $("#hero").hide();
-        $("#contact").fadeIn();
-    })
-</script>
 
 </body>
 </html>

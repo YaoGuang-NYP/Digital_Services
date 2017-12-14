@@ -24,11 +24,22 @@
 
     <!-- Main Stylesheet File -->
     <link href="../static/css/style.css" rel="stylesheet">
+
+    <style>
+        @media screen and (min-width: 768px) {
+            body {
+                position: fixed;
+                overflow-y: hidden;
+                width: 100%;
+            }
+        }
+    </style>
 </head>
 
 <body>
 <section id="hero">
     <div class="hero-container">
+
         <div class="container" id="login">
             <div class="row">
                 <div class="col-md-2"></div>
@@ -37,7 +48,7 @@
                         <form action="/" method="post" class="container" id="login_page" novalidate>
                             <div class="row">
                                 <div class="col-12">
-                                    <img src="../static/images/MyPortfolioLogo.png" style="height:35% ; width:35%">
+                                    <img src="../static/images/MyPortfolioLogo.png" style="height:27% ; width:27%">
                                     <br>
                                     <br>
                                     {{ loginform.username.label(class="wow fadeInUp") }}
@@ -56,10 +67,10 @@
                                     <br>
                                     {{ loginform.submit(class="btn btn-primary wow fadeInUp", style="width:150px") }}
                                     <br>
-                                <br>
-                                <br>
+                                    <br>
+                                    <br>
                                     <h6 class="wow fadeInUp" data-wow-delay="0.35s">Don't have an account? Register with
-                                        us <a href="login_register"><u style="cursor:pointer">here!</u></a></h6>
+                                        us <a id="choose"><u style="cursor:pointer">here!</u></a></h6>
                                 </div>
                             </div>
                         </form>
@@ -68,8 +79,42 @@
                 <div class="col-md-2"></div>
             </div>
         </div>
+
+        <div class="container" id="register" style="display:none">
+            <h1 id="title" class="wow fadeInUp"
+                style="margin-top:2% ;margin-bottom:2% ; text-align:center ; display:none">Who are you?</h1>
+            <div class="row">
+                <div class="col-md-5 col-xs-12 wow fadeInLeft" data-wow-delay="0.5s"
+                     style="text-align:center ; border:3px black solid ; border-radius:10px; margin-bottom : 5% ; background-color: #f7f7f7 ; display:none"
+                     id="left">
+                    <h2 style="margin-top:5%;color:#212529">Are you an employer?</h2>
+                    <img src="https://mit.jobs/img/key-features/employer_branding.svg"/>
+                    <h3>If you are an employer looking for potential employees, come register with us to see all the
+                        available applicants to scout!</h3>
+                    <button type="button" class="btn btn-success" id="employer_button"
+                            style="text-align:center ; margin-bottom:5% ; height:60px ; width:250px">Click Here!
+                    </button>
+                </div>
+                <div class="col-md-2"></div>
+                <div class="col-md-5 col-xs-12 wow fadeInRight" data-wow-delay="0.5s"
+                     style="text-align:center ; border:3px black solid ; border-radius:10px; margin-bottom : 5% ; background-color: #f7f7f7 ; display:none"
+                     id="right">
+                    <h2 style="margin-top:5%;color:#212529">Are you looking for a job?</h2>
+                    <img src="http://www.myiconfinder.com/uploads/iconsets/e3daf39a65e0872640c9b085d6d92d48.png"
+                         style="height:256px ; width:256px"/>
+                    <h3>If you are an individual finding a job, come register with us to be able to show potential
+                        employers what you have!</h3>
+                    <button type="button" class="btn btn-success" id="employee_button"
+                            style="text-align:center ; margin-bottom:5% ; height:60px ; width:250px">Click Here!
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
     </div>
 </section>
+<!--Comment-->
+
 <!-- JavaScript Libraries -->
 <script src="../static/js/jquery/jquery.min.js"></script>
 <script src="../static/js/jquery/jquery-migrate.min.js"></script>
@@ -89,6 +134,21 @@
 <script src="../static/js/main.js"></script>
 <a href="#" class="back-to-top"><i class="fa fa-chevron-up"></i></a>
 
+<script>
+    $("#choose").click(function () {
+        $("#login").hide();
+        $("#register").show();
+        $("#title").show();
+        $("#left").show();
+        $("#right").show();
+    })
+    $("#employer_button").click(function () {
+        window.location.assign("login_register_employer")
+    })
+    $("#employee_button").click(function () {
+        window.location.assign("login_register")
+    })
+</script>
 
 </body>
 </html>
