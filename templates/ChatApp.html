@@ -1,0 +1,107 @@
+{% extends "index.html" %}
+
+{% block inlinecss %}
+    <style>
+
+        div.message_holder{
+            background-color: #ddd;
+            padding: 5px 10px;
+            border-radius: 10px;
+            color: #555;
+            margin-bottom: 5px;
+        }
+
+        #chatbox{
+            border: 5px lightgrey solid;
+            border-radius: 5px;
+            padding:75px;
+            position: relative;
+            top: 75px;
+            margin: auto;
+        }
+
+        #button{
+            height: 60px;
+        }
+
+        #textbox{
+            border: 3px lightblue dotted;
+            width: 300px;
+            margin: auto;
+        }
+
+        #filterbox{
+            position: relative;
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+  </head>
+  <body>
+    <br><br><br><br><br>
+    <div id="textbox" class="text-center well"><b>Chat Messenger</b></div><br>
+
+    <div class="container">
+      <div class="col-sm-8">
+        <div class="no_message">
+          <h1 style='color: #ccc'>No message yet..</h1>
+          <div class="message_holder"></div>
+        </div>
+      </div>
+      <div id="chatbox" class="col-sm-4">
+        <form action="" method="POST">
+            <h4><b>Type your message below<span class="glyphicon glyphicon-arrow-down"></span></b></h4>
+          <div class="clearfix" style="margin-top: 5px;"></div>
+          <input type="text" class="username form-control input-lg" placeholder="User Name" required>
+          <div style="padding-top: 5px;"></div>
+          <input type="text" class="message form-control input-lg" placeholder="Messages" required>
+          <div style="padding-top: 5px;"></div>
+          <button type="submit" id="button" class="btn btn-primary btn-block"><span class="glyphicon glyphicon-send"></span> Send</button>
+        </form>
+      </div>
+    </div>
+
+    <br><br><br><br>
+
+    {% endblock %}
+
+
+    <!-- API Javascript -->
+    {% block additionalscripts %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.7.3/socket.io.min.js"></script>
+
+
+    <!-- Internal Javascript -->
+    <script>
+      var socket = io.connect( 'http://' + document.domain + ':' + location.port )
+      // broadcast a message
+      socket.on( 'connect', function() {
+        socket.emit( 'my event', {
+          data: 'User Connected'
+        } )
+        var form = $( 'form' ).on( 'submit', function( e ) {
+          e.preventDefault()
+          let user_name = $( 'input.username' ).val()
+          let user_input = $( 'input.message' ).val()
+          socket.emit( 'my event', {
+            user_name : user_name,
+            message : user_input
+          } )
+          // empty the input field
+          $( 'input.message' ).val( '' ).focus()
+        } )
+      } )
+
+      // capture message
+      socket.on( 'my response', function( msg ) {
+        console.log( msg )
+        if( typeof msg.user_name !== 'undefined' ) {
+          $( 'h1' ).remove()
+          $( 'div.message_holder' ).append( '<div class="msg_bbl"><b style="color: #000">'+msg.user_name+'</b> '+msg.message+'</div>' )
+        }
+      } )
+    </script>
+    {% endblock %}
+  </body>
+</html>

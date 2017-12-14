@@ -5,36 +5,28 @@ Header
     <div class="container">
 
         <div id="logo" class="pull-left">
-            <a href="#hero"><img src="../static/images/logo.png" alt="" title="" /></img></a>
+            <!--<a href="#hero"><img src="../static/images/MyPortfolio_Logo_title.png" alt="" title="" /></a>
             <!-- Uncomment below if you prefer to use a text logo -->
-            <!--<h1><a href="#hero">Regna</a></h1>-->
+            <h1><a href="/home">MyPortFolio</a></h1>
         </div>
 
         <nav id="nav-menu-container">
             <ul class="nav-menu">
-                <li class="menu-active"><a href="#hero">Home</a></li>
-                <li><a href="#about">About Us</a></li>
-                <li><a href="#services">Services</a></li>
-                <li><a href="#portfolio">Portfolio</a></li>
-                <li><a href="#team">Team</a></li>
-                <li class="menu-has-children"><a href="">Drop Down</a>
-                    <ul>
-                        <li><a href="#">Drop Down 1</a></li>
-                        <li class="menu-has-children"><a href="#">Drop Down 2</a>
-                            <ul>
-                                <li><a href="#">Deep Drop Down 1</a></li>
-                                <li><a href="#">Deep Drop Down 2</a></li>
-                                <li><a href="#">Deep Drop Down 3</a></li>
-                                <li><a href="#">Deep Drop Down 4</a></li>
-                                <li><a href="#">Deep Drop Down 5</a></li>
-                            </ul>
-                        </li>
-                        <li><a href="#">Drop Down 3</a></li>
-                        <li><a href="#">Drop Down 4</a></li>
-                        <li><a href="#">Drop Down 5</a></li>
+                {% if session['loggedin'] == True %}
+                    <li><a href="/home">Home</a></li>
+                    <li><a href="/messages">Messages</a></li>
+                    <li><a href="#portfolio">No New Notifications</a></li>
+                    <li><a href="{{ url_for('help') }}">FAQ</a></li>
+                    <li class="dropdown-toggle" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><a href="#">{{ session['data']['username'] }}</a></li>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        <li class="dropdown-item"><a href = "{{ url_for('accountsettings') }}" >Account Settings</a></li>
+                        <li class="dropdown-item"><a href="{{ url_for('logout') }}">Logout</a></li>
                     </ul>
-                </li>
-                <li><a href="#contact">Contact Us</a></li>
+                {% else %}
+                    <li><a href="#hero">Home</a></li>
+                    <li><a href="#team">About Us</a></li>
+                    <li><a href="{{ url_for('main') }}">Sign In or Register</a></li>
+                {% endif %}
             </ul>
         </nav><!-- #nav-menu-container -->
     </div>
