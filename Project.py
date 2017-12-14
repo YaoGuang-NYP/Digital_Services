@@ -90,7 +90,7 @@ def main():
                 session['data'] = {
                     'username' : uniqueuser['username'],
                     'password': uniqueuser['password'],
-                    'smail' : uniqueuser['email'],
+                    'email' : uniqueuser['email'],
                     'age' : uniqueuser['age'],
                     'firstname' : uniqueuser['firstname'],
                     'lastname' : uniqueuser['lastname'],
@@ -170,7 +170,7 @@ def home() :
 #Route to messenger
 @app.route( '/messages' )
 def hello():
-  return render_template( './ChatApp.html' )
+  return render_template( 'ChatApp.html' )
 
 def messageRecived():
   print( 'message was received!!!' )
@@ -178,6 +178,10 @@ def messageRecived():
 @app.route('/account')
 def accountsettings() :
     return render_template('AccountSettings.html')
+
+@app.route('/help')
+def help() :
+    return render_template('help.html')
 
 @app.route('/login')
 def login() :
@@ -197,4 +201,4 @@ def handle_my_custom_event( json ):
   socketio.emit( 'my response', json, callback=messageRecived )
 
 if __name__ == '__main__':
-    app.run(debug = True)
+    socketio.run(app, debug = True)
