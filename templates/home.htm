@@ -177,32 +177,47 @@
                                 <p class="details">Email : {{ session['data']['email']}}</p>
                             </div>
                             <div class="row" style="text-align: center;">
-                                <p class="details">First Name : {{ session['data']['firstname']}}</p>
+                                <p class="details">Bio : {{ session['data']['bio']}}</p>
                              </div>
-                            <div class="row" style="text-align: center;">
-                                <p class="details">Last Name : {{ session['data']['lastname']}}</p>
-                             </div>
-                            <div class="row" style="text-align: center;">
-                                <p class="details">Age : {{ session['data']['age']}}</p>
-                             </div>
-                            <div class="row" style="text-align: center;">
-                                <p class="details">Country : {{ session['data']['country']}}</p>
-                             </div>
-                            <div class="row" style="text-align: center;">
-                                <p class="details">Highest Qualification : {{ session['data']['highestqualification']}}</p>
-                             </div>
-                            <div class="row" style="text-align: center;">
-                                <p class="details">Work Experiences : {{ session['data']['workexperiences']}}</p>
-                             </div>
-                            <div class="row" style="text-align: center;">
-                                <p class="details">Skill Sets : {{ session['data']['skillsets']}}</p>
-                             </div>
-                            <div class="row" style="text-align: center;">
-                                <p class="details">Awards : {{ session['data']['awards']}}</p>
-                             </div>
-                            <div class="row" style="text-align: center;">
-                                <p class="details">Biography : {{ session['data']['bio']}}</p>
-                            </div>
+                            {% if session['data']['status'] == "user" %}
+                                <div class="row" style="text-align: center;">
+                                    <p class="details">Awards : {{ session['data']['awards']}}</p>
+                                 </div>
+                                <div class="row" style="text-align: center;">
+                                    <p class="details">Age : {{ session['data']['age']}}</p>
+                                 </div>
+                                <div class="row" style="text-align: center;">
+                                    <p class="details">Country : {{ session['data']['country']}}</p>
+                                 </div>
+                                <div class="row" style="text-align: center;">
+                                    <p class="details">Highest Qualification : {{ session['data']['highestqualification']}}</p>
+                                 </div>
+                                <div class="row" style="text-align: center;">
+                                    <p class="details">Work Experiences : {{ session['data']['workexperiences']}}</p>
+                                 </div>
+                                <div class="row" style="text-align: center;">
+                                    <p class="details">Skill Sets : {{ session['data']['skillsets']}}</p>
+                                 </div>
+                                <div class="row" style="text-align: center;">
+                                    <p class="details">First Name : {{ session['data']['firstname']}}</p>
+                                 </div>
+                                <div class="row" style="text-align: center;">
+                                    <p class="details">Last Name : {{ session['data']['lastname']}}</p>
+                                </div>
+                            {% else %}
+                                <div class="row" style="text-align: center;">
+                                    <p class="details">Company Name : {{ session['data']['company_name']}}</p>
+                                </div>
+                                <div class="row" style="text-align: center;">
+                                    <p class="details">Telephone Number : : {{ session['data']['telno']}}</p>
+                                </div>
+                                <div class="row" style="text-align: center;">
+                                    <p class="details">Industry : {{ session['data']['industry']}}</p>
+                                </div>
+                                <div class="row" style="text-align: center;">
+                                    <p class="details">Address : {{ session['data']['address']}}</p>
+                                </div>
+                            {% endif %}
                         </div>
                     </div>
                     <div class="col-lg-1">

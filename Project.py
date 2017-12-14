@@ -87,20 +87,34 @@ def main():
         for user in logindata :
             uniqueuser = logindata[user]
             if uniqueuser['username'] == name and uniqueuser['password'] == password :
-                session['data'] = {
-                    'username' : uniqueuser['username'],
-                    'password': uniqueuser['password'],
-                    'email' : uniqueuser['email'],
-                    'age' : uniqueuser['age'],
-                    'firstname' : uniqueuser['firstname'],
-                    'lastname' : uniqueuser['lastname'],
-                    'country' : uniqueuser['country'],
-                    'highestqualification' : uniqueuser['highestqualification'],
-                    'workexperiences' : uniqueuser['workexperiences'],
-                    'skillsets' : uniqueuser['skillsets'],
-                    'awards' : uniqueuser['awards'],
-                    'bio' : uniqueuser['bio']
-                }
+                if uniqueuser['status'] == "user" :
+                    session['data'] = {
+                        'username' : uniqueuser['username'],
+                        'password': uniqueuser['password'],
+                        'email' : uniqueuser['email'],
+                        'age' : uniqueuser['age'],
+                        'firstname' : uniqueuser['firstname'],
+                        'lastname' : uniqueuser['lastname'],
+                        'country' : uniqueuser['country'],
+                        'highestqualification' : uniqueuser['highestqualification'],
+                        'workexperiences' : uniqueuser['workexperiences'],
+                        'skillsets' : uniqueuser['skillsets'],
+                        'awards' : uniqueuser['awards'],
+                        'bio' : uniqueuser['bio'],
+                        'status' : "user"
+                    }
+                else :
+                    session['data'] = {
+                        'username': uniqueuser['username'],
+                        'password': uniqueuser['password'],
+                        "company_name" : uniqueuser['company_name'],
+                        'email': uniqueuser['email'],
+                        "telno" : uniqueuser['telno'],
+                        "address" : uniqueuser['address'],
+                        "industry" : uniqueuser['industry'],
+                        'bio': uniqueuser['bio'],
+                        'status': "employer"
+                    }
 
                 return redirect(url_for("login"))
 
@@ -195,7 +209,7 @@ def login_register_employer():
             "address" : address,
             "industry" : industry,
             'bio': bio,
-            "status": "user"
+            "status": "employer"
         }
 
         data_db = root.child("userdata")
@@ -210,7 +224,6 @@ def login_register_employer():
             "bio" : bio,
             "status" : "employer"
         })
-
         return redirect(url_for("login"))
 
 @app.route("/home")
@@ -249,6 +262,7 @@ def logout() :
 def handle_my_custom_event( json ):
   print( 'recived my event: ' + str( json ) )
   socketio.emit( 'my response', json, callback=messageRecived )
+
 
 if __name__ == '__main__':
     socketio.run(app, debug = True)
