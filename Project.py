@@ -197,8 +197,9 @@ def logout() :
 
 @socketio.on( 'my event' )
 def handle_my_custom_event( json ):
+    #store to database
   print( 'recived my event: ' + str( json ) )
-  socketio.emit( 'my response', json, callback=messageRecived )
+  socketio.emit( 'my response', json, callback=messageRecived() )
 
 if __name__ == '__main__':
     socketio.run(app, debug = True)
