@@ -132,6 +132,20 @@ def login_register():
         awards = register.awards.data
         bio = register.bio.data
         data = RegisterForm(name, password, email, firstname, lastname, age, country, highestqualification, workexperiences, skillsets, awards, bio)
+        session['data'] = {
+            'username' : name,
+            'password': password,
+            'email' : email,
+            'age' : age,
+            'firstname' : firstname,
+            'lastname' : lastname,
+            'country' : country,
+            'highestqualification' : highestqualification,
+            'workexperiences' : workexperiences,
+            'skillsets' : skillsets,
+            'awards' : awards,
+            'bio' : bio
+        }
         data_db = root.child('userdata')
         data_db.push({
             'username' : data.get_username(),
