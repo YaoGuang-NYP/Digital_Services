@@ -4,6 +4,7 @@ from wtforms import Form, StringField, TextAreaField, RadioField, SelectField, v
 from forms import Forms
 from registerform import RegisterForm
 from flask_socketio import SocketIO, emit
+import datetime
 
 app = Flask(__name__)
 app.secret_key = "development key"
@@ -233,6 +234,23 @@ industries = [('Abortion Policy/Anti-Abortion', 'Abortion Policy/Anti-Abortion')
               ('Waste Management', 'Waste Management'), ('Wine, Beer & Liquor', 'Wine, Beer & Liquor'),
               ("Women's Issues", "Women's Issues")]
 
+class RequiredIf(object):
+
+    def __init__(self, *args, **kwargs):
+        self.conditions = kwargs
+
+    def __call__(self, form, field):
+        for name, data in self.conditions.items():
+            if name not in form._fields:
+                validators.Optional()(field)
+            else:
+                condition_field = form._fields.get(name)
+                if condition_field.data == data:
+                    validators.DataRequired().__call__(form, field)
+                else:
+                    validators.Optional().__call__(form, field)
+
+
 
 class login_form(Form):
     username = StringField("Username : ", [validators.DataRequired("Please enter your username!")])
@@ -271,8 +289,14 @@ class employer_register_form(Form):
     submit = SubmitField("Register")
 
 class create_job_posting(Form):
-    pass
-
+    job_title = StringField("Job Title : ", [validators.DataRequired("Please enter job title")])
+    salary = IntegerField("Salary : ", [validators.DataRequired("Please enter salary")])
+    career_level = SelectField("Career Level : ", choices = [("Low", "Low"),("Medium","Medium"),("High","High")])
+    qualification = SelectField("Qualification : ", choices = [("Primary Qualification","Primary Qualification"),("Lower Secondary","Lower Secondary"),("Secondary Qualification", "Secondary Qualification"),("ITE Nitec / Higher Nitec", "ITE Nitec / Higher Nitec"),("Polytechnic Diploma","Polytechnic Diploma"),("Professional Qualification","Professional Qualification"),("Bachelor's or Equivalent", "Bachelor's or Equivalent"),("Postgraduate Diploma", "Postgraduate Diploma"),("Master's and Doctorate", "Master's and Doctorate")])
+    employment_type = SelectField("Employment Type : ", choices = [("Contract Full Time", "Contract Full Time"),("Full Time", "Full Time"),("Part Time", "Part Time"),("Intern","Intern")])
+    employment_type_duration = StringField("Contract Time : ", [RequiredIf(employment_type="Contract Full Time")])
+    lat = StringField("Latitude : ")
+    lng = StringField("Longitude : ")
 
 @app.route("/", methods=["POST", "GET"])
 def main():
@@ -439,9 +463,19 @@ def home():
 def search_job():
     return render_template("search_jobs.html")
 
-@app.route("/create_job")
+@app.route("/create_job", methods = ["GET","POST"])
 def create_job():
-    return render_template("create_job.html")
+    create_form = create_job_posting(request.form)
+
+    if request.method == "GET" :
+        return render_template("create_job.html", form = create_form)
+
+    elif request.method == "POST" and create_form.validate() == False :
+        return render_template("create_job.html", form = create_form)
+
+    elif request.method == "POST" and create_form.validate() == True :
+        url_for("home")
+
 # Route to messenger
 @app.route('/messages')
 def hello():

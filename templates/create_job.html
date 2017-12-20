@@ -1,11 +1,105 @@
 {% extends "index.html" %}
 
-{% block body %}
-     <div class="container">
-        <div class="row">
-            <div class="">
+{% block inlinecss %}
+    <style>
+        @media screen and (max-width: 768px) {
+            h1 {
+                margin-top: 20%;
+            }
+        }
 
+        @media screen and (max-width: 1024px) and (min-width: 768px) {
+            h1 {
+                margin-top: 15%;
+            }
+        }
+
+        @media screen and (min-width: 1024px) {
+            h1 {
+                margin-top: 10%;
+            }
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <h1>Create Job Post</h1>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4 col-xs-12">
+                {{ form.job_title.label }}
+                {{ form.job_title(class="form-control", placeholder="Job Title") }}
+            </div>
+            <div class="col-md-4 col-xs-12">
+                {{ form.salary.label }}
+                {{ form.salary(class="form-control", placeholder="Salary") }}
+            </div>
+            <div class="col-md-4 col-xs-12">
+                {{ form.career_level.label }}
+                {{ form.career_level(class="form-control") }}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4 col-xs-12">
+                {{ form.qualification.label }}
+                {{ form.qualification(class="form-control") }}
+            </div>
+            <div class="col-md-4 col-xs-12">
+                {{ form.employment_type.label }}
+                {{ form.employment_type(class="form-control") }}
+            </div>
+            <div class="col-md-4 col-xs-12">
+                {{ form.employment_type_duration.label }}
+                {{ form.employment_type_duration(class="form-control") }}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6 col-xs-12">
+                {{ form.lat.label }}
+                {{ form.lat(class="form-control") }}
+            </div>
+            <div class="col-md-6 col-xs-12">
+                {{ form.lng.label }}
+                {{ form.lng(class="form-control") }}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <div id="map" style="width:100%;height:600px;margin-top:5%"></div>
             </div>
         </div>
     </div>
+{% endblock %}
+
+{% block additionalscripts %}
+    <script>
+        function initMap() {
+            var uluru = {lat: 1.290270, lng: 103.851959};
+            var map = new google.maps.Map(document.getElementById('map'), {
+                zoom: 15,
+                center: uluru,
+                gestureHandling: 'greedy'
+            });
+            var marker = new google.maps.Marker({
+                position: uluru,
+                map: map,
+                draggable: true
+            });
+            map.addListener("click", function (event) {
+                var lat = event.latLng.lat();
+                var long = event.latLng.lng();
+                marker.setPosition({lat: lat, lng: long});
+                $("#lat").val(marker.getPosition().lat);
+                $("#lng").val(marker.getPosition().lng);
+            })
+        }
+
+    </script>
+    <script async defer
+            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBuKc700OWcOyHcuBQ_9mQWSgmOsYKHI7c&callback=initMap">
+    </script>
 {% endblock %}
