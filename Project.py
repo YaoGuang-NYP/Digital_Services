@@ -298,6 +298,7 @@ class create_job_posting(Form):
     lat = StringField("Latitude : ", [validators.DataRequired("Please click on the map!")])
     lng = StringField("Longitude : ")
     location = StringField("Location : ")
+    job_des = TextAreaField("Job Description : ", [validators.DataRequired("Please enter the description for the above mentioned job")])
     submit = SubmitField("Create Posting")
 
 @app.route("/", methods=["POST", "GET"])
@@ -488,6 +489,7 @@ def create_job():
         latitude = create_form.lat.data
         longtitude = create_form.lng.data
         location = create_form.location.data
+        job_description = create_form.job_des.data
         time = str(datetime.date.today())
 
         #employer details
@@ -509,6 +511,7 @@ def create_job():
             'lat' : latitude,
             'lng' : longtitude,
             'location' : location,
+            'job_dec' : job_description,
             'date' : time,
             'company_name' : company_name,
             'company_email' : company_email,
