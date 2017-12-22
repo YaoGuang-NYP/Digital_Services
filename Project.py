@@ -295,8 +295,10 @@ class create_job_posting(Form):
     qualification = SelectField("Qualification : ", choices = [("Primary Qualification","Primary Qualification"),("Lower Secondary","Lower Secondary"),("Secondary Qualification", "Secondary Qualification"),("ITE Nitec / Higher Nitec", "ITE Nitec / Higher Nitec"),("Polytechnic Diploma","Polytechnic Diploma"),("Professional Qualification","Professional Qualification"),("Bachelor's or Equivalent", "Bachelor's or Equivalent"),("Postgraduate Diploma", "Postgraduate Diploma"),("Master's and Doctorate", "Master's and Doctorate")])
     employment_type = SelectField("Employment Type : ", choices = [("Contract Full Time", "Contract Full Time"),("Full Time", "Full Time"),("Part Time", "Part Time"),("Intern","Intern")])
     employment_type_duration = StringField("Contract Time : ", [RequiredIf(employment_type="Contract Full Time")])
-    lat = StringField("Latitude : ")
+    lat = StringField("Latitude : ", [validators.DataRequired("Please click on the map!")])
     lng = StringField("Longitude : ")
+    location = StringField("Location : ")
+    submit = SubmitField("Create Posting")
 
 @app.route("/", methods=["POST", "GET"])
 def main():
@@ -461,7 +463,9 @@ def home():
 
 @app.route("/search_job")
 def search_job():
-    return render_template("search_jobs.html")
+    jobs = root.child("jobposts").get()
+    print(jobs)
+    return render_template("search_jobs.html", jobs = jobs)
 
 @app.route("/create_job", methods = ["GET","POST"])
 def create_job():
@@ -474,7 +478,46 @@ def create_job():
         return render_template("create_job.html", form = create_form)
 
     elif request.method == "POST" and create_form.validate() == True :
-        url_for("home")
+        #job details
+        job_title = create_form.job_title.data
+        salary = create_form.salary.data
+        career = create_form.career_level.data
+        qualification = create_form.qualification.data
+        employment_type = create_form.employment_type.data
+        contract_time = create_form.employment_type_duration.data
+        latitude = create_form.lat.data
+        longtitude = create_form.lng.data
+        location = create_form.location.data
+        time = str(datetime.date.today())
+
+        #employer details
+        company_name = session["data"]["company_name"]
+        company_email = session["data"]["email"]
+        company_tel = session["data"]["telno"]
+        company_address = session["data"]["address"]
+        company_industry = session["data"]["industry"]
+        company_bio = session["data"]["bio"]
+
+        data_db = root.child('jobposts')
+        data_db.push({
+            'job_title' : job_title,
+            'salary' : salary,
+            'career' : career,
+            'qualification' : qualification,
+            'employment_type' : employment_type,
+            'contract_time' : contract_time,
+            'lat' : latitude,
+            'lng' : longtitude,
+            'location' : location,
+            'date' : time,
+            'company_name' : company_name,
+            'company_email' : company_email,
+            'company_tel': company_tel,
+            'company_address': company_address,
+            'company_industry': company_industry,
+            'company_bio': company_bio
+        })
+        return '<script> alert("Successfully Posted, Returning to home now!"); window.location.href = "home";</script>'
 
 # Route to messenger
 @app.route('/messages')
