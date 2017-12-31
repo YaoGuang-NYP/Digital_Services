@@ -16,14 +16,14 @@ socketio = SocketIO(app)
 import firebase_admin
 from firebase_admin import credentials, db
 
-#ZHENG TING's DATABASE
-#cred = credentials.Certificate('cred/digitalservices-d9e1c-firebase-adminsdk-3ms44-b4b21b1d32.json')
+# ZHENG TING's DATABASE
+# cred = credentials.Certificate('cred/digitalservices-d9e1c-firebase-adminsdk-3ms44-b4b21b1d32.json')
 
-#default_app = firebase_admin.initialize_app(cred, {
+# default_app = firebase_admin.initialize_app(cred, {
 #    'databaseURL': 'https://digitalservices-d9e1c.firebaseio.com/'
-#})
+# })
 
-#JJ's DATABASE
+# JJ's DATABASE
 cred = credentials.Certificate("cred/secondary-d4f0e-firebase-adminsdk-xa4rb-21094bbf76.json")
 default_app = firebase_admin.initialize_app(cred, {
     'databaseURL': 'https://secondary-d4f0e.firebaseio.com/'
@@ -234,6 +234,7 @@ industries = [('Abortion Policy/Anti-Abortion', 'Abortion Policy/Anti-Abortion')
               ('Waste Management', 'Waste Management'), ('Wine, Beer & Liquor', 'Wine, Beer & Liquor'),
               ("Women's Issues", "Women's Issues")]
 
+
 class RequiredIf(object):
 
     def __init__(self, *args, **kwargs):
@@ -249,7 +250,6 @@ class RequiredIf(object):
                     validators.DataRequired().__call__(form, field)
                 else:
                     validators.Optional().__call__(form, field)
-
 
 
 class login_form(Form):
@@ -288,18 +288,32 @@ class employer_register_form(Form):
                         [validators.DataRequired("Please enter your company biography")])
     submit = SubmitField("Register")
 
+
 class create_job_posting(Form):
     job_title = StringField("Job Title : ", [validators.DataRequired("Please enter job title")])
     salary = IntegerField("Salary : ", [validators.DataRequired("Please enter salary")])
-    career_level = SelectField("Career Level : ", choices = [("Low", "Low"),("Medium","Medium"),("High","High")])
-    qualification = SelectField("Qualification : ", choices = [("Primary Qualification","Primary Qualification"),("Lower Secondary","Lower Secondary"),("Secondary Qualification", "Secondary Qualification"),("ITE Nitec / Higher Nitec", "ITE Nitec / Higher Nitec"),("Polytechnic Diploma","Polytechnic Diploma"),("Professional Qualification","Professional Qualification"),("Bachelor's or Equivalent", "Bachelor's or Equivalent"),("Postgraduate Diploma", "Postgraduate Diploma"),("Master's and Doctorate", "Master's and Doctorate")])
-    employment_type = SelectField("Employment Type : ", choices = [("Contract Full Time", "Contract Full Time"),("Full Time", "Full Time"),("Part Time", "Part Time"),("Intern","Intern")])
+    career_level = SelectField("Career Level : ", choices=[("Low", "Low"), ("Medium", "Medium"), ("High", "High")])
+    qualification = SelectField("Qualification : ", choices=[("Primary Qualification", "Primary Qualification"),
+                                                             ("Lower Secondary", "Lower Secondary"),
+                                                             ("Secondary Qualification", "Secondary Qualification"),
+                                                             ("ITE Nitec / Higher Nitec", "ITE Nitec / Higher Nitec"),
+                                                             ("Polytechnic Diploma", "Polytechnic Diploma"), (
+                                                                 "Professional Qualification",
+                                                                 "Professional Qualification"),
+                                                             ("Bachelor's or Equivalent", "Bachelor's or Equivalent"),
+                                                             ("Postgraduate Diploma", "Postgraduate Diploma"),
+                                                             ("Master's and Doctorate", "Master's and Doctorate")])
+    employment_type = SelectField("Employment Type : ",
+                                  choices=[("Contract Full Time", "Contract Full Time"), ("Full Time", "Full Time"),
+                                           ("Part Time", "Part Time"), ("Intern", "Intern")])
     employment_type_duration = StringField("Contract Time : ", [RequiredIf(employment_type="Contract Full Time")])
     lat = StringField("Latitude : ", [validators.DataRequired("Please click on the map!")])
     lng = StringField("Longitude : ")
     location = StringField("Location : ")
-    job_des = TextAreaField("Job Description : ", [validators.DataRequired("Please enter the description for the above mentioned job")])
+    job_des = TextAreaField("Job Description : ",
+                            [validators.DataRequired("Please enter the description for the above mentioned job")])
     submit = SubmitField("Create Posting")
+
 
 @app.route("/", methods=["POST", "GET"])
 def main():
@@ -462,24 +476,31 @@ def login_register_employer():
 def home():
     return render_template('home.htm')
 
+
 @app.route("/search_job")
 def search_job():
-    jobs = root.child("jobposts").get()
+    jobs = {}
+    job = root.child("jobposts").get()
+    print(job)
+    reverse = sorted(job, reverse=True)
+    for i in reverse:
+        jobs[i] = job[i]
     print(jobs)
-    return render_template("search_jobs.html", jobs = jobs)
+    return render_template("search_jobs.html", jobs=jobs)
 
-@app.route("/create_job", methods = ["GET","POST"])
+
+@app.route("/create_job", methods=["GET", "POST"])
 def create_job():
     create_form = create_job_posting(request.form)
 
-    if request.method == "GET" :
-        return render_template("create_job.html", form = create_form)
+    if request.method == "GET":
+        return render_template("create_job.html", form=create_form)
 
-    elif request.method == "POST" and create_form.validate() == False :
-        return render_template("create_job.html", form = create_form)
+    elif request.method == "POST" and create_form.validate() == False:
+        return render_template("create_job.html", form=create_form)
 
-    elif request.method == "POST" and create_form.validate() == True :
-        #job details
+    elif request.method == "POST" and create_form.validate() == True:
+        # job details
         job_title = create_form.job_title.data
         salary = create_form.salary.data
         career = create_form.career_level.data
@@ -492,7 +513,7 @@ def create_job():
         job_description = create_form.job_des.data
         time = str(datetime.date.today())
 
-        #employer details
+        # employer details
         company_name = session["data"]["company_name"]
         company_email = session["data"]["email"]
         company_tel = session["data"]["telno"]
@@ -502,25 +523,101 @@ def create_job():
 
         data_db = root.child('jobposts')
         data_db.push({
-            'job_title' : job_title,
-            'salary' : salary,
-            'career' : career,
-            'qualification' : qualification,
-            'employment_type' : employment_type,
-            'contract_time' : contract_time,
-            'lat' : latitude,
-            'lng' : longtitude,
-            'location' : location,
-            'job_dec' : job_description,
-            'date' : time,
-            'company_name' : company_name,
-            'company_email' : company_email,
+            'job_title': job_title,
+            'salary': salary,
+            'career': career,
+            'qualification': qualification,
+            'employment_type': employment_type,
+            'contract_time': contract_time,
+            'lat': latitude,
+            'lng': longtitude,
+            'location': location,
+            'job_dec': job_description,
+            'date': time,
+            'company_name': company_name,
+            'company_email': company_email,
             'company_tel': company_tel,
             'company_address': company_address,
             'company_industry': company_industry,
             'company_bio': company_bio
         })
         return '<script> alert("Successfully Posted, Returning to home now!"); window.location.href = "home";</script>'
+
+
+@app.route('/edit_posts', methods=["GET","POST"])
+def edit_posts():
+        jobs = {}
+        job = root.child("jobposts").get()
+        reverse = sorted(job, reverse=True)
+        for i in reverse:
+            jobs[i] = job[i]
+        return render_template("edit_posts.html", jobs=jobs)
+
+@app.route('/edit_post<post_id>', methods = ["GET","POST"])
+def edit_post(post_id):
+    create_form = create_job_posting(request.form)
+    if request.method == "GET" :
+
+        job_post = root.child('jobposts/' + post_id).get()
+        create_form.job_title.data = job_post["job_title"]
+        create_form.salary.data = job_post["salary"]
+        create_form.career_level.data = job_post["career"]
+        create_form.qualification.data = job_post["qualification"]
+        create_form.employment_type.data = job_post["employment_type"]
+        create_form.employment_type_duration.data = job_post["contract_time"]
+        create_form.lat.data = job_post["lat"]
+        create_form.lng.data = job_post["lng"]
+        create_form.location.data = job_post["location"]
+        create_form.job_des.data = job_post["job_dec"]
+        return render_template('edit_post.html', post_id=post_id, job=job_post, form=create_form)
+
+    elif request.method == "POST" and create_form.validate() == False :
+        print(False)
+        return render_template('edit_post.html', form=create_form)
+
+    elif request.method == "POST" and create_form.validate() == True:
+        print(True)
+        job_title = create_form.job_title.data
+        salary = create_form.salary.data
+        career = create_form.career_level.data
+        qualification = create_form.qualification.data
+        employment_type = create_form.employment_type.data
+        contract_time = create_form.employment_type_duration.data
+        latitude = create_form.lat.data
+        longtitude = create_form.lng.data
+        location = create_form.location.data
+        job_description = create_form.job_des.data
+        time = str(datetime.date.today())
+
+        company_name = session["data"]["company_name"]
+        company_email = session["data"]["email"]
+        company_tel = session["data"]["telno"]
+        company_address = session["data"]["address"]
+        company_industry = session["data"]["industry"]
+        company_bio = session["data"]["bio"]
+
+        job_post = root.child("jobposts/" + post_id )
+        job_post.set({
+            'job_title' : job_title,
+            'salary': salary,
+            'career': career,
+            'qualification': qualification,
+            'employment_type': employment_type,
+            'contract_time': contract_time,
+            'lat': latitude,
+            'lng': longtitude,
+            'location': location,
+            'job_dec': job_description,
+            'date': time,
+            'company_name': company_name,
+            'company_email': company_email,
+            'company_tel': company_tel,
+            'company_address': company_address,
+            'company_industry': company_industry,
+            'company_bio': company_bio
+        })
+
+        return redirect(url_for("edit_posts"))
 
 # Route to messenger
 @app.route('/messages')
