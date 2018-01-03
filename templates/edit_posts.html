@@ -1,0 +1,94 @@
+{% extends "index.html" %}
+
+{% block inlinecss %}
+    <style>
+        @media screen and (max-width: 768px) {
+            h1 {
+                margin-top: 20%;
+            }
+
+            table {
+                text-align: center;
+            }
+
+        }
+
+        @media screen and (max-width: 1024px) and (min-width: 768px) {
+            h1 {
+                margin-top: 15%;
+            }
+        }
+
+        @media screen and (min-width: 1024px) {
+            h1 {
+                margin-top: 10%;
+            }
+        }
+
+        .modal-open {
+            overflow-y: auto
+        }
+
+        .modal-lg {
+            max-width: 80% !important;
+        }
+
+        /*.collapsing_button[aria-expanded="false"]:before {
+            content: "Show Company Details";
+        }
+
+        .collapsing_button[aria-expanded="true"]:before {
+            content: "Hide Company Details";
+        }*/
+
+        ::-webkit-scrollbar {
+            display: none;
+        }
+
+    </style>
+{% endblock %}
+
+{% block body %}
+
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <h1>Edit Jobs Posts</h1>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <table class="table table-striped table-bordered table-hover" style="margin-bottom: 5%">
+                    <thead class="thead-dark" style="background-color: black; color:white">
+                    <tr>
+                        <td style="width:30% ; text-align: center ; vertical-align: middle"><b>Job Title</b></td>
+                        <td style="width:30% ; text-align: center ; vertical-align: middle "><b>Company</b></td>
+                        <td style="width:25% ; text-align: center ; vertical-align: middle"><b>Date</b></td>
+                        <td style="width:15% ; text-align: center ; vertical-align: middle"><b>Choice</b></td>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for i in jobs %}
+                        {% if session['data']['company_name'] == jobs[i]['company_name'] %}
+                            <tr>
+                                <td style="text-align: center ; vertical-align: middle">{{ jobs[i]["job_title"].capitalize() }}</td>
+                                <td style="text-align: center ; vertical-align: middle">{{ jobs[i]["company_name"].capitalize() }}</td>
+                                <td style="text-align: center ; vertical-align: middle">{{ jobs[i]["date"] }}</td>
+                                <td style="text-align: center ; vertical-align: middle">
+                                    <a href="{{ url_for('edit_post', post_id = i ) }}">
+                                    <button id="btn{{ i }}" class="btn btn-primary" data-toggle="modal" style="width:100%">Edit
+                                    </button>
+                                    </a>
+                                </td>
+                            </tr>
+                        {% endif %}
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+
+
+{% endblock %}

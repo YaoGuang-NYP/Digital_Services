@@ -1,4 +1,4 @@
-{% extends "index.html" %}
+{% extends 'index.html' %}
 
 {% block inlinecss %}
     <style>
@@ -23,11 +23,12 @@
 {% endblock %}
 
 {% block body %}
-    <form action="/create_job" method="post">
-        <div class="container">
+
+    <div class="container">
+        <form action="edit_post{{ post_id }}" method="post">
             <div class="row">
                 <div class="col-12">
-                    <h1>Create Job Post</h1>
+                    <h1>Edit Job Post</h1>
                 </div>
             </div>
             <br>
@@ -36,7 +37,7 @@
                     {{ form.job_title.label }}
                     {{ form.job_title(class="form-control", placeholder="Job Title") }}
                     {% for i in form.job_title.errors %}
-                    <h6 style="color:red">{{ i }}</h6>
+                        <h6 style="color:red">{{ i }}</h6>
                     {% endfor %}
                 </div>
                 <br><br><br><br>
@@ -44,7 +45,7 @@
                     {{ form.salary.label }}
                     {{ form.salary(class="form-control", placeholder="Salary") }}
                     {% for i in form.salary.errors %}
-                    <h6 style="color:red">{{ i }}</h6>
+                        <h6 style="color:red">{{ i }}</h6>
                     {% endfor %}
                 </div>
                 <br><br><br><br>
@@ -70,7 +71,7 @@
                     {{ form.employment_type_duration.label }}
                     {{ form.employment_type_duration(class="form-control", placeholder="Required only for Contract Full Time") }}
                     {% for i in form.employment_type_duration.errors %}
-                    <h6 style="color:red">{{ i }}</h6>
+                        <h6 style="color:red">{{ i }}</h6>
                     {% endfor %}
                 </div>
                 <br><br><br>
@@ -98,25 +99,38 @@
                     <div id="map" style="width:100%;height:600px;margin-top:5%"></div>
                 </div>
             </div>
-        <div clsss="row" style="margin-top:2%">
-            <div class="col-12">
-                {{ form.job_des.label }}
-                {{ form.job_des(class="form-control", cols = "5", rows = "9") }}
-            </div>
-        </div>
-            <div class="row">
-                <div class="col-12" style="text-align: center ; margin-top: 4% ; margin-bottom: 4%">
-                    {{ form.submit(class = "btn btn-primary") }}
+            <div clsss="row" style="margin-top:2%">
+                <div class="col-12">
+                    {{ form.job_des.label }}
+                    {{ form.job_des(class="form-control", cols = "5", rows = "9") }}
                 </div>
             </div>
+            <div class="row">
+                <div class="col-12" style="text-align: center ; margin-top: 4% ; margin-bottom: 4%; width:100%">
+                    {{ form.submit(class = "btn btn-primary", value="Edit Post", style="width:100%") }}
+                </div>
+            </div>
+        </form>
+        <div class="row">
+            <div class="col-12" style="text-align: center">
+                <a href="{{ url_for("delete_post", post_id = post_id) }}">
+                    <button class="btn btn-danger" style="width:100%;margin-bottom: 4%">
+                        Delete Post
+                    </button>
+                </a>
+            </div>
         </div>
-    </form>
+    </div>
+
+
 {% endblock %}
 
 {% block additionalscripts %}
     <script>
         function initMap() {
-            var uluru = {lat: 1.290270, lng: 103.851959};
+            lat = $("#lat").val();
+            lng = $("#lng").val();
+            var uluru = {lat: parseFloat(lat), lng: parseFloat(lng)};
             var map = new google.maps.Map(document.getElementById('map'), {
                 zoom: 15,
                 center: uluru,

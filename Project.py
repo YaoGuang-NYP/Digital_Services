@@ -291,7 +291,7 @@ class employer_register_form(Form):
 
 class create_job_posting(Form):
     job_title = StringField("Job Title : ", [validators.DataRequired("Please enter job title")])
-    salary = IntegerField("Salary : ", [validators.DataRequired("Please enter salary")])
+    salary = IntegerField("Salary (Per Month) : ", [validators.DataRequired("Please enter salary")])
     career_level = SelectField("Career Level : ", choices=[("Low", "Low"), ("Medium", "Medium"), ("High", "High")])
     qualification = SelectField("Qualification : ", choices=[("Primary Qualification", "Primary Qualification"),
                                                              ("Lower Secondary", "Lower Secondary"),
@@ -306,7 +306,8 @@ class create_job_posting(Form):
     employment_type = SelectField("Employment Type : ",
                                   choices=[("Contract Full Time", "Contract Full Time"), ("Full Time", "Full Time"),
                                            ("Part Time", "Part Time"), ("Intern", "Intern")])
-    employment_type_duration = StringField("Contract Time : ", [RequiredIf(employment_type="Contract Full Time")])
+    employment_type_duration = StringField("Contract Time (Months) : ",
+                                           [RequiredIf(employment_type="Contract Full Time")])
     lat = StringField("Latitude : ", [validators.DataRequired("Please click on the map!")])
     lng = StringField("Longitude : ")
     location = StringField("Location : ")
@@ -358,7 +359,9 @@ def main():
                         "address": uniqueuser['address'],
                         "industry": uniqueuser['industry'],
                         'bio': uniqueuser['bio'],
-                        'status': "employer"
+                        'status': "employer",
+                        "notifications": uniqueuser["notifications"],
+                        "applications": uniqueuser["applications"]
                     }
 
                 return redirect(url_for("login"))
@@ -454,7 +457,9 @@ def login_register_employer():
             "address": address,
             "industry": industry,
             'bio': bio,
-            "status": "employer"
+            "status": "employer",
+            "notifications": 0,
+            "applicants": ''
         }
 
         data_db = root.child("userdata")
@@ -467,25 +472,38 @@ def login_register_employer():
             "address": address,
             "industry": industry,
             "bio": bio,
-            "status": "employer"
+            "status": "employer",
+            'notifications': 0,
+            'applicants': ""
         })
         return redirect(url_for("login"))
 
 
 @app.route("/home")
 def home():
-    return render_template('home.htm')
+    try :
+        notification = []
+        for i in session['data']['applications'].split(","):
+            if i == "":
+                continue
+            else:
+                format_1 = i.split(":")
+                jobpost = root.child("jobposts/" + format_1[1]).get()
+                job_title = jobpost["job_title"]
+                format_1.append(job_title)
+                notification.append(format_1)
+        return render_template('home.htm', notification=notification)
+    except :
+        return render_template("home.htm")
 
 
 @app.route("/search_job")
 def search_job():
     jobs = {}
     job = root.child("jobposts").get()
-    print(job)
     reverse = sorted(job, reverse=True)
     for i in reverse:
         jobs[i] = job[i]
-    print(jobs)
     return render_template("search_jobs.html", jobs=jobs)
 
 
@@ -544,19 +562,20 @@ def create_job():
         return '<script> alert("Successfully Posted, Returning to home now!"); window.location.href = "home";</script>'
 
 
-@app.route('/edit_posts', methods=["GET","POST"])
+@app.route('/edit_posts', methods=["GET", "POST"])
 def edit_posts():
-        jobs = {}
-        job = root.child("jobposts").get()
-        reverse = sorted(job, reverse=True)
-        for i in reverse:
-            jobs[i] = job[i]
-        return render_template("edit_posts.html", jobs=jobs)
+    jobs = {}
+    job = root.child("jobposts").get()
+    reverse = sorted(job, reverse=True)
+    for i in reverse:
+        jobs[i] = job[i]
+    return render_template("edit_posts.html", jobs=jobs)
 
-@app.route('/edit_post<post_id>', methods = ["GET","POST"])
+
+@app.route('/edit_post<post_id>', methods=["GET", "POST"])
 def edit_post(post_id):
     create_form = create_job_posting(request.form)
-    if request.method == "GET" :
+    if request.method == "GET":
 
         job_post = root.child('jobposts/' + post_id).get()
         create_form.job_title.data = job_post["job_title"]
@@ -571,12 +590,10 @@ def edit_post(post_id):
         create_form.job_des.data = job_post["job_dec"]
         return render_template('edit_post.html', post_id=post_id, job=job_post, form=create_form)
 
-    elif request.method == "POST" and create_form.validate() == False :
-        print(False)
+    elif request.method == "POST" and create_form.validate() == False:
         return render_template('edit_post.html', form=create_form)
 
     elif request.method == "POST" and create_form.validate() == True:
-        print(True)
         job_title = create_form.job_title.data
         salary = create_form.salary.data
         career = create_form.career_level.data
@@ -596,9 +613,9 @@ def edit_post(post_id):
         company_industry = session["data"]["industry"]
         company_bio = session["data"]["bio"]
 
-        job_post = root.child("jobposts/" + post_id )
+        job_post = root.child("jobposts/" + post_id)
         job_post.set({
-            'job_title' : job_title,
+            'job_title': job_title,
             'salary': salary,
             'career': career,
             'qualification': qualification,
@@ -618,6 +635,83 @@ def edit_post(post_id):
         })
 
         return redirect(url_for("edit_posts"))
+
+
+@app.route('/delete_post<post_id>')
+def delete_post(post_id):
+    post = root.child("jobposts/" + post_id)
+    post.delete()
+    return redirect(url_for("edit_posts"))
+
+
+@app.route('/apply_job<post_id>')
+def apply_job(post_id):
+    company_userdata = ""
+    find_company = root.child('jobposts/' + post_id).get()
+    company_name = find_company["company_name"]
+    find_company_userdata = root.child('userdata').get()
+    for i in find_company_userdata:
+        try:
+            if find_company_userdata[i]["company_name"] == company_name:
+                company_userdata = i
+        except:
+            continue
+    company_db = root.child('userdata/' + company_userdata)
+    company_userdata = root.child('userdata/' + company_userdata).get()
+    applicant = session['data']['username']
+    current_notifications = company_userdata["notifications"]
+    current_applicants = company_userdata["applications"]
+    if current_applicants == "":
+        applicant = "," + applicant
+    company_db.update({
+        'notifications': current_notifications + 1,
+        'applications': current_applicants + applicant + ":" + post_id + ","
+    })
+    return redirect("home")
+
+
+@app.route('/show_application<applicant><job>')
+def show_application(applicant,job):
+    applicant = applicant+job
+    form = register_form()
+    form2 = create_job_posting()
+    applicant_ = applicant.split("-")
+    applicant_[1] = "-" + applicant_[1]
+    find_applicant = root.child("userdata").get()
+    for i in find_applicant :
+        try :
+            if find_applicant[i]["username"] == applicant_[0] :
+                print(find_applicant[i]["username"])
+                applicant = i
+        except :
+            continue
+    #firstform
+    get_details = root.child("userdata/" + applicant).get()
+    form.firstname.data = get_details["firstname"]
+    form.lastname.data = get_details["lastname"]
+    form.age.data = get_details["age"]
+    form.awards.data = get_details['awards']
+    form.bio.data = get_details['bio']
+    form.email.data = get_details['email']
+    form.highestqualification.data = get_details['highestqualification']
+    form.workexperiences.data = get_details['workexperiences']
+    form.skillsets.data = get_details['skillsets']
+    form.country.data = get_details['country']
+
+    #secondform
+    get_details2 = root.child("jobposts/" + applicant_[1]).get()
+    form2.job_title.data = get_details2["job_title"]
+    form2.career_level.data = get_details2["career"]
+    form2.salary.data = get_details2["salary"]
+    form2.qualification.data = get_details2["qualification"]
+    form2.location.data = get_details2["location"]
+    form2.lng.data = get_details2["lng"]
+    form2.lat.data = get_details2["lat"]
+    form2.job_des.data = get_details2["job_dec"]
+    form2.employment_type.data = get_details2["employment_type"]
+    form2.employment_type_duration.data = get_details2["contract_time"]
+    return render_template("show_applicant.html", form = form,form2 = form2 ,user = get_details["firstname"])
+
 
 # Route to messenger
 @app.route('/messages')
