@@ -226,8 +226,35 @@ def login_register_employer():
         })
         return redirect(url_for("login"))
 
+@app.route("/loadtemplate/<name>")
+def loadtemplate(name) :
+    templates = root.child('template').get()
+    for saves in templates :
+        template = templates[saves]
+        if template['name'] == name :
+            session['template'] = {
+                'css' : template['css'],
+                'html' : template['html']
+            }
+    return redirect(url_for("editor"))
+
+@app.route('/editor')
+def editor() :
+    return render_template('editor.html')
+
 @app.route("/home")
 def home() :
+    list1 = []
+    list2 = []
+    templates = root.child('template').get()
+    for saves in templates :
+        template = templates[saves]
+        if template['user'] == session['data']['username'] :
+            list1.append(template['name'])
+            list2.append(template['html'])
+    templatedata = zip(list1, list2)
+    dictionary = dict(templatedata)
+    session['templates'] = dictionary
     return render_template('home.htm')
 
 #Route to messenger
@@ -256,6 +283,7 @@ def logout() :
     session.pop('data', None)
     session['loggedin'] = False
     return redirect(url_for('main'))
+
 
 
 @socketio.on( 'my event' )

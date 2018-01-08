@@ -17,11 +17,31 @@
             margin-top : 100px;
         }
 
-        /*.box3 {
+        .template {
+            margin-left : 25px;
+        }
+        
+        .template:hover {
+            -webkit-animation-name: template;
+            -moz-animation-name: template;
+            -o-animation-name: template;
+            animation-name: template;
+            -webkit-animation-fill-mode: forwards;
+            -moz-animation-fill-mode: forwards;
+            -o-animation-fill-mode: forwards;
+            animation-fill-mode: forwards;
+            -webkit-animation-duration: 0.5s;
+            -moz-animation-duration: 0.5s;
+            -o-animation-duration: 0.5s;
+            animation-duration: 0.5s;
+        }
+
+        .box3 {
             border : 2px black solid;
-            height : 500px;
+            height : 300px;
             margin-bottom : 50px;
-        } */
+            border-radius: 5px;
+        }
 
         .container-fluid.create {
             background-color: gray;
@@ -60,6 +80,22 @@
             border-radius: 100%;
             transform: scale(1, 1) translate(-50%);
             transform-origin: 50% 50%;
+        }
+
+        #create:active {
+            -webkit-animation-name: hidebutton;
+            -moz-animation-name: hidebutton;
+            -o-animation-name: hidebutton;
+            animation-name: hidebutton;
+            -webkit-animation-duration: 0.5s;
+            -moz-animation-duration: 0.5s;
+            -o-animation-duration: 0.5s;
+            animation-duration: 0.5s;
+        }
+
+        @keyframes template {
+            0% {opacity: 1;}
+            100% {opacity: 0.4;}
         }
 
         @keyframes ripple {
@@ -103,40 +139,45 @@
               box-shadow: 0 9px #999;
             }
 
-            .button span {
-              cursor: pointer;
-              display: inline-block;
-              position: relative;
-              transition: 0.5s;
-            }
+        .button span {
+          cursor: pointer;
+          display: inline-block;
+          position: relative;
+          transition: 0.5s;
+        }
 
-            .button span:after {
-              content: '\00bb';
-              position: absolute;
-              opacity: 0;
-              top: 0;
-              right: -20px;
-              transition: 0.5s;
-            }
+        .button span:after {
+          content: '\00bb';
+          position: absolute;
+          opacity: 0;
+          top: 0;
+          right: -20px;
+          transition: 0.5s;
+        }
 
-            .button:hover span {
-              padding-right: 25px;
-            }
+        .button:hover span {
+          padding-right: 25px;
+        }
 
-            .button:hover span:after {
-              opacity: 1;
-              right: 0;
-            }
+        .button:hover span:after {
+          opacity: 1;
+          right: 0;
+        }
 
-            .button:active {
-              background-color: #3e8e41;
-              box-shadow: 0 5px #666;
-              transform: translateY(4px);
-            }
+        .button:active {
+          background-color: #3e8e41;
+          box-shadow: 0 5px #666;
+          transform: translateY(4px);
+        }
 
-            a, a:hover, a:active {
-                color: white;
-            }
+        a, a:hover, a:active {
+            color: white;
+        }
+
+        div.box2 a {
+            color : #464a4e;
+        }
+
     </style>
 {% endblock %}
 
@@ -147,12 +188,12 @@
             <div class="container-fluid hero-container wow fadeInLeft" data-wow-delay="0.05s">
                 <div class="row">
                     <div class="col" align="center">
-                        <p style="margin-top : 50px; color: white; font-weight: bold; font-size : 30px;">Looks like you haven't created a resume yet!</p>
+                        <p id="template" style="margin-top : 50px; color: white; font-weight: bold; font-size : 30px; position: relative; top: 200px;"> Start Creating A Resume Now!</p>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col" align="center">
-                        <button type="button" id="create">Create      <i href="#" class="fa fa-plus" aria-hidden="false"></i></button>
+                <div class="row" id="template">
+                    <div class="col" align="center" style="margin-top : 200px; padding:160px 100px;">
+                        <button type="button" id="create" data-toggle="modal" data-target="#myModal">Create      <i href="#" class="fa fa-plus" aria-hidden="false"></i></button>
                     </div>
                 </div>
             </div>
@@ -226,10 +267,29 @@
                         <div class="row">
                             <div class="container box2 wow fadeInUp" data-wow-delay="0.05s">
                                 <div class="row" style="text-align: center;">
-                                    <p style="margin:0 auto; margin-top: 30px; margin-bottom: 30px; font-size: 25px; font-weight: bold;">Useful Links</p>
+                                    <p style="margin:0 auto; margin-top: 30px; margin-bottom: 30px; font-size: 25px; font-weight: bold;">Saved Templates</p>
+                                </div>
+                                {% for saves in session['templates'].keys() %}
+                                    <a href="/loadtemplate/{{ saves }}">
+                                        <div class="row" id="{{ saves }}" style="text-align: center; cursor: pointer;">
+                                            <div class="col-4">
+                                                {{ saves }}
+                                            </div>
+                                            <div class="col-8">
+                                                <h3>LOL</h3>
+                                            </div>
+                                        </div>
+                                    </a>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="container box3 wow fadeInUp" data-wow-delay="0.05s">
+                                <div class="row" style="text-align: center;">
+                                    <p style="margin:0 auto; margin-top: 30px; margin-bottom: 20px; font-size: 25px; font-weight: bold;">Useful Links</p>
                                 </div>
                                 <div class="row" style="text-align: center">
-                                    <button class="button" style="vertical-align:middle; margin: 0 auto; margin-bottom : 100px; margin-top:30px;"><a href="{{ url_for('help') }}" style="padding: 50px;"><span>FAQ </span></a></button>
+                                    <button class="button" style="vertical-align:middle; margin: 0 auto; margin-bottom : 40px;"><a href="{{ url_for('help') }}"><span>FAQ </span></a></button>
                                     <br>
                                     <button class="button" style="vertical-align:middle; margin: 0 auto;"><span>Search For Jobs </span></button>
                                 </div>
@@ -239,6 +299,30 @@
                 </div>
             </div>
         </section>
+        <div id="myModal" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title wow fadeInUp">Select Your Template!</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col template">
+                                <button class="button hoveroptions" style="display: none;">Test</button>
+                                <button class="button hoveroptions" style="display: none;">Test</button>
+                                <a href="loadtemplate/default1"><img src="../static/images/template1.JPG" /></a>
+                            </div>
+                            <div class="col template">
+                                <a href="loadtemplate/default2"><img src="../static/images/template2.JPG" /></a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
     {% else %}
         <section id="hero">
             <div class="hero-container">
@@ -292,18 +376,19 @@
 {% endblock %}
 
 {% block additionalscripts %}
-<script>
-    $(document).ready(function () {
-        $(".portfolioedit").click(function () {
-            $(".homeusername").attr('contenteditable', 'true');
-            $(".portfolioedit").html('Save<i class="fa fa-check" style="margin-left : 10px;"></i>');
-            $(".portfolioedit").attr('class', 'saveedit');
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $(".portfolioedit").click(function () {
+                $(".homeusername").attr('contenteditable', 'true');
+                $(".portfolioedit").html('Save<i class="fa fa-check" style="margin-left : 10px;"></i>');
+                $(".portfolioedit").attr('class', 'saveedit');
+            });
+            $(".saveedit").click(function () {
+                $(".homeusername").removeAttr('contenteditable');
+                $(".saveedit").html('Edit<i class="fa fa-bars" style="margin-left : 10px;"></i>');
+                $(".saveedit").attr('class', 'portfolioedit');
+            });
         });
-        $(".saveedit").click(function () {
-            $(".homeusername").removeAttr('contenteditable');
-            $(".saveedit").html('Edit<i class="fa fa-bars" style="margin-left : 10px;"></i>');
-            $(".saveedit").attr('class', 'portfolioedit');
-        });
-    });
-</script>
+    </script>
 {% endblock %}

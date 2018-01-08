@@ -1,0 +1,42 @@
+{% extends 'index.html' %}
+
+{% block inlinecss %}
+    <style>
+        section.choosetemplate {
+            margin-top : 200px;
+        }
+
+        .templates {
+            border : 3px lightgray solid;
+            height: 850px;
+            width : 600px;
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+    {% if session['loggedin'] == True %}
+        <section class="choosetemplate">
+            <div class="container">
+                <div class="row">
+                    <div class="col-5 col-sm-12 col-lg-5 templates">
+                    </div>
+                    <div class="col-lg-2">
+                    </div>
+                    <div class="col-5 col-sm-12 col-lg-5 templates">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-5 col-sm-12 col-lg-5 templates">
+                    </div>
+                    <div class="col-lg-2">
+                    </div>
+                    <div class="col-5 col-sm-12 col-lg-5 templates">
+                    </div>
+                </div>
+            </div>
+        </section>
+    {% else %}
+        <script> alert("You need to sign in first before creating templates!"); window.location.href = "/";</script>
+    {% endif %}
+{% endblock %}

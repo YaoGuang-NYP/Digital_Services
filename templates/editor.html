@@ -1,39 +1,137 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <script src='../static/js/tinymce/tinymce.min.js'></script>
+{% extends 'index.html' %}
+
+{% block additionalheadscripts %}
+    <script src="../static/js/tinymce/tinymce.min.js"></script>
+    <script src="../static/js/tinymce/jquery.tinymce.min.js"></script>
+    <script src="../static/js/jspdf.js"></script>
+    <script src="../static/js/xepOnline.jqPlugin.js"></script>
+    <script>
+        {% if session['loggedin'] == True %}
+            function save() {
+                // Initialize Firebase
+                var config = {
+                    apiKey: "AIzaSyD8tlo06pljGXcljlmaynixErjNGrovyeY",
+                    authDomain: "digitalservices-d9e1c.firebaseapp.com",
+                    databaseURL: "https://digitalservices-d9e1c.firebaseio.com",
+                    projectId: "digitalservices-d9e1c",
+                    storageBucket: "digitalservices-d9e1c.appspot.com",
+                    messagingSenderId: "950814978960"
+                };
+                firebase.initializeApp(config);
+                var myFirebase = firebase.database().ref();
+                var template = myFirebase.child("template");
+                var $page = $(".page");
+                var htmlencode = window.btoa($page.html());
+                var $css = $("style");
+                var cssencode = window.btoa($css.html());
+                var name = prompt('Enter a name for this template');
+                template.push({
+                    "html": htmlencode,
+                    "css" : cssencode,
+                    "user" : '{{ session['data']['username'] }}',
+                    "name" : name
+                });
+            }
+            function HTMLtoPDF(){
+                var pdf = new jsPDF('p', 'pt', 'letter');
+                source = $('#HTMLtoPDF')[0];
+                specialElementHandlers = {
+                    '#bypassme': function(element, renderer){
+                        return true
+                    }
+                }
+                margins = {
+                    top: 50,
+                    left: 60,
+                    width: 545
+                };
+                pdf.fromHTML(
+                    source // HTML string or DOM elem ref.
+                    , margins.left // x coord
+                    , margins.top // y coord
+                    , {
+                        'width': margins.width // max width of content on PDF
+                        , 'elementHandlers': specialElementHandlers
+                    },
+                    function (dispose) {
+                        // dispose: object with X, Y of the last line add to the PDF
+                        //          this allow the insertion of new lines after html
+                        pdf.save('template.pdf');
+                    }
+                )
+            }
+        {% endif %}
+    </script>
+
+{% endblock %}
+
+{% block inlinecss %}
+    <style>
+    </style>
+{% endblock %}
+
+{% block body %}
+    {% if session['loggedin'] == True %}
+        <div class="container-fluid" id="status"></div>
+        <div>
+            <br>
+            {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    <ul class=flashes>
+                        {% for message in messages %}
+                            <li>{{ message }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            {% endwith %}
+            <div class="page" data-size="A4" id="HTMLtoPDF" style="margin-top: 100px;">
+            </div>
+            <a href="#" onclick="save()">Save to MyPortFolio Workspace</a>
+        </div>
+    {% else %}
+        <script>alert("You Need to Sign In First to Use!"); window.location.href = "/";</script>
+    {% endif %}
+
+{% endblock %}
+
+{% block additionalscripts %}
+    <script src="https://www.gstatic.com/firebasejs/4.8.1/firebase.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/4.8.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/4.8.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/4.8.1/firebase-database.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/4.8.1/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/4.8.1/firebase-messaging.js"></script>
+    <script>
+        var savedtemplate = '{{ session['template']['html'] }}';
+        var savedcss = '{{ session['template']['css'] }}';
+        var decode = window.atob(savedtemplate);
+        var css = window.atob(savedcss);
+        var $page = $(".page");
+        var $css = $("style");
+        cssdecode = $.parseHTML(css);
+        htmldecode = $.parseHTML(decode);
+        $page.append(htmldecode);
+        $css.append(cssdecode);
+    </script>
     <script>
         tinymce.init({
-            selector: "#textarea",  // change this value according to your HTML
-            plugins: "fullpage",
-            fullpage_hide_in_source_view: true
+            selector: '.editablediv',
+            plugins : 'advlist lists autoresize charmap textcolor colorpicker contextmenu emoticons image imagetools paste print',
+            toolbar : [
+                'newdocument, bold, italic, underline, strikethrough, alignleft, aligncenter, alignright, alignjustify, styleselect, formatselect, fontselect, fontsizeselect',
+                'cut, copy, paste, image, bullist, numlist, outdent, indent, blockquote, undo, redo, removeformat, subscript, superscript, forecolor, backcolor, charmap, emoticons'
+            ],
+            paste_data_images: true,
+            paste_as_text: true,
+            image_advtab : true,
+            skin : 'custom',
+            inline: true,
+            branding : false,
+            contextmenu: "link image inserttable | cell row column deletetable",
+            contextmenu_never_use_native: true,
+            relative_urls : false,
+            remove_script_host : false,
+            convert_urls : true,
         });
     </script>
-</head>
-<style>
-    body {
-        background: rgb(204,204,204);
-    }
-    div.page {
-        background: white;
-        display: block;
-        margin: 0 auto;
-        margin-bottom: 0.5cm;
-        box-shadow: 0 0 0.5cm rgba(0,0,0,0.5);
-    }
-    div.page[data-size="A4"] {
-        width: 21cm;
-        height: 29.7cm;
-    }
-    div.page[data-size="A4"][layout="portrait"] {
-        width: 29.7cm;
-        height: 21cm;
-    }
-</style>
-<body>
-
-<form method="post">
-    <div class="page" data-size="A4">
-</form>
-</body>
-</html>
+{% endblock %}
