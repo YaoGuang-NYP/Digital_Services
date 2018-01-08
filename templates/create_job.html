@@ -1,0 +1,163 @@
+{% extends "index.html" %}
+
+{% block inlinecss %}
+    <style>
+        @media screen and (max-width: 768px) {
+            h1 {
+                margin-top: 20%;
+            }
+        }
+
+        @media screen and (max-width: 1024px) and (min-width: 768px) {
+            h1 {
+                margin-top: 15%;
+            }
+        }
+
+        @media screen and (min-width: 1024px) {
+            h1 {
+                margin-top: 10%;
+            }
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+    <form action="/create_job" method="post">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <h1>Create Job Post</h1>
+                </div>
+            </div>
+            <br>
+            <div class="row">
+                <div class="col-md-4 col-xs-12">
+                    {{ form.job_title.label }}
+                    {{ form.job_title(class="form-control", placeholder="Job Title") }}
+                    {% for i in form.job_title.errors %}
+                    <h6 style="color:red">{{ i }}</h6>
+                    {% endfor %}
+                </div>
+                <br><br><br><br>
+                <div class="col-md-4 col-xs-12">
+                    {{ form.salary.label }}
+                    {{ form.salary(class="form-control", placeholder="Salary") }}
+                    {% for i in form.salary.errors %}
+                    <h6 style="color:red">{{ i }}</h6>
+                    {% endfor %}
+                </div>
+                <br><br><br><br>
+                <div class="col-md-4 col-xs-12">
+                    {{ form.career_level.label }}
+                    {{ form.career_level(class="form-control") }}
+                </div>
+                <br><br><br>
+            </div>
+            <br>
+            <div class="row">
+                <div class="col-md-4 col-xs-12">
+                    {{ form.qualification.label }}
+                    {{ form.qualification(class="form-control") }}
+                </div>
+                <br><br><br><br>
+                <div class="col-md-4 col-xs-12">
+                    {{ form.employment_type.label }}
+                    {{ form.employment_type(class="form-control") }}
+                </div>
+                <br><br><br><br>
+                <div class="col-md-4 col-xs-12">
+                    {{ form.employment_type_duration.label }}
+                    {{ form.employment_type_duration(class="form-control", placeholder="Required only for Contract Full Time") }}
+                    {% for i in form.employment_type_duration.errors %}
+                    <h6 style="color:red">{{ i }}</h6>
+                    {% endfor %}
+                </div>
+                <br><br><br>
+            </div>
+            <br>
+            <div class="row">
+                <div class="col-md-4 col-xs-12">
+                    {{ form.lat.label }}
+                    {{ form.lat(class="form-control" ,readonly=true) }}
+                </div>
+                <br><br><br><br>
+                <div class="col-md-4 col-xs-12">
+                    {{ form.lng.label }}
+                    {{ form.lng(class="form-control" ,readonly=true) }}
+                </div>
+                <br><br><br><br>
+                <div class="col-md-4 col-xs-12">
+                    {{ form.location.label }}
+                    {{ form.location(class="form-control", readonly=true) }}
+                </div>
+                <br><br><br>
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <div id="map" style="width:100%;height:600px;margin-top:5%"></div>
+                </div>
+            </div>
+        <div clsss="row" style="margin-top:2%">
+            <div class="col-12">
+                {{ form.job_des.label }}
+                {{ form.job_des(class="form-control", cols = "5", rows = "9") }}
+            </div>
+        </div>
+            <div class="row">
+                <div class="col-12" style="text-align: center ; margin-top: 4% ; margin-bottom: 4%">
+                    {{ form.submit(class = "btn btn-primary") }}
+                </div>
+            </div>
+        </div>
+    </form>
+{% endblock %}
+
+{% block additionalscripts %}
+    <script>
+        function initMap() {
+            var uluru = {lat: 1.290270, lng: 103.851959};
+            var map = new google.maps.Map(document.getElementById('map'), {
+                zoom: 15,
+                center: uluru,
+                gestureHandling: 'greedy'
+            });
+            var geocoder = new google.maps.Geocoder;
+
+            var marker = new google.maps.Marker({
+                position: uluru,
+                map: map,
+                draggable: true,
+            });
+            marker.setAnimation(google.maps.Animation.BOUNCE);
+            map.addListener("click", function (event) {
+                var lat = event.latLng.lat();
+                var long = event.latLng.lng();
+                marker.setPosition({lat: lat, lng: long});
+                $("#lat").val(marker.getPosition().lat);
+                $("#lng").val(marker.getPosition().lng);
+                geocodeLatLng(geocoder, map, lat, long);
+                setTimeout(function () {
+                    map.panTo({lat: lat, lng: long})
+                }, 3000);
+            });
+        }
+
+        function geocodeLatLng(geocoder, map, lat, lng) {
+            var latlng = {lat: parseFloat(lat), lng: parseFloat(lng)}
+            geocoder.geocode({'location': latlng}, function (results, status) {
+                if (status === 'OK') {
+                    if (results[0]) {
+                        $("#location").val(results[0].formatted_address);
+
+                    }
+                }
+            });
+        }
+
+
+    </script>
+    <script async defer
+            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBuKc700OWcOyHcuBQ_9mQWSgmOsYKHI7c&callback=initMap">
+    </script>
+{% endblock %}

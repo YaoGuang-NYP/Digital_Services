@@ -45,6 +45,10 @@
                         <h6 style="color:red">{{ message }}</h6>
                     {% endfor %}
                 </div>
+                <br>
+                <br>
+                <br>
+                <br>
                 <div class="col-md-6 col-xs-12">
                     {{ company.password.label(class = "wow fadeInUp") }}
                     {{ company.password(class = "form-control wow fadeInUp", placeholder = "Password") }}
@@ -54,6 +58,7 @@
                 </div>
             </div>
             <br>
+
             <div class="row">
                 <div class="col-md-4 col-xs-12">
                     {{ company.company.label(class = "wow fadeInUp") }}
@@ -62,6 +67,10 @@
                         <h6 style="color:red">{{ message }}</h6>
                     {% endfor %}
                 </div>
+                <br>
+                <br>
+                <br>
+                <br>
                 <div class="col-md-4 col-xs-12">
                     {{ company.email.label(class = "wow fadeInUp") }}
                     {{ company.email(class = "form-control wow fadeInUp ", placeholder = "Company Email") }}
@@ -69,6 +78,10 @@
                         <h6 style="color:red">{{ message }}</h6>
                     {% endfor %}
                 </div>
+                <br>
+                <br>
+                <br>
+                <br>
                 <div class="col-md-4 col-xs-12">
                     {{ company.telno.label(class = "wow fadeInUp") }}
                     {{ company.telno(class = "form-control wow fadeInUp ", placeholder = "Company Telephone No.") }}
@@ -78,15 +91,20 @@
                 </div>
             </div>
             <br>
+
             <div class="row">
-                <div class="col-md-9 col-xs-12">
+                <div class="col-md-7 col-xs-12">
                     {{ company.address.label(class="wow fadeInUp") }}
                     {{ company.address(class = "form-control wow fadeInUp", placeholder = "Company Address") }}
                     {% for message in company.address.errors %}
                         <h6 style="color:red">{{ message }}</h6>
                     {% endfor %}
                 </div>
-                <div class="col-md-3 col-xs-12">
+                <br>
+                <br>
+                <br>
+                <br>
+                <div class="col-md-5 col-xs-12">
                     {{ company.industry.label(class="wow fadeInUp") }}
                     {{ company.industry(class="form-control wow fadeInUp", placeholder = "Company Industry") }}
                     {% for message in company.industry.errors %}
@@ -95,6 +113,7 @@
                 </div>
             </div>
             <br>
+
             <div class="row">
                 <div class="col-12">
                     {{ company.bio.label(class="wow fadeInUp") }}
@@ -105,6 +124,7 @@
                 </div>
             </div>
             <br>
+
             <div class="row">
                 <div class="col-12" style="text-align: center">
                     {{ company.submit(class="wow fadeInUp btn btn-primary" , style = "width:150px") }}
