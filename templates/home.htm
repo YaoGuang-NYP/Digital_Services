@@ -3,18 +3,18 @@
 {% block inlinecss %}
     <style>
         .box1 {
-            border : 2px black solid;
-            height : 870px;
-            margin-bottom : 50px;
-            margin-top : 100px;
+            border: 2px black solid;
+            height: 870px;
+            margin-bottom: 50px;
+            margin-top: 100px;
         }
 
         .box2 {
-            border : 2px black solid;
+            border: 2px black solid;
             border-radius: 5px;
-            height : 500px;
-            margin-bottom : 70px;
-            margin-top : 100px;
+            height: 500px;
+            margin-bottom: 70px;
+            margin-top: 100px;
         }
 
         /*.box3 {
@@ -25,12 +25,12 @@
 
         .container-fluid.create {
             background-color: gray;
-            margin-top : 90px;;
-            height:300px
+            margin-top: 90px;;
+            height: 300px
         }
 
         #create {
-            margin-top : 50px;
+            margin-top: 50px;
             border: none;
             cursor: pointer;
             color: white;
@@ -39,11 +39,11 @@
             font-size: 22px;
             box-shadow: 2px 2px 4px rgba(0, 0, 0, .4);
             background: green;
-            width:200px;
+            width: 200px;
         }
 
         /* Ripple magic */
-        #create{
+        #create {
             position: relative;
             overflow: hidden;
         }
@@ -89,206 +89,261 @@
         }
 
         .button {
-              display: inline-block;
-              background-color: darkgreen;
-              border: none;
-              color: #FFFFFF;
-              text-align: center;
-              font-size: 16px;
-              padding: 20px;
-              width: 200px;
-              transition: all 0.5s;
-              cursor: pointer;
-              margin: 5px;
-              box-shadow: 0 9px #999;
-            }
+            display: inline-block;
+            background-color: darkgreen;
+            border: none;
+            color: #FFFFFF;
+            text-align: center;
+            font-size: 16px;
+            padding: 20px;
+            width: 200px;
+            transition: all 0.5s;
+            cursor: pointer;
+            margin: 5px;
+            box-shadow: 0 9px #999;
+        }
 
-            .button span {
-              cursor: pointer;
-              display: inline-block;
-              position: relative;
-              transition: 0.5s;
-            }
+        .button span {
+            cursor: pointer;
+            display: inline-block;
+            position: relative;
+            transition: 0.5s;
+        }
 
-            .button span:after {
-              content: '\00bb';
-              position: absolute;
-              opacity: 0;
-              top: 0;
-              right: -20px;
-              transition: 0.5s;
-            }
+        .button span:after {
+            content: '\00bb';
+            position: absolute;
+            opacity: 0;
+            top: 0;
+            right: -20px;
+            transition: 0.5s;
+        }
 
-            .button:hover span {
-              padding-right: 25px;
-            }
+        .button:hover span {
+            padding-right: 25px;
+        }
 
-            .button:hover span:after {
-              opacity: 1;
-              right: 0;
-            }
+        .button:hover span:after {
+            opacity: 1;
+            right: 0;
+        }
 
-            .button:active {
-              background-color: #3e8e41;
-              box-shadow: 0 5px #666;
-              transform: translateY(4px);
-            }
+        .button:active {
+            background-color: #3e8e41;
+            box-shadow: 0 5px #666;
+            transform: translateY(4px);
+        }
 
-            a, a:hover, a:active {
-                color: white;
-            }
+        a, a:hover, a:active {
+            color: white;
+        }
     </style>
 {% endblock %}
 
 {% block body %}
-<main>
-    {% if session['loggedin'] == True %}
-        <section id="hero">
-            <div class="container-fluid hero-container wow fadeInLeft" data-wow-delay="0.05s">
-                <div class="row">
-                    <div class="col" align="center">
-                        <p style="margin-top : 50px; color: white; font-weight: bold; font-size : 30px;">Looks like you haven't created a resume yet!</p>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col" align="center">
-                        <button type="button" id="create">Create      <i href="#" class="fa fa-plus" aria-hidden="false"></i></button>
-                    </div>
-                </div>
-            </div>
-        </section>
-        <section class="alert-secondary">
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-7">
-                        <div class="container box1 wow fadeInUp" data-wow-delay="0.05s">
-                            <div class="row" style="background-color : gray; color: white; height: 50px; border-bottom-color: black; border-bottom-style: solid; border-bottom-width: 2px;">
-                                <p style="margin-top : 10px; margin-left: 20px;">My Portfolio Details<button type="button" id="saveedit" class="portfolioedit" style="border-radius: 5px; background-color : gray; color : white; border: 2px white solid; margin-left : 50px; cursor: pointer;">Edit<i class="fa fa-bars" style="margin-left : 10px;"></i></button></p>
-                            </div>
-                            <div class="row" style="text-align: center;">
-                                <div class="container" style="width: 200px; height: 200px; border-radius: 100px; border:5px black solid; margin-top : 20px; margin-bottom: 20px;">
-                                    <img src="https://image.flaticon.com/icons/png/128/118/118781.png" style="margin:auto; margin-top: 20px;">
-                                </div>
-                            </div>
-                            <div class="row" style="text-align: center;">
-                                <p class="details">Name : {{ session['data']['username']}}</p>
-                            </div>
-                            <div class="row" style="text-align: center;">
-                                <p class="details">Email : {{ session['data']['email']}}</p>
-                            </div>
-                            <div class="row" style="text-align: center;">
-                                <p class="details">First Name : {{ session['data']['firstname']}}</p>
-                             </div>
-                            <div class="row" style="text-align: center;">
-                                <p class="details">Last Name : {{ session['data']['lastname']}}</p>
-                             </div>
-                            <div class="row" style="text-align: center;">
-                                <p class="details">Age : {{ session['data']['age']}}</p>
-                             </div>
-                            <div class="row" style="text-align: center;">
-                                <p class="details">Country : {{ session['data']['country']}}</p>
-                             </div>
-                            <div class="row" style="text-align: center;">
-                                <p class="details">Highest Qualification : {{ session['data']['highestqualification']}}</p>
-                             </div>
-                            <div class="row" style="text-align: center;">
-                                <p class="details">Work Experiences : {{ session['data']['workexperiences']}}</p>
-                             </div>
-                            <div class="row" style="text-align: center;">
-                                <p class="details">Skill Sets : {{ session['data']['skillsets']}}</p>
-                             </div>
-                            <div class="row" style="text-align: center;">
-                                <p class="details">Awards : {{ session['data']['awards']}}</p>
-                             </div>
-                            <div class="row" style="text-align: center;">
-                                <p class="details">Biography : {{ session['data']['bio']}}</p>
-                            </div>
+    <main>
+        {% if session['loggedin'] == True %}
+            <section id="hero">
+                <div class="container-fluid hero-container wow fadeInLeft" data-wow-delay="0.05s">
+                    <div class="row">
+                        <div class="col" align="center">
+                            <p style="margin-top : 50px; color: white; font-weight: bold; font-size : 30px;">Looks like
+                                you haven't created a resume yet!</p>
                         </div>
                     </div>
-                    <div class="col-lg-1">
+                    <div class="row">
+                        <div class="col" align="center">
+                            <button type="button" id="create">Create <i href="#" class="fa fa-plus"
+                                                                        aria-hidden="false"></i></button>
+                        </div>
                     </div>
-                    <div class="col-lg-4">
-                        <div class="row">
-                            <div class="container box2 wow fadeInUp" data-wow-delay="0.05s">
+                </div>
+            </section>
+            <section class="alert-secondary">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-7">
+                            <div class="container box1 wow fadeInUp" data-wow-delay="0.05s">
+                                <div class="row"
+                                     style="background-color : gray; color: white; height: 50px; border-bottom-color: black; border-bottom-style: solid; border-bottom-width: 2px;">
+                                    <p style="margin-top : 10px; margin-left: 20px;">My Portfolio Details
+                                        <button type="button" id="saveedit" class="portfolioedit"
+                                                style="border-radius: 5px; background-color : gray; color : white; border: 2px white solid; margin-left : 50px; cursor: pointer;">
+                                            Edit<i class="fa fa-bars" style="margin-left : 10px;"></i></button>
+                                    </p>
+                                </div>
                                 <div class="row" style="text-align: center;">
-                                    <p style="margin:0 auto; margin-top: 30px; margin-bottom: 30px; font-size: 25px; font-weight: bold;">Useful Links</p>
+                                    <div class="container"
+                                         style="width: 200px; height: 200px; border-radius: 100px; border:5px black solid; margin-top : 20px; margin-bottom: 20px;">
+                                        <img src="https://image.flaticon.com/icons/png/128/118/118781.png"
+                                             style="margin:auto; margin-top: 20px;">
+                                    </div>
                                 </div>
-                                <div class="row" style="text-align: center">
-                                    <button class="button" style="vertical-align:middle; margin: 0 auto; margin-bottom : 100px; margin-top:30px;"><a href="{{ url_for('help') }}" style="padding: 50px;"><span>FAQ </span></a></button>
-                                    <br>
-                                    <button class="button" style="vertical-align:middle; margin: 0 auto;"><span>Search For Jobs </span></button>
+                                <div class="row" style="text-align: center;">
+                                    <p class="details">Name : {{ session['data']['username'] }}</p>
+                                </div>
+                                <div class="row" style="text-align: center;">
+                                    <p class="details">Email : {{ session['data']['email'] }}</p>
+                                </div>
+                                <div class="row" style="text-align: center;">
+                                    <p class="details">Bio : {{ session['data']['bio'] }}</p>
+                                </div>
+                                {% if session['data']['status'] == "user" %}
+                                    <div class="row" style="text-align: center;">
+                                        <p class="details">Awards : {{ session['data']['awards'] }}</p>
+                                    </div>
+                                    <div class="row" style="text-align: center;">
+                                        <p class="details">Age : {{ session['data']['age'] }}</p>
+                                    </div>
+                                    <div class="row" style="text-align: center;">
+                                        <p class="details">Country : {{ session['data']['country'] }}</p>
+                                    </div>
+                                    <div class="row" style="text-align: center;">
+                                        <p class="details">Highest Qualification
+                                            : {{ session['data']['highestqualification'] }}</p>
+                                    </div>
+                                    <div class="row" style="text-align: center;">
+                                        <p class="details">Work Experiences
+                                            : {{ session['data']['workexperiences'] }}</p>
+                                    </div>
+                                    <div class="row" style="text-align: center;">
+                                        <p class="details">Skill Sets : {{ session['data']['skillsets'] }}</p>
+                                    </div>
+                                    <div class="row" style="text-align: center;">
+                                        <p class="details">First Name : {{ session['data']['firstname'] }}</p>
+                                    </div>
+                                    <div class="row" style="text-align: center;">
+                                        <p class="details">Last Name : {{ session['data']['lastname'] }}</p>
+                                    </div>
+                                {% else %}
+                                    <div class="row" style="text-align: center;">
+                                        <p class="details">Company Name : {{ session['data']['company_name'] }}</p>
+                                    </div>
+                                    <div class="row" style="text-align: center;">
+                                        <p class="details">Telephone Number : : {{ session['data']['telno'] }}</p>
+                                    </div>
+                                    <div class="row" style="text-align: center;">
+                                        <p class="details">Industry : {{ session['data']['industry'] }}</p>
+                                    </div>
+                                    <div class="row" style="text-align: center;">
+                                        <p class="details">Address : {{ session['data']['address'] }}</p>
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="col-lg-1">
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="row">
+                                <div class="container box2 wow fadeInUp" data-wow-delay="0.05s">
+                                    <div class="row" style="text-align: center;">
+                                        <p style="margin:0 auto; margin-top: 30px; margin-bottom: 30px; font-size: 25px; font-weight: bold;">
+                                            Useful Links</p>
+                                    </div>
+                                    <div class="row" style="text-align: center">
+                                        <button class="button"
+                                                style="vertical-align:middle; margin: 0 auto; margin-bottom : 100px; margin-top:30px;">
+                                            <a href="{{ url_for('help') }}" style="padding: 50px;"><span>FAQ </span></a>
+                                        </button>
+                                        <br>
+                                        {% if session["data"]["status"] == "user" %}
+                                            <button class="button" style="vertical-align:middle; margin: 0 auto;"><a
+                                                    href="{{ url_for("search_job") }}"><span>Search For Jobs </span></a>
+                                            </button>
+
+                                        {% else %}
+                                            <button class="button" style="vertical-align:middle; margin: 0 auto;"><a
+                                                    href="{{ url_for("create_job") }}"><span>Create Job Posting </span></a>
+                                            </button>
+                                            <button class="button" style="vertical-align:middle; margin: 0 auto; margin-top:5%">
+                                                <a
+                                                        href="{{ url_for("edit_posts") }}"><span>Edit Job Posting </span></a>
+                                            </button>
+
+                                        {% endif %}
+
+
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        </section>
-    {% else %}
-        <section id="hero">
-            <div class="hero-container">
-                <h1>Welcome to MyPortFolio</h1>
-                <h2>Where you can create resumes and search for jobs in this All-In-One website</h2>
-                <a href="#team" class="btn-get-started">Get Started</a>
-            </div>
-        </section>
-        <section id="team" style="margin-top:100px; margin-bottom: 100px;">
-            <div class="container wow fadeInLeft">
-                <div class="section-header">
-                    <h3 class="section-title">About Us</h3>
-                    <p class="section-description">A Few Words About Us</p>
+            </section>
+        {% else %}
+            <section id="hero">
+                <div class="hero-container">
+                    <h1>Welcome to MyPortFolio</h1>
+                    <h2>Where you can create resumes and search for jobs in this All-In-One website</h2>
+                    <a href="#team" class="btn-get-started">Get Started</a>
                 </div>
-                <div id="content">
-                    <div id="introduction">
-                        <div class="wrapper">
-                            MY PORTFOLIO is the brainchild of our 4 founders: Jia Jun, Zheng Ting, Argel and Yao Guang. Like many great ideas, it was  discovered through accidental fate (in a random classroom). While constructing a portfolio to bethe basis of a start-up idea, we quickly discovered that creating their own portfolio was difficult, frustrating and very time consuming.
+            </section>
+            <section id="team" style="margin-top:100px; margin-bottom: 100px;">
+                <div class="container wow fadeInLeft">
+                    <div class="section-header">
+                        <h3 class="section-title">About Us</h3>
+                        <p class="section-description">A Few Words About Us</p>
+                    </div>
+                    <div id="content">
+                        <div id="introduction">
+                            <div class="wrapper">
+                                MY PORTFOLIO is the brainchild of our 4 founders: Jia Jun, Zheng Ting, Argel and Yao
+                                Guang. Like many great ideas, it was discovered through accidental fate (in a random
+                                classroom). While constructing a portfolio to bethe basis of a start-up idea, we quickly
+                                discovered that creating their own portfolio was difficult, frustrating and very time
+                                consuming.
 
-                            The team quickly went on to research and build a platform that empowered anyone to create their own portdolio with minimal skills needed.
+                                The team quickly went on to research and build a platform that empowered anyone to
+                                create their own portdolio with minimal skills needed.
 
-                            Better yet, make it free!
+                                Better yet, make it free!
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
 
-        </section><!-- #team -->
-        <section id="hero">
-            <div class="container-fluid hero-container wow fadeInUp" data-wow-delay="0.05s">
-                <div class="row">
-                    <div class="col" align="center">
-                        <p style="margin-top : 50px; color: white; font-weight: bold; font-size : 30px;">What are you waiting for? Start Using It Now!</p>
+            </section><!-- #team -->
+            <section id="hero">
+                <div class="container-fluid hero-container wow fadeInUp" data-wow-delay="0.05s">
+                    <div class="row">
+                        <div class="col" align="center">
+                            <p style="margin-top : 50px; color: white; font-weight: bold; font-size : 30px;">What are
+                                you waiting for? Start Using It Now!</p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-5" align="center">
+                            <button type="button" id="create" onclick="location.href='{{ url_for('main') }}'">Sign In
+                            </button>
+                        </div>
+                        <div class="col-lg-2" align="center">
+                            <strong style="position:relative; top:60%; color: white;">Or</strong>
+                        </div>
+                        <div class="col-lg-5" align="center">
+                            <button type="button" id="create" onclick="location.href='{{ url_for('login_register') }}'">
+                                Register
+                            </button>
+                        </div>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col-lg-5" align="center">
-                        <button type="button" id="create" onclick="location.href='{{ url_for('main') }}'">Sign In</button>
-                    </div>
-                    <div class="col-lg-2" align="center">
-                        <strong style="position:relative; top:60%; color: white;">Or</strong>
-                    </div>
-                    <div class="col-lg-5" align="center">
-                        <button type="button" id="create" onclick="location.href='{{ url_for('login_register') }}'">Register</button>
-                    </div>
-                </div>
-            </div>
-        </section>
-    {% endif %}
-</main>
+            </section>
+        {% endif %}
+    </main>
 {% endblock %}
 
 {% block additionalscripts %}
-<script>
-    $(document).ready(function () {
-        $(".portfolioedit").click(function () {
-            $(".homeusername").attr('contenteditable', 'true');
-            $(".portfolioedit").html('Save<i class="fa fa-check" style="margin-left : 10px;"></i>');
-            $(".portfolioedit").attr('class', 'saveedit');
+    <script>
+        $(document).ready(function () {
+            $(".portfolioedit").click(function () {
+                $(".homeusername").attr('contenteditable', 'true');
+                $(".portfolioedit").html('Save<i class="fa fa-check" style="margin-left : 10px;"></i>');
+                $(".portfolioedit").attr('class', 'saveedit');
+            });
+            $(".saveedit").click(function () {
+                $(".homeusername").removeAttr('contenteditable');
+                $(".saveedit").html('Edit<i class="fa fa-bars" style="margin-left : 10px;"></i>');
+                $(".saveedit").attr('class', 'portfolioedit');
+            });
         });
-        $(".saveedit").click(function () {
-            $(".homeusername").removeAttr('contenteditable');
-            $(".saveedit").html('Edit<i class="fa fa-bars" style="margin-left : 10px;"></i>');
-            $(".saveedit").attr('class', 'portfolioedit');
-        });
-    });
-</script>
+    </script>
 {% endblock %}

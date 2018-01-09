@@ -2,7 +2,24 @@
 
 {% block inlinecss %}
     <style>
+        /* CSS for My Contacts */
+        table{
+            font-family: Arial, Sans-serif;
+            border-collapse: collapse;
+            width: 100%;
+        }
 
+        td, th{
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+
+        tr:nth-child(even){
+            background-color: #dddddd;
+        }
+
+        /* CSS for Chat Messenger */
         div.message_holder{
             background-color: #ddd;
             padding: 5px 10px;
@@ -25,13 +42,15 @@
         }
 
         #textbox{
-            border: 3px lightblue dotted;
-            width: 300px;
+            padding: 10px;
             margin: auto;
+            background-color: lightgrey;
         }
 
-        #filterbox{
-            position: relative;
+        #mycontacts{
+          position: relative;
+          top: 88px;
+
         }
     </style>
 {% endblock %}
@@ -40,10 +59,10 @@
   </head>
   <body>
     <br><br><br><br><br>
-    <div id="textbox" class="text-center well"><b>Chat Messenger</b></div><br>
+    <div id="textbox" class="text-center well" style="margin: auto"><b>Chat Messenger</b></div><br>
 
     <div class="container">
-      <div class="col-sm-8">
+      <div class="col-sm-4">
         <div class="no_message">
           <h1 style='color: #ccc'>No message yet..</h1>
           <div class="message_holder"></div>
@@ -61,8 +80,46 @@
         </form>
       </div>
     </div>
+     <div class="container" id="mycontacts">
+      <div class="col-sm-4">
+          <h2>My Contacts</h2>
+          <input id="myInput" type="text" placeholder="Search...">
+          <table>
+              <thead>
+              <tr>
+                  <th>Firstname</th>
+                  <th>Lastname</th>
+                  <th>Email</th>
+              </tr>
+              </thead>
+              <tbody id="myTable">
+              <tr>
+                  <td>John</td>
+                  <td>Lim</td>
+                  <td>johnlim@nyp.edu.sg</td>
+              </tr>
+              <tr>
+                  <td>Albert</td>
+                  <td>Chia</td>
+                  <td>albertchina@gmail.com</td>
+              </tr>
+              <tr>
+                  <td>Brandon</td>
+                  <td>Chow</td>
+                  <td>branbran@student.edu.sg</td>
+              </tr>
+              <tr>
+                  <td>Keith</td>
+                  <td>Lee</td>
+                  <td>keithlee97@hotmail.com</td>
+              </tr>
+              </tbody>
+          </table>
+      </div>
+    </div>
 
-    <br><br><br><br>
+
+    <br><br><br><br><br><br>
 
     {% endblock %}
 
@@ -72,7 +129,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.7.3/socket.io.min.js"></script>
 
 
-    <!-- Internal Javascript -->
+    <!-- Internal Javascript for Chat Messenger -->
     <script>
       var socket = io.connect( 'http://' + document.domain + ':' + location.port )
       // broadcast a message
@@ -99,8 +156,21 @@
         if( typeof msg.user_name !== 'undefined' ) {
           $( 'h1' ).remove()
           $( 'div.message_holder' ).append( '<div class="msg_bbl"><b style="color: #000">'+msg.user_name+'</b> '+msg.message+'</div>' )
+            
         }
       } )
+    </script>
+
+    <!-- jQuery for Filter Contacts -->
+    <script>
+       $(document).ready(function(){
+           $("#myInput").on("keyup", function() {
+       var value = $(this).val().toLowerCase();
+       $("#myTable tr").filter(function() {
+         $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+       });
+     });
+   });
     </script>
     {% endblock %}
   </body>
