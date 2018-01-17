@@ -504,6 +504,7 @@ def search_job():
     reverse = sorted(job, reverse=True)
     for i in reverse:
         jobs[i] = job[i]
+    print(root.child("userdata").get())
     return render_template("search_jobs.html", jobs=jobs)
 
 
