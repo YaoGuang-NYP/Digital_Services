@@ -483,7 +483,12 @@ def login_register_employer():
 def home():
     try :
         notification = []
-        for i in session['data']['applications'].split(","):
+        user_id = ""
+        notifications = root.child("userdata").get()
+        for i in notifications:
+            if notifications[i]["username"] == session["data"]["username"] :
+                user_id = i
+        for i in notifications[user_id]["applications"].split(","):
             if i == "":
                 continue
             else:
@@ -504,9 +509,18 @@ def search_job():
     reverse = sorted(job, reverse=True)
     for i in reverse:
         jobs[i] = job[i]
-    print(root.child("userdata").get())
     return render_template("search_jobs.html", jobs=jobs)
 
+@app.route("/search_job_relevance<industry>")
+def search_job_relevance(industry):
+    industry = str(industry)
+    jobs = {}
+    job = root.child("jobposts").get()
+    for i in job:
+        if job[i]["company_industry"] == industry :
+            jobs[i] = job[i]
+
+    return render_template("search_jobs_relevance.html", jobs=jobs)
 
 @app.route("/create_job", methods=["GET", "POST"])
 def create_job():
@@ -668,7 +682,8 @@ def apply_job(post_id):
         'notifications': current_notifications + 1,
         'applications': current_applicants + applicant + ":" + post_id + ","
     })
-    return redirect("home")
+    return '<script> alert("Successfully Applied, redirecting to home!"); window.location.href = "home";</script>'
+
 
 
 @app.route('/show_application<applicant><job>')
@@ -677,12 +692,12 @@ def show_application(applicant,job):
     form = register_form()
     form2 = create_job_posting()
     applicant_ = applicant.split("-")
+    job_id = "-" + applicant_[1]
     applicant_[1] = "-" + applicant_[1]
     find_applicant = root.child("userdata").get()
     for i in find_applicant :
         try :
             if find_applicant[i]["username"] == applicant_[0] :
-                print(find_applicant[i]["username"])
                 applicant = i
         except :
             continue
@@ -711,8 +726,84 @@ def show_application(applicant,job):
     form2.job_des.data = get_details2["job_dec"]
     form2.employment_type.data = get_details2["employment_type"]
     form2.employment_type_duration.data = get_details2["contract_time"]
-    return render_template("show_applicant.html", form = form,form2 = form2 ,user = get_details["firstname"])
 
+    return render_template("show_applicant.html", form = form,form2 = form2 ,user = get_details["firstname"], id=applicant , job_id = job_id)
+
+@app.route('/accept<job_post><applicant><job_id>')
+def accept(job_post,applicant,job_id):
+    new_string = job_post + applicant + job_id
+    new_string = new_string.split("-")
+    job_name = new_string[0]
+    applicant_id = "-" + new_string[1]
+    job_id = "-" + new_string[2]
+    person = root.child("userdata/" + applicant_id)
+    person2 = root.child("userdata/" + applicant_id).get()
+    notifications_counts = person2["notifications"]
+    notifications = person2["applications"]
+    person.update({
+        'notifications' : notifications_counts + 1,
+        'applications' : notifications + "," + job_name + ":"  + job_id + ":" + "accept"
+    })
+
+    applicant_username = root.child("userdata/" + applicant_id + "/username").get()
+    employer_id = ""
+    employer = session["data"]["username"]
+    find_employer = root.child("userdata").get()
+    for i in find_employer:
+        if find_employer[i]["username"] == employer :
+            employer_id = i
+    employer_db = root.child("userdata/" + employer_id)
+    employer_db_data = root.child("userdata/" + employer_id).get()
+    employer_notifications = employer_db_data["notifications"]
+    employer_applications = employer_db_data["applications"].split(",")
+    find_string = applicant_username + ":" + job_id
+    employer_applications.remove(find_string)
+    reformat = ""
+    for i in employer_applications:
+        reformat += "," + i
+    employer_db.update({
+        'notifications' : int(employer_notifications) - 1,
+        'applications' : reformat
+    })
+    return redirect("home")
+
+@app.route('/decline<job_post><applicant><job_id>')
+def decline(job_post,applicant,job_id):
+    new_string = job_post + applicant + job_id
+    new_string = new_string.split("-")
+    job_name = new_string[0]
+    applicant_id = "-" + new_string[1]
+    job_id = "-" + new_string[2]
+    person = root.child("userdata/" + applicant_id)
+    person2 = root.child("userdata/" + applicant_id).get()
+    notifications_counts = person2["notifications"]
+    notifications = person2["applications"]
+    person.update({
+        'notifications' : notifications_counts + 1,
+        'applications' : notifications + "," + job_name + ":"  + job_id + ":" + "reject"
+    })
+
+    applicant_username = root.child("userdata/" + applicant_id + "/username").get()
+    employer_id = ""
+    employer = session["data"]["username"]
+    find_employer = root.child("userdata").get()
+    for i in find_employer:
+        if find_employer[i]["username"] == employer :
+            employer_id = i
+    employer_db = root.child("userdata/" + employer_id)
+    employer_db_data = root.child("userdata/" + employer_id).get()
+    employer_notifications = employer_db_data["notifications"]
+    employer_applications = employer_db_data["applications"].split(",")
+    find_string = applicant_username + ":" + job_id
+    employer_applications.remove(find_string)
+    reformat = ""
+    for i in employer_applications:
+        reformat += "," + i
+    employer_db.update({
+        'notifications' : int(employer_notifications) - 1,
+        'applications' : reformat
+    })
+    return redirect("home")
 
 # Route to messenger
 @app.route('/messages')

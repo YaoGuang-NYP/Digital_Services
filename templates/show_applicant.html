@@ -156,10 +156,10 @@
 
         <div class="row" style="text-align: center;margin-bottom:5%;margin-top: 5%">
             <div class="col-md-6 col-xs-12">
-                <button class="btn btn-danger" style="width:100%">Accept</button>
+                <a id="accept" href="{{ url_for('accept', job_post = form2.job_title.data, applicant = id , job_id = job_id) }}"><button class="btn btn-danger" style="width:100%">Accept</button></a>
             </div>
             <div class="col-md-6 col-xs-12">
-                <button class="btn btn-primary" style="width:100%">Decline</button>
+                <a id="decline" href="{{ url_for('decline', job_post = form2.job_title.data, applicant = id , job_id = job_id) }}"><button class="btn btn-primary" style="width:100%">Decline</button></a>
             </div>
         </div>
     </div>
@@ -183,6 +183,14 @@
             });
             marker.setAnimation(google.maps.Animation.BOUNCE);
         }
+    </script>
+    <script>
+    document.getElementById("accept").addEventListener("click", function() {
+        alert("Success! Returning to home now!")
+    });
+    document.getElementById("decline").addEventListener("click", function() {
+        alert("Success! Returning to home now!")
+    });
     </script>
     <script async defer
             src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBuKc700OWcOyHcuBQ_9mQWSgmOsYKHI7c&callback=initMap">
