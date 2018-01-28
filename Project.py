@@ -5,6 +5,8 @@ from forms import Forms
 from registerform import RegisterForm
 from flask_socketio import SocketIO, emit
 import datetime
+import smtplib
+from random import randint
 
 app = Flask(__name__)
 app.secret_key = "development key"
@@ -315,6 +317,30 @@ class create_job_posting(Form):
                             [validators.DataRequired("Please enter the description for the above mentioned job")])
     submit = SubmitField("Create Posting")
 
+
+class accountsettingsform(Form):
+    otp = StringField("One-Time-Code: ", [validators.data_required("Please enter verification code!")])
+    username = StringField("Username : ", [validators.DataRequired("Please enter your username!")])
+    password = PasswordField("Password : ", [validators.DataRequired("Please enter your password!")])
+    email = StringField("Email : ", [validators.DataRequired("Please enter your email!")])
+    firstname = StringField("First Name : ", [validators.DataRequired("Please enter your First Name!")])
+    lastname = StringField("Last Name : ", [validators.DataRequired("Please enter your Last Name")])
+    age = IntegerField("Age : ", [validators.DataRequired("Please enter your age!")])
+    country = SelectField("Country : ", choices=countries)
+    highestqualification = StringField("Highest Qualification : ", [validators.DataRequired("Please enter your highest qualifications!")])
+    workexperiences = StringField("Work Experiences : ", [validators.DataRequired("Please enter your work experiences!")])
+    skillsets = StringField("Skillsets : ", [validators.DataRequired("Please enter your skillsets!")])
+    awards = StringField("Awards : ", [validators.DataRequired("Please enter what awards you have received!")])
+    bio = TextAreaField("Biography(Less than 500 words) : ")
+
+    submit = SubmitField("Submit")
+
+class contactus(Form):
+    username = StringField("Username: ", [validators.DataRequired("Please enter your username!")])
+    email = StringField("Email: ", [validators.DataRequired("Please enter your email!")])
+    contactform = TextAreaField("Contact: ", [validators.DataRequired("Please enter your contact form!")])
+
+    submit = SubmitField("Submit")
 
 @app.route("/", methods=["POST", "GET"])
 def main():
@@ -815,9 +841,147 @@ def messageRecived():
     print('message was received!!!')
 
 
-@app.route('/account')
-def accountsettings():
-    return render_template('AccountSettings.html')
+@app.route('/accountsettings', methods=['GET', 'POST'])
+def accountsettings() :
+    listnum = []
+    randnum = randint(1000,4000)
+    listnum.append(randnum)
+    print(randnum)
+    email_session = session["data"]["email"]
+    print(email_session)
+
+    #email
+    fromadd = 'twertyrewq@gmail.com'
+    toadd = email_session
+
+    msg = ("Hello, your OTP for MyPortfolio is %s" % (randnum))
+    username = 'twertyrewq@gmail.com'
+    passwd = 'rewqtyu123'
+
+    try:
+        server = smtplib.SMTP('smtp.gmail.com:587')
+        server.ehlo()
+        server.starttls()
+        server.login(username, passwd)
+
+        server.sendmail(fromadd, toadd, msg)
+        print("Mail Send Successfully")
+        server.quit()
+
+    except:
+        print("Error:unable to send mail")
+
+    id = ""
+    datab = root.child("userdata").get()
+    for i in datab:
+        if datab[i]["username"] == session["data"]["username"]:
+            id = i
+
+    form = accountsettingsform(request.form)
+    if request.method == "POST" and form.validate():
+        otp = form.otp.data
+        username = form.username.data
+        password = form.password.data
+        email = form.email.data
+        firstname = form.firstname.data
+        lastname = form.lastname.data
+        age = form.age.data
+        country = form.country.data
+        highestqualification = form.highestqualification.data
+        workexperiences = form.workexperiences.data
+        skillsets = form.skillsets.data
+        awards = form.awards.data
+        bio = form.bio.data
+
+
+        if listnum[0] == randnum:
+
+            setting = RegisterForm(username, password, email, firstname, lastname, age, country, highestqualification,
+                               workexperiences, skillsets, awards, bio)
+
+            setting_db = root.child('userdata/' + id)
+            setting_db.update({
+                'username': setting.get_username(),
+                'password': setting.get_password(),
+                'email' : setting.get_email(),
+                'firstname': setting.get_firstname(),
+                'lastname': setting.get_lastname(),
+                'age': setting.get_age(),
+                'country': setting.get_country(),
+                'highestqualification': setting.get_highestqualification(),
+                'workexperiences': setting.get_workexperiences(),
+                'skillsets': setting.get_skillsets(),
+                'awards': setting.get_awards(),
+                'bio': setting.get_bio()
+            })
+
+        else:
+            print("Incorrect!")
+    return render_template('accountsettings.html', form=form)
+
+@app.route('/contactus', methods = ["GET", "POST"])
+def contact():
+
+    name_session = session["data"]["username"]
+    email_session = session["data"]["email"]
+
+    fromadd = 'twertyrewq@gmail.com'
+    toadd = email_session
+
+    msg = ""
+    username1 = 'twertyrewq@gmail.com'
+    passwd = 'rewqtyu123'
+
+    form = contactus(request.form)
+    if request.method == "POST" and form.validate():
+        username = form.username.data
+        email = form.email.data
+        contact = form.contactform.data
+
+
+        if 'thank' in contact.lower():
+            try:
+                server = smtplib.SMTP('smtp.gmail.com:587')
+                server.ehlo()
+                server.starttls()
+                server.login(username1, passwd)
+
+                server.sendmail(fromadd, toadd, msg="Hello {}, thank you too for using our product! You can continue to use our product for free FOREVER!".format((name_session)))
+                print("Mail Send Successfully")
+                server.quit()
+
+            except:
+                print("Error:unable to send mail")
+
+        elif 'how' in contact:
+            try:
+                server = smtplib.SMTP('smtp.gmail.com:587')
+                server.ehlo()
+                server.starttls()
+                server.login(username1, passwd)
+
+                server.sendmail(fromadd, toadd, msg="Hello {}, our developer team has reviewed your question and we will get to withni 24 hours!".format((name_session)))
+                print("Mail Send Successfully")
+                server.quit()
+
+            except:
+                print("Error:unable to send mail")
+
+        else:
+            try:
+                server = smtplib.SMTP('smtp.gmail.com:587')
+                server.ehlo()
+                server.starttls()
+                server.login(username1, passwd)
+
+                server.sendmail(fromadd, toadd, msg="Hi {}! Thank you for the kind feedback and response!".format((name_session)))
+                print("Mail Send Successfully")
+                server.quit()
+
+            except:
+                print("Error:unable to send mail")
+
+    return render_template('contactus.html', form=form)
 
 
 @app.route('/help')
