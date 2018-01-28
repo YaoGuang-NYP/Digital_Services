@@ -523,9 +523,25 @@ def home():
                 job_title = jobpost["job_title"]
                 format_1.append(job_title)
                 notification.append(format_1)
-        return render_template('home.htm', notification=notification)
+        list1 = []
+        list2 = []
+        list3 = []
+        templates = root.child('template').get()
+        for saves in templates :
+            template = templates[saves]
+            if template['user'] == session['data']['username'] :
+                list1.append(template['name'])
+                list2.append(saves)
+        templatedata = zip(list1, list2)
+        dictionary = dict(templatedata)
+        session['templates'] = dictionary
+        default_template = root.child('default_template').get()
+        for i in default_template :
+            list3.append(i)
+        session['default_template_id'] = list3
+        return render_template('home.html')
     except :
-        return render_template("home.htm")
+        return render_template("home.html")
 
 
 @app.route("/search_job")
@@ -918,6 +934,41 @@ def accountsettings() :
         else:
             print("Incorrect!")
     return render_template('accountsettings.html', form=form)
+
+@app.route('/loadtemplate/<string:name>')
+def loadtemplate(name) :
+    templates = root.child('template/' + name).get()
+    session['templateid'] = name
+    session['templatehtml'] = templates['html']
+    session['templatecss'] = templates['css']
+    session['templatename'] = templates['name']
+    session['default'] = False
+    return redirect(url_for('editor'))
+
+@app.route('/editor')
+def editor() :
+    return render_template('editor.html')
+
+@app.route('/savetemplate')
+def savetemplate() :
+    data_db = root.child('template')
+    data_db.push({
+        "user" : session['data']['username'],
+    })
+    flash('You Have Successfully Saved Your Template.')
+    return redirect(url_for('editor'))
+
+@app.route('/defaulttemplate/<string:name>')
+def defaulttemplate(name) :
+    default = root.child('default_template').get()
+    for templates in default :
+        template = default[templates]
+        if template['name'] == name :
+            session['templatehtml'] = template['html']
+            session['templatecss'] = template['css']
+            session['default'] = True
+
+    return redirect(url_for('editor'))
 
 @app.route('/contactus', methods = ["GET", "POST"])
 def contact():

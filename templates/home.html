@@ -139,7 +139,19 @@
                                 <div class="row" style="text-align: center">
                                     <button class="button" style="vertical-align:middle; margin: 0 auto; margin-bottom : 40px;"><a href="{{ url_for('help') }}"><span>FAQ </span></a></button>
                                     <br>
-                                    <button class="button" style="vertical-align:middle; margin: 0 auto;"><span>Search For Jobs </span></button>
+                                    {% if session["data"]["status"] == "user" %}
+                                        <button class="button" style="vertical-align:middle; margin: 0 auto;">
+                                            <a href="{{ url_for("search_job") }}"><span>Search For Jobs </span></a>
+                                        </button>
+
+                                    {% else %}
+                                        <button class="button" style="vertical-align:middle; margin: 0 auto;">
+                                            <a href="{{ url_for("create_job") }}"><span>Create Job Posting </span></a>
+                                        </button>
+                                        <button class="button" style="vertical-align:middle; margin: 0 auto; margin-top:5%">
+                                            <a href="{{ url_for("edit_posts") }}"><span>Edit Job Posting </span></a>
+                                        </button>
+                                    {% endif %}
                                 </div>
                             </div>
                         </div>
