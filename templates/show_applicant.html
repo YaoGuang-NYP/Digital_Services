@@ -1,0 +1,198 @@
+{% extends "index.html" %}
+
+{% block inlinecss %}
+    <style>
+        @media screen and (max-width: 768px) {
+            h1 {
+                margin-top: 20%;
+            }
+        }
+
+        @media screen and (max-width: 1024px) and (min-width: 768px) {
+            h1 {
+                margin-top: 15%;
+            }
+        }
+
+        @media screen and (min-width: 1024px) {
+            h1 {
+                margin-top: 10%;
+            }
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <h1>{{ user }}'s Resume</h1>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-4 col-xs-12">
+                {{ form.firstname.label(class="wow fadeInUp") }}
+                {{ form.firstname(class="form-control wow fadeInUp", placeholder="First Name", readonly=true) }}
+                <br>
+            </div>
+            <div class="col-md-4 col-xs-12">
+                {{ form.lastname.label(class="wow fadeInUp") }}
+                {{ form.lastname(class="form-control wow fadeInUp", placeholder="Last Name", readonly=true) }}
+                <br>
+            </div>
+            <div class="col-md-4 col-xs-12">
+                {{ form.age.label(class="wow fadeInUp") }}
+                {{ form.age(class="form-control wow fadeInUp", placeholder="18", readonly=true) }}
+            </div>
+        </div>
+        <br>
+
+        <div class="row">
+            <div class="col-md-4 col-xs-12">
+                {{ form.email.label(class="wow fadeInUp") }}
+                {{ form.email(class="form-control wow fadeInUp", placeholder="Email", readonly=true) }}
+                <br>
+            </div>
+            <div class="col-md-4 col-xs-12">
+                {{ form.skillsets.label(class="wow fadeInUp") }}
+                {{ form.skillsets(class="form-control wow fadeInUp", placeholder="Skillsets", readonly=true) }}
+                <br>
+            </div>
+            <div class="col-md-4 col-xs-12">
+                {{ form.country.label(class="wow fadeInUp") }}
+                {{ form.country(class="form-control wow fadeInUp", readonly=true, disabled=true) }}
+            </div>
+        </div>
+        <br>
+
+        <div class="row">
+            <div class="col-md-4 col-xs-12">
+                {{ form.highestqualification.label(class="wow fadeInUp") }}
+                {{ form.highestqualification(class="form-control wow fadeInUp", placeholder="Highest Qualification", readonly=true) }}
+                <br>
+            </div>
+            <div class="col-md-4 col-xs-12">
+                {{ form.workexperiences.label(class="wow fadeInUp") }}
+                {{ form.workexperiences(class="form-control wow fadeInUp", placeholder="Work Experience", readonly=true) }}
+                <br>
+            </div>
+            <div class="col-md-4 col-xs-12">
+                {{ form.awards.label(class="wow fadeInUp") }}
+                {{ form.awards(class="form-control wow fadeInUp", placeholder="Awards", readonly=true) }}
+                <br>
+            </div>
+        </div>
+
+        <div class="row">
+            <h1 style="margin-top: 4%">Applying For</h1>
+        </div>
+
+        <div class="row">
+            <div class="col-md-4 col-xs-12">
+                {{ form2.job_title.label }}
+                {{ form2.job_title(class="form-control", placeholder="Job Title", readonly=true) }}
+            </div>
+            <br><br><br><br>
+            <div class="col-md-4 col-xs-12">
+                {{ form2.salary.label }}
+                {{ form2.salary(class="form-control", placeholder="Salary", readonly=true) }}
+            </div>
+            <br><br><br><br>
+            <div class="col-md-4 col-xs-12">
+                {{ form2.career_level.label }}
+                {{ form2.career_level(class="form-control", readonly=true, disabled=true) }}
+            </div>
+            <br><br><br>
+        </div>
+        <br>
+        <div class="row">
+            <div class="col-md-4 col-xs-12">
+                {{ form2.qualification.label }}
+                {{ form2.qualification(class="form-control", readonly=true) }}
+            </div>
+            <br><br><br><br>
+            <div class="col-md-4 col-xs-12">
+                {{ form2.employment_type.label }}
+                {{ form2.employment_type(class="form-control", readonly=true) }}
+            </div>
+            <br><br><br><br>
+            <div class="col-md-4 col-xs-12">
+                {{ form2.employment_type_duration.label }}
+                {{ form2.employment_type_duration(class="form-control", placeholder="Required only for Contract Full Time", readonly=true) }}
+            </div>
+            <br><br><br>
+        </div>
+        <br>
+        <div class="row">
+            <div class="col-md-4 col-xs-12">
+                {{ form2.lat.label }}
+                {{ form2.lat(class="form-control" ,readonly=true) }}
+            </div>
+            <br><br><br><br>
+            <div class="col-md-4 col-xs-12">
+                {{ form2.lng.label }}
+                {{ form2.lng(class="form-control" ,readonly=true) }}
+            </div>
+            <br><br><br><br>
+            <div class="col-md-4 col-xs-12">
+                {{ form2.location.label }}
+                {{ form2.location(class="form-control", readonly=true) }}
+            </div>
+            <br><br><br>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <div id="map" style="width:100%;height:600px;margin-top:5%"></div>
+            </div>
+        </div>
+        <div clsss="row" style="margin-top:2%">
+            <div class="col-12">
+                {{ form2.job_des.label }}
+                {{ form2.job_des(class="form-control", cols = "5", rows = "9") }}
+            </div>
+        </div>
+
+        <div class="row" style="text-align: center;margin-bottom:5%;margin-top: 5%">
+            <div class="col-md-6 col-xs-12">
+                <a id="accept" href="{{ url_for('accept', job_post = form2.job_title.data, applicant = id , job_id = job_id) }}"><button class="btn btn-danger" style="width:100%">Accept</button></a>
+            </div>
+            <div class="col-md-6 col-xs-12">
+                <a id="decline" href="{{ url_for('decline', job_post = form2.job_title.data, applicant = id , job_id = job_id) }}"><button class="btn btn-primary" style="width:100%">Decline</button></a>
+            </div>
+        </div>
+    </div>
+
+
+    <script>
+        var map;
+
+        function initMap() {
+            var lat = $("#lat").val();
+            var lng = $("#lng").val();
+            console.log(lat, lng);
+            map = new google.maps.Map(document.getElementById('map'), {
+                center: {lat: parseFloat(lat), lng: parseFloat(lng)},
+                zoom: 15,
+                gestureHandling: 'greedy'
+            });
+            var marker = new google.maps.Marker({
+                position: {lat: parseFloat(lat), lng: parseFloat(lng)},
+                map: map
+            });
+            marker.setAnimation(google.maps.Animation.BOUNCE);
+        }
+    </script>
+    <script>
+    document.getElementById("accept").addEventListener("click", function() {
+        alert("Success! Returning to home now!")
+    });
+    document.getElementById("decline").addEventListener("click", function() {
+        alert("Success! Returning to home now!")
+    });
+    </script>
+    <script async defer
+            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBuKc700OWcOyHcuBQ_9mQWSgmOsYKHI7c&callback=initMap">
+    </script>
+{% endblock %}
