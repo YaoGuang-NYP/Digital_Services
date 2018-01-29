@@ -9,14 +9,14 @@
         {% if session['loggedin'] == True %}
             function save() {
                 // Initialize Firebase
-                var config = {
-                    apiKey: "AIzaSyD8tlo06pljGXcljlmaynixErjNGrovyeY",
-                    authDomain: "digitalservices-d9e1c.firebaseapp.com",
-                    databaseURL: "https://digitalservices-d9e1c.firebaseio.com",
-                    projectId: "digitalservices-d9e1c",
-                    storageBucket: "digitalservices-d9e1c.appspot.com",
-                    messagingSenderId: "950814978960"
-                };
+                  var config = {
+                    apiKey: "AIzaSyDPRQ8NKKp9TJRskaBZwJSRuMM4Klo2ktA",
+                    authDomain: "secondary-d4f0e.firebaseapp.com",
+                    databaseURL: "https://secondary-d4f0e.firebaseio.com",
+                    projectId: "secondary-d4f0e",
+                    storageBucket: "secondary-d4f0e.appspot.com",
+                    messagingSenderId: "650251225114"
+                  };
                 firebase.initializeApp(config);
                 var myFirebase = firebase.database().ref();
                 var template = myFirebase.child("template");
@@ -34,14 +34,14 @@
             }
             function existsave() {
                 // Initialize Firebase
-                var config = {
-                    apiKey: "AIzaSyD8tlo06pljGXcljlmaynixErjNGrovyeY",
-                    authDomain: "digitalservices-d9e1c.firebaseapp.com",
-                    databaseURL: "https://digitalservices-d9e1c.firebaseio.com",
-                    projectId: "digitalservices-d9e1c",
-                    storageBucket: "digitalservices-d9e1c.appspot.com",
-                    messagingSenderId: "950814978960"
-                };
+                  var config = {
+                    apiKey: "AIzaSyDPRQ8NKKp9TJRskaBZwJSRuMM4Klo2ktA",
+                    authDomain: "secondary-d4f0e.firebaseapp.com",
+                    databaseURL: "https://secondary-d4f0e.firebaseio.com",
+                    projectId: "secondary-d4f0e",
+                    storageBucket: "secondary-d4f0e.appspot.com",
+                    messagingSenderId: "650251225114"
+                  };
                 firebase.initializeApp(config);
                 var template = firebase.database().ref("template/" + '{{ session['templateid'] }}');
                 var $page = $(".page");
