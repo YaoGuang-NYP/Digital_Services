@@ -327,13 +327,16 @@ class accountsettingsform(Form):
     lastname = StringField("Last Name : ", [validators.DataRequired("Please enter your Last Name")])
     age = IntegerField("Age : ", [validators.DataRequired("Please enter your age!")])
     country = SelectField("Country : ", choices=countries)
-    highestqualification = StringField("Highest Qualification : ", [validators.DataRequired("Please enter your highest qualifications!")])
-    workexperiences = StringField("Work Experiences : ", [validators.DataRequired("Please enter your work experiences!")])
+    highestqualification = StringField("Highest Qualification : ",
+                                       [validators.DataRequired("Please enter your highest qualifications!")])
+    workexperiences = StringField("Work Experiences : ",
+                                  [validators.DataRequired("Please enter your work experiences!")])
     skillsets = StringField("Skillsets : ", [validators.DataRequired("Please enter your skillsets!")])
     awards = StringField("Awards : ", [validators.DataRequired("Please enter what awards you have received!")])
     bio = TextAreaField("Biography(Less than 500 words) : ")
 
     submit = SubmitField("Submit")
+
 
 class contactus(Form):
     username = StringField("Username: ", [validators.DataRequired("Please enter your username!")])
@@ -341,6 +344,7 @@ class contactus(Form):
     contactform = TextAreaField("Contact: ", [validators.DataRequired("Please enter your contact form!")])
 
     submit = SubmitField("Submit")
+
 
 @app.route("/", methods=["POST", "GET"])
 def main():
@@ -374,7 +378,7 @@ def main():
                         'awards': uniqueuser['awards'],
                         'bio': uniqueuser['bio'],
                         'status': "user",
-                        'notifications' : uniqueuser['notifications']
+                        'notifications': uniqueuser['notifications']
                     }
                 else:
                     session['data'] = {
@@ -451,8 +455,8 @@ def login_register():
             'awards': data.get_awards(),
             'bio': data.get_bio(),
             "status": "user",
-            'notifications' : 0,
-            'applications' : ''
+            'notifications': 0,
+            'applications': ''
         })
         return redirect(url_for("login"))
 
@@ -510,6 +514,116 @@ def login_register_employer():
 
 @app.route("/home")
 def home():
+    try:
+        if session["data"]["status"] == "employer":
+            notification = []
+            user_id = ""
+            notifications = root.child("userdata").get()
+            for i in notifications:
+                if notifications[i]["username"] == session["data"]["username"]:
+                    user_id = i
+            notification_counts = notifications[user_id]["notifications"]
+            for i in notifications[user_id]["applications"].split(","):
+                if i == "":
+                    continue
+                else:
+                    format_1 = i.split(":")
+                    jobpost = root.child("jobposts/" + format_1[1]).get()
+                    job_title = jobpost["job_title"]
+                    format_1.append(job_title)
+                    notification.append(format_1)
+            return render_template('home.html', notification=notification, notification_counts=notification_counts)
+        elif session["data"]["status"] == "user":
+            notification = []
+            user_id = ""
+            notifications = root.child("userdata").get()
+            for i in notifications:
+                if notifications[i]["username"] == session["data"]["username"]:
+                    user_id = i
+            notification_counts = notifications[user_id]["notifications"]
+            for i in notifications[user_id]["applications"].split(","):
+                if i == "":
+                    continue
+                else:
+                    format1 = i.split(":")
+                    notification.append(format1)
+            # template
+            list1 = []
+            list2 = []
+            list3 = []
+            templates = root.child('template').get()
+            for saves in templates:
+                template = templates[saves]
+                if template['user'] == session['data']['username']:
+                    list1.append(template['name'])
+                    list2.append(saves)
+            templatedata = zip(list1, list2)
+            dictionary = dict(templatedata)
+            session['templates'] = dictionary
+            default_template = root.child('default_template').get()
+            for i in default_template:
+                list3.append(i)
+            session['default_template_id'] = list3
+            return render_template('home.html', notification=notification, notification_counts=notification_counts)
+    except:
+        return render_template("home.html")
+
+
+@app.route("/search_job")
+def search_job():
+    jobs = {}
+    job = root.child("jobposts").get()
+    reverse = sorted(job, reverse=True)
+    for i in reverse:
+        jobs[i] = job[i]
+
+    try:
+        if session["data"]["status"] == "employer":
+            notification = []
+            user_id = ""
+            notifications = root.child("userdata").get()
+            for i in notifications:
+                if notifications[i]["username"] == session["data"]["username"]:
+                    user_id = i
+            notification_counts = notifications[user_id]["notifications"]
+            for i in notifications[user_id]["applications"].split(","):
+                if i == "":
+                    continue
+                else:
+                    format_1 = i.split(":")
+                    jobpost = root.child("jobposts/" + format_1[1]).get()
+                    job_title = jobpost["job_title"]
+                    format_1.append(job_title)
+                    notification.append(format_1)
+            return render_template("search_jobs.html", jobs=jobs, notification=notification,
+                                   notification_counts=notification_counts)
+        elif session["data"]["status"] == "user":
+            notification = []
+            user_id = ""
+            notifications = root.child("userdata").get()
+            for i in notifications:
+                if notifications[i]["username"] == session["data"]["username"]:
+                    user_id = i
+            notification_counts = notifications[user_id]["notifications"]
+            for i in notifications[user_id]["applications"].split(","):
+                if i == "":
+                    continue
+                else:
+                    format1 = i.split(":")
+                    notification.append(format1)
+                return render_template("search_jobs.html", jobs=jobs, notification=notification, notification_counts=notification_counts)
+    except :
+        return render_template("search_jobs.html", jobs=jobs)
+
+
+@app.route("/search_job_relevance<industry>")
+def search_job_relevance(industry):
+    industry = str(industry)
+    jobs = {}
+    job = root.child("jobposts").get()
+    for i in job:
+        if job[i]["company_industry"] == industry:
+            jobs[i] = job[i]
     try :
         if session["data"]["status"] == "employer":
             notification = []
@@ -528,7 +642,7 @@ def home():
                     job_title = jobpost["job_title"]
                     format_1.append(job_title)
                     notification.append(format_1)
-            return render_template('home.html', notification=notification , notification_counts=notification_counts)
+            return render_template("search_jobs_relevance.html", jobs=jobs , notification=notification, notification_counts=notification_counts)
         elif session["data"]["status"] == "user":
             notification = []
             user_id = ""
@@ -543,57 +657,92 @@ def home():
                 else:
                     format1 = i.split(":")
                     notification.append(format1)
-            #template
-            list1 = []
-            list2 = []
-            list3 = []
-            templates = root.child('template').get()
-            for saves in templates :
-                template = templates[saves]
-                if template['user'] == session['data']['username'] :
-                    list1.append(template['name'])
-                    list2.append(saves)
-            templatedata = zip(list1, list2)
-            dictionary = dict(templatedata)
-            session['templates'] = dictionary
-            default_template = root.child('default_template').get()
-            for i in default_template :
-                list3.append(i)
-            session['default_template_id'] = list3
-            return render_template('home.html', notification=notification , notification_counts=notification_counts)
+            return render_template("search_jobs_relevance.html", jobs=jobs , notification=notification, notification_counts=notification_counts )
     except :
-        return render_template("home.html")
+        return render_template("search_jobs_relevance.html", jobs=jobs)
 
-
-@app.route("/search_job")
-def search_job():
-    jobs = {}
-    job = root.child("jobposts").get()
-    reverse = sorted(job, reverse=True)
-    for i in reverse:
-        jobs[i] = job[i]
-    return render_template("search_jobs.html", jobs=jobs)
-
-@app.route("/search_job_relevance<industry>")
-def search_job_relevance(industry):
-    industry = str(industry)
-    jobs = {}
-    job = root.child("jobposts").get()
-    for i in job:
-        if job[i]["company_industry"] == industry :
-            jobs[i] = job[i]
-
-    return render_template("search_jobs_relevance.html", jobs=jobs)
 
 @app.route("/create_job", methods=["GET", "POST"])
 def create_job():
     create_form = create_job_posting(request.form)
 
     if request.method == "GET":
-        return render_template("create_job.html", form=create_form)
+        try:
+            if session["data"]["status"] == "employer":
+                notification = []
+                user_id = ""
+                notifications = root.child("userdata").get()
+                for i in notifications:
+                    if notifications[i]["username"] == session["data"]["username"]:
+                        user_id = i
+                notification_counts = notifications[user_id]["notifications"]
+                for i in notifications[user_id]["applications"].split(","):
+                    if i == "":
+                        continue
+                    else:
+                        format_1 = i.split(":")
+                        jobpost = root.child("jobposts/" + format_1[1]).get()
+                        job_title = jobpost["job_title"]
+                        format_1.append(job_title)
+                        notification.append(format_1)
+                return render_template("create_job.html", form=create_form , notification=notification, notification_counts=notification_counts)
+            elif session["data"]["status"] == "user":
+                notification = []
+                user_id = ""
+                notifications = root.child("userdata").get()
+                for i in notifications:
+                    if notifications[i]["username"] == session["data"]["username"]:
+                        user_id = i
+                notification_counts = notifications[user_id]["notifications"]
+                for i in notifications[user_id]["applications"].split(","):
+                    if i == "":
+                        continue
+                    else:
+                        format1 = i.split(":")
+                        notification.append(format1)
+                return render_template("create_job.html", form=create_form , notification=notification, notification_counts=notification_counts)
+        except:
+            return render_template("create_job.html", form=create_form)
 
     elif request.method == "POST" and create_form.validate() == False:
-        return render_template("create_job.html", form=create_form)
+        try:
+            if session["data"]["status"] == "employer":
+                notification = []
+                user_id = ""
+                notifications = root.child("userdata").get()
+                for i in notifications:
+                    if notifications[i]["username"] == session["data"]["username"]:
+                        user_id = i
+                notification_counts = notifications[user_id]["notifications"]
+                for i in notifications[user_id]["applications"].split(","):
+                    if i == "":
+                        continue
+                    else:
+                        format_1 = i.split(":")
+                        jobpost = root.child("jobposts/" + format_1[1]).get()
+                        job_title = jobpost["job_title"]
+                        format_1.append(job_title)
+                        notification.append(format_1)
+                return render_template("create_job.html", form=create_form, notification=notification,
+                                       notification_counts=notification_counts)
+            elif session["data"]["status"] == "user":
+                notification = []
+                user_id = ""
+                notifications = root.child("userdata").get()
+                for i in notifications:
+                    if notifications[i]["username"] == session["data"]["username"]:
+                        user_id = i
+                notification_counts = notifications[user_id]["notifications"]
+                for i in notifications[user_id]["applications"].split(","):
+                    if i == "":
+                        continue
+                    else:
+                        format1 = i.split(":")
+                        notification.append(format1)
+                return render_template("create_job.html", form=create_form, notification=notification,
+                                       notification_counts=notification_counts)
+        except:
+            return render_template("create_job.html", form=create_form)
 
     elif request.method == "POST" and create_form.validate() == True:
         # job details
@@ -647,7 +796,45 @@ def edit_posts():
     reverse = sorted(job, reverse=True)
     for i in reverse:
         jobs[i] = job[i]
-    return render_template("edit_posts.html", jobs=jobs)
+
+    try :
+        if session["data"]["status"] == "employer":
+            notification = []
+            user_id = ""
+            notifications = root.child("userdata").get()
+            for i in notifications:
+                if notifications[i]["username"] == session["data"]["username"]:
+                    user_id = i
+            notification_counts = notifications[user_id]["notifications"]
+            for i in notifications[user_id]["applications"].split(","):
+                if i == "":
+                    continue
+                else:
+                    format_1 = i.split(":")
+                    jobpost = root.child("jobposts/" + format_1[1]).get()
+                    job_title = jobpost["job_title"]
+                    format_1.append(job_title)
+                    notification.append(format_1)
+            return render_template("edit_posts.html", jobs=jobs , notification=notification,
+                                       notification_counts=notification_counts)
+        elif session["data"]["status"] == "user":
+            notification = []
+            user_id = ""
+            notifications = root.child("userdata").get()
+            for i in notifications:
+                if notifications[i]["username"] == session["data"]["username"]:
+                    user_id = i
+            notification_counts = notifications[user_id]["notifications"]
+            for i in notifications[user_id]["applications"].split(","):
+                if i == "":
+                    continue
+                else:
+                    format1 = i.split(":")
+                    notification.append(format1)
+            return render_template("edit_posts.html", jobs=jobs , notification=notification,
+                                       notification_counts=notification_counts)
+    except :
+        return render_template("edit_posts.html", jobs=jobs)
 
 
 @app.route('/edit_post<post_id>', methods=["GET", "POST"])
@@ -666,10 +853,87 @@ def edit_post(post_id):
         create_form.lng.data = job_post["lng"]
         create_form.location.data = job_post["location"]
         create_form.job_des.data = job_post["job_dec"]
-        return render_template('edit_post.html', post_id=post_id, job=job_post, form=create_form)
+
+        try:
+            if session["data"]["status"] == "employer":
+                notification = []
+                user_id = ""
+                notifications = root.child("userdata").get()
+                for i in notifications:
+                    if notifications[i]["username"] == session["data"]["username"]:
+                        user_id = i
+                notification_counts = notifications[user_id]["notifications"]
+                for i in notifications[user_id]["applications"].split(","):
+                    if i == "":
+                        continue
+                    else:
+                        format_1 = i.split(":")
+                        jobpost = root.child("jobposts/" + format_1[1]).get()
+                        job_title = jobpost["job_title"]
+                        format_1.append(job_title)
+                        notification.append(format_1)
+                return render_template('edit_post.html', post_id=post_id, job=job_post, form=create_form,
+                                       notification=notification,
+                                       notification_counts=notification_counts)
+            elif session["data"]["status"] == "user":
+                notification = []
+                user_id = ""
+                notifications = root.child("userdata").get()
+                for i in notifications:
+                    if notifications[i]["username"] == session["data"]["username"]:
+                        user_id = i
+                notification_counts = notifications[user_id]["notifications"]
+                for i in notifications[user_id]["applications"].split(","):
+                    if i == "":
+                        continue
+                    else:
+                        format1 = i.split(":")
+                        notification.append(format1)
+                return render_template('edit_post.html', post_id=post_id, job=job_post, form=create_form ,  notification=notification,
+                                       notification_counts=notification_counts)
+        except :
+            return render_template('edit_post.html', post_id=post_id, job=job_post, form=create_form)
 
     elif request.method == "POST" and create_form.validate() == False:
-        return render_template('edit_post.html', form=create_form)
+
+        try:
+            if session["data"]["status"] == "employer":
+                notification = []
+                user_id = ""
+                notifications = root.child("userdata").get()
+                for i in notifications:
+                    if notifications[i]["username"] == session["data"]["username"]:
+                        user_id = i
+                notification_counts = notifications[user_id]["notifications"]
+                for i in notifications[user_id]["applications"].split(","):
+                    if i == "":
+                        continue
+                    else:
+                        format_1 = i.split(":")
+                        jobpost = root.child("jobposts/" + format_1[1]).get()
+                        job_title = jobpost["job_title"]
+                        format_1.append(job_title)
+                        notification.append(format_1)
+                return render_template('edit_post.html', form=create_form, notification=notification,
+                                       notification_counts=notification_counts)
+            elif session["data"]["status"] == "user":
+                notification = []
+                user_id = ""
+                notifications = root.child("userdata").get()
+                for i in notifications:
+                    if notifications[i]["username"] == session["data"]["username"]:
+                        user_id = i
+                notification_counts = notifications[user_id]["notifications"]
+                for i in notifications[user_id]["applications"].split(","):
+                    if i == "":
+                        continue
+                    else:
+                        format1 = i.split(":")
+                        notification.append(format1)
+                return render_template('edit_post.html', form=create_form , notification=notification,
+                                       notification_counts=notification_counts)
+        except :
+            return render_template('edit_post.html', form=create_form)
 
     elif request.method == "POST" and create_form.validate() == True:
         job_title = create_form.job_title.data
@@ -748,19 +1012,18 @@ def apply_job(post_id):
     return '<script> alert("Successfully Applied, redirecting to home!"); window.location.href = "home";</script>'
 
 
-
 @app.route('/show_application/<applicant>/<job>')
-def show_application(applicant,job):
+def show_application(applicant, job):
     form = register_form()
     form2 = create_job_posting()
     find_applicant = root.child("userdata").get()
-    for i in find_applicant :
-        try :
-            if find_applicant[i]["username"] == applicant :
+    for i in find_applicant:
+        try:
+            if find_applicant[i]["username"] == applicant:
                 applicant = i
-        except :
+        except:
             continue
-    #firstform
+    # firstform
     get_details = root.child("userdata/" + applicant).get()
     form.firstname.data = get_details["firstname"]
     form.lastname.data = get_details["lastname"]
@@ -773,7 +1036,7 @@ def show_application(applicant,job):
     form.skillsets.data = get_details['skillsets']
     form.country.data = get_details['country']
 
-    #secondform
+    # secondform
     get_details2 = root.child("jobposts/" + job).get()
     form2.job_title.data = get_details2["job_title"]
     form2.career_level.data = get_details2["career"]
@@ -786,17 +1049,19 @@ def show_application(applicant,job):
     form2.employment_type.data = get_details2["employment_type"]
     form2.employment_type_duration.data = get_details2["contract_time"]
 
-    return render_template("show_applicant.html", form = form,form2 = form2 ,user = get_details["firstname"], id=applicant , job_id = job)
+    return render_template("show_applicant.html", form=form, form2=form2, user=get_details["firstname"], id=applicant,
+                           job_id=job)
+
 
 @app.route('/accept/<job_post>/<applicant>/<job_id>')
-def accept(job_post,applicant,job_id):
+def accept(job_post, applicant, job_id):
     person = root.child("userdata/" + applicant)
     person2 = root.child("userdata/" + applicant).get()
     notifications_counts = person2["notifications"]
     notifications = person2["applications"]
     person.update({
-        'notifications' : notifications_counts + 1,
-        'applications' : notifications + "," + job_post + ":"  + job_id + ":" + "accepted"
+        'notifications': notifications_counts + 1,
+        'applications': notifications + "," + job_post + ":" + job_id + ":" + "accepted"
     })
 
     applicant_username = root.child("userdata/" + applicant + "/username").get()
@@ -804,7 +1069,7 @@ def accept(job_post,applicant,job_id):
     employer = session["data"]["username"]
     find_employer = root.child("userdata").get()
     for i in find_employer:
-        if find_employer[i]["username"] == employer :
+        if find_employer[i]["username"] == employer:
             employer_id = i
     employer_db = root.child("userdata/" + employer_id)
     employer_db_data = root.child("userdata/" + employer_id).get()
@@ -816,13 +1081,14 @@ def accept(job_post,applicant,job_id):
     for i in employer_applications:
         reformat += "," + i
     employer_db.update({
-        'notifications' : int(employer_notifications) - 1,
-        'applications' : reformat
+        'notifications': int(employer_notifications) - 1,
+        'applications': reformat
     })
     return redirect("home")
 
+
 @app.route('/decline<job_post><applicant><job_id>')
-def decline(job_post,applicant,job_id):
+def decline(job_post, applicant, job_id):
     new_string = job_post + applicant + job_id
     new_string = new_string.split("-")
     job_name = new_string[0]
@@ -833,8 +1099,8 @@ def decline(job_post,applicant,job_id):
     notifications_counts = person2["notifications"]
     notifications = person2["applications"]
     person.update({
-        'notifications' : notifications_counts + 1,
-        'applications' : notifications + "," + job_name + ":"  + job_id + ":" + "rejected"
+        'notifications': notifications_counts + 1,
+        'applications': notifications + "," + job_name + ":" + job_id + ":" + "rejected"
     })
 
     applicant_username = root.child("userdata/" + applicant_id + "/username").get()
@@ -842,7 +1108,7 @@ def decline(job_post,applicant,job_id):
     employer = session["data"]["username"]
     find_employer = root.child("userdata").get()
     for i in find_employer:
-        if find_employer[i]["username"] == employer :
+        if find_employer[i]["username"] == employer:
             employer_id = i
     employer_db = root.child("userdata/" + employer_id)
     employer_db_data = root.child("userdata/" + employer_id).get()
@@ -854,19 +1120,20 @@ def decline(job_post,applicant,job_id):
     for i in employer_applications:
         reformat += "," + i
     employer_db.update({
-        'notifications' : int(employer_notifications) - 1,
-        'applications' : reformat
+        'notifications': int(employer_notifications) - 1,
+        'applications': reformat
     })
     return redirect("home")
 
+
 @app.route('/user_notification/<job>/<result>/<id>')
-def user(job,result,id):
-    delete = job+":"+id+":"+result
+def user(job, result, id):
+    delete = job + ":" + id + ":" + result
     user_id = session["data"]["username"]
     user = ""
     find_user = root.child("userdata").get()
-    for i in find_user :
-        if find_user[i]["username"] == user_id :
+    for i in find_user:
+        if find_user[i]["username"] == user_id:
             user = i
     get_application = root.child("userdata/" + user).get()
     notifications = get_application["notifications"]
@@ -877,11 +1144,12 @@ def user(job,result,id):
         applications += "," + i
     user = root.child("userdata/" + user)
     user.update({
-        'applications' : applications,
-        'notifications' : int(notifications) - 1
+        'applications': applications,
+        'notifications': int(notifications) - 1
     })
     get_job = root.child("jobposts/" + id).get()
-    return render_template("user_notification.html", job = job, result = result, id = id, details = get_job)
+    return render_template("user_notification.html", job=job, result=result, id=id, details=get_job)
+
 
 # Route to messenger
 @app.route('/messages')
@@ -894,15 +1162,15 @@ def messageRecived():
 
 
 @app.route('/accountsettings', methods=['GET', 'POST'])
-def accountsettings() :
+def accountsettings():
     listnum = []
-    randnum = randint(1000,4000)
+    randnum = randint(1000, 4000)
     listnum.append(randnum)
     print(randnum)
     email_session = session["data"]["email"]
     print(email_session)
 
-    #email
+    # email
     fromadd = 'twertyrewq@gmail.com'
     toadd = email_session
 
@@ -945,17 +1213,16 @@ def accountsettings() :
         awards = form.awards.data
         bio = form.bio.data
 
-
         if listnum[0] == randnum:
 
             setting = RegisterForm(username, password, email, firstname, lastname, age, country, highestqualification,
-                               workexperiences, skillsets, awards, bio)
+                                   workexperiences, skillsets, awards, bio)
 
             setting_db = root.child('userdata/' + id)
             setting_db.update({
                 'username': setting.get_username(),
                 'password': setting.get_password(),
-                'email' : setting.get_email(),
+                'email': setting.get_email(),
                 'firstname': setting.get_firstname(),
                 'lastname': setting.get_lastname(),
                 'age': setting.get_age(),
@@ -971,8 +1238,9 @@ def accountsettings() :
             print("Incorrect!")
     return render_template('accountsettings.html', form=form)
 
+
 @app.route('/loadtemplate/<string:name>')
-def loadtemplate(name) :
+def loadtemplate(name):
     templates = root.child('template/' + name).get()
     session['templateid'] = name
     session['templatehtml'] = templates['html']
@@ -981,34 +1249,37 @@ def loadtemplate(name) :
     session['default'] = False
     return redirect(url_for('editor'))
 
+
 @app.route('/editor')
-def editor() :
+def editor():
     return render_template('editor.html')
 
+
 @app.route('/savetemplate')
-def savetemplate() :
+def savetemplate():
     data_db = root.child('template')
     data_db.push({
-        "user" : session['data']['username'],
+        "user": session['data']['username'],
     })
     flash('You Have Successfully Saved Your Template.')
     return redirect(url_for('editor'))
 
+
 @app.route('/defaulttemplate/<string:name>')
-def defaulttemplate(name) :
+def defaulttemplate(name):
     default = root.child('default_template').get()
-    for templates in default :
+    for templates in default:
         template = default[templates]
-        if template['name'] == name :
+        if template['name'] == name:
             session['templatehtml'] = template['html']
             session['templatecss'] = template['css']
             session['default'] = True
 
     return redirect(url_for('editor'))
 
-@app.route('/contactus', methods = ["GET", "POST"])
-def contact():
 
+@app.route('/contactus', methods=["GET", "POST"])
+def contact():
     name_session = session["data"]["username"]
     email_session = session["data"]["email"]
 
@@ -1025,7 +1296,6 @@ def contact():
         email = form.email.data
         contact = form.contactform.data
 
-
         if 'thank' in contact.lower():
             try:
                 server = smtplib.SMTP('smtp.gmail.com:587')
@@ -1033,7 +1303,9 @@ def contact():
                 server.starttls()
                 server.login(username1, passwd)
 
-                server.sendmail(fromadd, toadd, msg="Hello {}, thank you too for using our product! You can continue to use our product for free FOREVER!".format((name_session)))
+                server.sendmail(fromadd, toadd,
+                                msg="Hello {}, thank you too for using our product! You can continue to use our product for free FOREVER!".format(
+                                    (name_session)))
                 print("Mail Send Successfully")
                 server.quit()
 
@@ -1047,7 +1319,9 @@ def contact():
                 server.starttls()
                 server.login(username1, passwd)
 
-                server.sendmail(fromadd, toadd, msg="Hello {}, our developer team has reviewed your question and we will get to withni 24 hours!".format((name_session)))
+                server.sendmail(fromadd, toadd,
+                                msg="Hello {}, our developer team has reviewed your question and we will get to withni 24 hours!".format(
+                                    (name_session)))
                 print("Mail Send Successfully")
                 server.quit()
 
@@ -1061,7 +1335,8 @@ def contact():
                 server.starttls()
                 server.login(username1, passwd)
 
-                server.sendmail(fromadd, toadd, msg="Hi {}! Thank you for the kind feedback and response!".format((name_session)))
+                server.sendmail(fromadd, toadd,
+                                msg="Hi {}! Thank you for the kind feedback and response!".format((name_session)))
                 print("Mail Send Successfully")
                 server.quit()
 
