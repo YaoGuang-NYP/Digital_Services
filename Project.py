@@ -1236,7 +1236,45 @@ def accountsettings():
 
         else:
             print("Incorrect!")
-    return render_template('accountsettings.html', form=form)
+
+    try :
+        if session["data"]["status"] == "employer":
+            notification = []
+            user_id = ""
+            notifications = root.child("userdata").get()
+            for i in notifications:
+                if notifications[i]["username"] == session["data"]["username"]:
+                    user_id = i
+            notification_counts = notifications[user_id]["notifications"]
+            for i in notifications[user_id]["applications"].split(","):
+                if i == "":
+                    continue
+                else:
+                    format_1 = i.split(":")
+                    jobpost = root.child("jobposts/" + format_1[1]).get()
+                    job_title = jobpost["job_title"]
+                    format_1.append(job_title)
+                    notification.append(format_1)
+            return render_template('accountsettings.html', form=form , notification=notification,
+                                       notification_counts=notification_counts)
+        elif session["data"]["status"] == "user":
+            notification = []
+            user_id = ""
+            notifications = root.child("userdata").get()
+            for i in notifications:
+                if notifications[i]["username"] == session["data"]["username"]:
+                    user_id = i
+            notification_counts = notifications[user_id]["notifications"]
+            for i in notifications[user_id]["applications"].split(","):
+                if i == "":
+                    continue
+                else:
+                    format1 = i.split(":")
+                    notification.append(format1)
+            return render_template('accountsettings.html', form=form , notification=notification,
+                                       notification_counts=notification_counts)
+    except :
+        return render_template('accountsettings.html', form=form)
 
 
 @app.route('/loadtemplate/<string:name>')
@@ -1252,7 +1290,44 @@ def loadtemplate(name):
 
 @app.route('/editor')
 def editor():
-    return render_template('editor.html')
+    try :
+        if session["data"]["status"] == "employer":
+            notification = []
+            user_id = ""
+            notifications = root.child("userdata").get()
+            for i in notifications:
+                if notifications[i]["username"] == session["data"]["username"]:
+                    user_id = i
+            notification_counts = notifications[user_id]["notifications"]
+            for i in notifications[user_id]["applications"].split(","):
+                if i == "":
+                    continue
+                else:
+                    format_1 = i.split(":")
+                    jobpost = root.child("jobposts/" + format_1[1]).get()
+                    job_title = jobpost["job_title"]
+                    format_1.append(job_title)
+                    notification.append(format_1)
+            return render_template('editor.html', notification=notification,
+                                       notification_counts=notification_counts)
+        elif session["data"]["status"] == "user":
+            notification = []
+            user_id = ""
+            notifications = root.child("userdata").get()
+            for i in notifications:
+                if notifications[i]["username"] == session["data"]["username"]:
+                    user_id = i
+            notification_counts = notifications[user_id]["notifications"]
+            for i in notifications[user_id]["applications"].split(","):
+                if i == "":
+                    continue
+                else:
+                    format1 = i.split(":")
+                    notification.append(format1)
+            return render_template('editor.html', notification=notification,
+                                       notification_counts=notification_counts)
+    except:
+        return render_template('editor.html')
 
 
 @app.route('/savetemplate')
@@ -1343,12 +1418,86 @@ def contact():
             except:
                 print("Error:unable to send mail")
 
-    return render_template('contactus.html', form=form)
+    try :
+        if session["data"]["status"] == "employer":
+            notification = []
+            user_id = ""
+            notifications = root.child("userdata").get()
+            for i in notifications:
+                if notifications[i]["username"] == session["data"]["username"]:
+                    user_id = i
+            notification_counts = notifications[user_id]["notifications"]
+            for i in notifications[user_id]["applications"].split(","):
+                if i == "":
+                    continue
+                else:
+                    format_1 = i.split(":")
+                    jobpost = root.child("jobposts/" + format_1[1]).get()
+                    job_title = jobpost["job_title"]
+                    format_1.append(job_title)
+                    notification.append(format_1)
+            return render_template('contactus.html', form=form, notification=notification,
+                                       notification_counts=notification_counts)
+        elif session["data"]["status"] == "user":
+            notification = []
+            user_id = ""
+            notifications = root.child("userdata").get()
+            for i in notifications:
+                if notifications[i]["username"] == session["data"]["username"]:
+                    user_id = i
+            notification_counts = notifications[user_id]["notifications"]
+            for i in notifications[user_id]["applications"].split(","):
+                if i == "":
+                    continue
+                else:
+                    format1 = i.split(":")
+                    notification.append(format1)
+            return render_template('contactus.html', form=form, notification=notification,
+                                       notification_counts=notification_counts)
+    except :
+        return render_template('contactus.html', form=form)
 
 
 @app.route('/help')
 def help():
-    return render_template('help.html')
+    try :
+        if session["data"]["status"] == "employer":
+            notification = []
+            user_id = ""
+            notifications = root.child("userdata").get()
+            for i in notifications:
+                if notifications[i]["username"] == session["data"]["username"]:
+                    user_id = i
+            notification_counts = notifications[user_id]["notifications"]
+            for i in notifications[user_id]["applications"].split(","):
+                if i == "":
+                    continue
+                else:
+                    format_1 = i.split(":")
+                    jobpost = root.child("jobposts/" + format_1[1]).get()
+                    job_title = jobpost["job_title"]
+                    format_1.append(job_title)
+                    notification.append(format_1)
+            return render_template('help.html', notification=notification,
+                                       notification_counts=notification_counts)
+        elif session["data"]["status"] == "user":
+            notification = []
+            user_id = ""
+            notifications = root.child("userdata").get()
+            for i in notifications:
+                if notifications[i]["username"] == session["data"]["username"]:
+                    user_id = i
+            notification_counts = notifications[user_id]["notifications"]
+            for i in notifications[user_id]["applications"].split(","):
+                if i == "":
+                    continue
+                else:
+                    format1 = i.split(":")
+                    notification.append(format1)
+            return render_template('help.html', notification=notification,
+                                       notification_counts=notification_counts)
+    except :
+        return render_template('help.html')
 
 
 @app.route('/login')
