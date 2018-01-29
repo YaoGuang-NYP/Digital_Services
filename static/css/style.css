@@ -1080,6 +1080,22 @@ p.details {
   margin: 5px;
 }
 
+.button.editor {
+  display: inline-block;
+  background-color: darkgreen;
+  border: none;
+  color: #FFFFFF;
+  text-align: center;
+  font-size: 16px;
+  padding: 20px;
+  width: 200px;
+  transition: all 0.5s;
+  cursor: pointer;
+  margin: 5px;
+  border-radius : 50px;
+  font-size : 10px;
+}
+
 .button span {
   cursor: pointer;
   display: inline-block;
@@ -1103,10 +1119,6 @@ p.details {
 .button:hover span:after {
   opacity: 1;
   right: 0;
-}
-
-a, a:hover, a:active {
-  color: white;
 }
 
 div.box2 a {

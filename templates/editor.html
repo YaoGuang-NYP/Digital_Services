@@ -123,11 +123,11 @@
         </div>
         <div align='center' style="margin-top : 85px; margin-bottom : 85px;">
             {% if session['default'] == True %}
-                <a href="#" onclick="save()"><button class="button">Save to MyPortFolio Workspace</button></a>
+                <a href="#" onclick="save()"><button class="button editor">Save to MyPortFolio Workspace</button></a>
             {% else %}
-                <a href="#" onclick="existsave()"><button class="button">Save Existing Template</button></a>
+                <a href="#" onclick="existsave()"><button class="button editor">Save Existing Template</button></a>
             {% endif %}
-            <a href="#" onclick="HTMLtoPDF()"><button class="button">Download As PDF</button></a>
+            <a href="#" onclick="HTMLtoPDF()"><button class="button editor">Download As PDF</button></a>
         </div>
     {% else %}
         <script>alert("You Need to Sign In First to Use!"); window.location.href = "/";</script>
