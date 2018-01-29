@@ -373,7 +373,8 @@ def main():
                         'skillsets': uniqueuser['skillsets'],
                         'awards': uniqueuser['awards'],
                         'bio': uniqueuser['bio'],
-                        'status': "user"
+                        'status': "user",
+                        'notifications' : uniqueuser['notifications']
                     }
                 else:
                     session['data'] = {
@@ -449,7 +450,9 @@ def login_register():
             'skillsets': data.get_skillsets(),
             'awards': data.get_awards(),
             'bio': data.get_bio(),
-            "status": "user"
+            "status": "user",
+            'notifications' : 0,
+            'applications' : ''
         })
         return redirect(url_for("login"))
 
@@ -508,40 +511,57 @@ def login_register_employer():
 @app.route("/home")
 def home():
     try :
-        notification = []
-        user_id = ""
-        notifications = root.child("userdata").get()
-        for i in notifications:
-            if notifications[i]["username"] == session["data"]["username"] :
-                user_id = i
-        for i in notifications[user_id]["applications"].split(","):
-            if i == "":
-                continue
-            else:
-                format_1 = i.split(":")
-                jobpost = root.child("jobposts/" + format_1[1]).get()
-                job_title = jobpost["job_title"]
-                format_1.append(job_title)
-                notification.append(format_1)
+        if session["data"]["status"] == "employer":
+            notification = []
+            user_id = ""
+            notifications = root.child("userdata").get()
+            for i in notifications:
+                if notifications[i]["username"] == session["data"]["username"]:
+                    user_id = i
+            notification_counts = notifications[user_id]["notifications"]
+            for i in notifications[user_id]["applications"].split(","):
+                if i == "":
+                    continue
+                else:
+                    format_1 = i.split(":")
+                    jobpost = root.child("jobposts/" + format_1[1]).get()
+                    job_title = jobpost["job_title"]
+                    format_1.append(job_title)
+                    notification.append(format_1)
+            return render_template('home.html', notification=notification , notification_counts=notification_counts)
+        elif session["data"]["status"] == "user":
+            notification = []
+            user_id = ""
+            notifications = root.child("userdata").get()
+            for i in notifications:
+                if notifications[i]["username"] == session["data"]["username"]:
+                    user_id = i
+                notification_counts = notifications[user_id]["notifications"]
+            for i in notifications[user_id]["applications"].split(","):
+                if i == "":
+                    continue
+                else:
+                    format1 = i.split(":")
+                    notification.append(format1)
 
-        #template
-        list1 = []
-        list2 = []
-        list3 = []
-        templates = root.child('template').get()
-        for saves in templates :
-            template = templates[saves]
-            if template['user'] == session['data']['username'] :
-                list1.append(template['name'])
-                list2.append(saves)
-        templatedata = zip(list1, list2)
-        dictionary = dict(templatedata)
-        session['templates'] = dictionary
-        default_template = root.child('default_template').get()
-        for i in default_template :
-            list3.append(i)
-        session['default_template_id'] = list3
-        return render_template('home.html')
+                    #template
+                    list1 = []
+                    list2 = []
+                    list3 = []
+                    templates = root.child('template').get()
+                    for saves in templates :
+                        template = templates[saves]
+                        if template['user'] == session['data']['username'] :
+                            list1.append(template['name'])
+                            list2.append(saves)
+                    templatedata = zip(list1, list2)
+                    dictionary = dict(templatedata)
+                    session['templates'] = dictionary
+                    default_template = root.child('default_template').get()
+                    for i in default_template :
+                        list3.append(i)
+                    session['default_template_id'] = list3
+                    return render_template('home.html')
     except :
         return render_template("home.html")
 
@@ -848,6 +868,30 @@ def decline(job_post,applicant,job_id):
         'applications' : reformat
     })
     return redirect("home")
+
+@app.route('/user_notification/<job>/<result>/<id>')
+def user(job,result,id):
+    delete = job+":"+id+":"+result
+    user_id = session["data"]["username"]
+    user = ""
+    find_user = root.child("userdata").get()
+    for i in find_user :
+        if find_user[i]["username"] == user_id :
+            user = i
+    get_application = root.child("userdata/" + user).get()
+    notifications = get_application["notifications"]
+    application = get_application["applications"].split(",")
+    application.remove(delete)
+    applications = ""
+    for i in application:
+        applications += "," + i
+    user = root.child("userdata/" + user)
+    user.update({
+        'applications' : applications,
+        'notifications' : int(notifications) - 1
+    })
+    get_job = root.child("jobposts/" + id).get()
+    return render_template("user_notification.html", job = job, result = result, id = id, details = get_job)
 
 # Route to messenger
 @app.route('/messages')
