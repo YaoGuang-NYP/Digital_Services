@@ -87,7 +87,8 @@
                 <h1>
                     Congratulations
                 </h1>
-                <h3 style="margin-top: 3%">Your application for {{ job }} has been accepted please contact the company</h3>
+                <h3 style="margin-top: 3%">Your application for {{ job }} has been accepted please contact the
+                    company</h3>
             </div>
             <div class="col-12" style="margin-top: 3%">
                 <h4>
@@ -110,9 +111,28 @@
         </div>
         <div class="row" style="margin-top:8%">
             <div class="col-12" style="text-align: center">
-                <a href="{{ url_for("home") }}"><button class="btn btn-primary">Back to Home</button></a>
+                <a href="{{ url_for("home") }}">
+                    <button class="btn btn-primary">Back to Home</button>
+                </a>
             </div>
         </div>
+    </div>
+
+{% elif result == "rejected" %}
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <h1 style="text-align: center">We're sorry</h1>
+                <h3 style="text-align: center; margin-top: 15%">Unfortunately your application has been rejected.</h3>
+                <h3 style="text-align: center">We wish you good luck for your next application.</h3>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12" style="text-align: center; margin-top: 15%">
+                <a href="{{ url_for("home") }}"><button class="btn btn-primary">Back to home</button></a>
+            </div>
+        </div>
+
     </div>
 {% endif %}
 
