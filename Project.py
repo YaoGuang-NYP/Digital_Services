@@ -536,32 +536,31 @@ def home():
             for i in notifications:
                 if notifications[i]["username"] == session["data"]["username"]:
                     user_id = i
-                notification_counts = notifications[user_id]["notifications"]
+            notification_counts = notifications[user_id]["notifications"]
             for i in notifications[user_id]["applications"].split(","):
                 if i == "":
                     continue
                 else:
                     format1 = i.split(":")
                     notification.append(format1)
-
-                    #template
-                    list1 = []
-                    list2 = []
-                    list3 = []
-                    templates = root.child('template').get()
-                    for saves in templates :
-                        template = templates[saves]
-                        if template['user'] == session['data']['username'] :
-                            list1.append(template['name'])
-                            list2.append(saves)
-                    templatedata = zip(list1, list2)
-                    dictionary = dict(templatedata)
-                    session['templates'] = dictionary
-                    default_template = root.child('default_template').get()
-                    for i in default_template :
-                        list3.append(i)
-                    session['default_template_id'] = list3
-                    return render_template('home.html')
+            #template
+            list1 = []
+            list2 = []
+            list3 = []
+            templates = root.child('template').get()
+            for saves in templates :
+                template = templates[saves]
+                if template['user'] == session['data']['username'] :
+                    list1.append(template['name'])
+                    list2.append(saves)
+            templatedata = zip(list1, list2)
+            dictionary = dict(templatedata)
+            session['templates'] = dictionary
+            default_template = root.child('default_template').get()
+            for i in default_template :
+                list3.append(i)
+            session['default_template_id'] = list3
+            return render_template('home.html', notification=notification , notification_counts=notification_counts)
     except :
         return render_template("home.html")
 
@@ -752,12 +751,8 @@ def apply_job(post_id):
 
 @app.route('/show_application/<applicant>/<job>')
 def show_application(applicant,job):
-    #applicant = applicant+job
     form = register_form()
     form2 = create_job_posting()
-    #applicant_ = applicant.split("-")
-    #job_id = "-" + applicant_[1]
-    #applicant_[1] = "-" + applicant_[1]
     find_applicant = root.child("userdata").get()
     for i in find_applicant :
         try :
