@@ -1,65 +1,99 @@
 {% extends 'index.html' %}
 
+
 {% block additionalheadscripts %}
     <script src="../static/js/tinymce/tinymce.min.js"></script>
     <script src="../static/js/tinymce/jquery.tinymce.min.js"></script>
     <script src="../static/js/jspdf.js"></script>
-    <script src="../static/js/xepOnline.jqPlugin.js"></script>
     <script>
         {% if session['loggedin'] == True %}
-                function save() {
-                    // Initialize Firebase
-                    var config = {
-                        apiKey: "AIzaSyD8tlo06pljGXcljlmaynixErjNGrovyeY",
-                        authDomain: "digitalservices-d9e1c.firebaseapp.com",
-                        databaseURL: "https://digitalservices-d9e1c.firebaseio.com",
-                        projectId: "digitalservices-d9e1c",
-                        storageBucket: "digitalservices-d9e1c.appspot.com",
-                        messagingSenderId: "950814978960"
-                    };
-                    firebase.initializeApp(config);
-                    var myFirebase = firebase.database().ref();
-                    var template = myFirebase.child("template");
-                    var $page = $(".page");
-                    var htmlencode = window.btoa($page.html());
-                    var $css = $("#style");
-                    var cssencode = window.btoa($css.html());
-                    var name = prompt('Enter a name for this template');
-                    template.push({
+            function save() {
+                // Initialize Firebase
+                var config = {
+                    apiKey: "AIzaSyD8tlo06pljGXcljlmaynixErjNGrovyeY",
+                    authDomain: "digitalservices-d9e1c.firebaseapp.com",
+                    databaseURL: "https://digitalservices-d9e1c.firebaseio.com",
+                    projectId: "digitalservices-d9e1c",
+                    storageBucket: "digitalservices-d9e1c.appspot.com",
+                    messagingSenderId: "950814978960"
+                };
+                firebase.initializeApp(config);
+                var myFirebase = firebase.database().ref();
+                var template = myFirebase.child("template");
+                var $page = $(".page");
+                var htmlencode = window.btoa($page.html());
+                var $css = $("#style");
+                var cssencode = window.btoa($css.html());
+                var name = prompt('Enter a name for this template');
+                template.push({
+                    "html": htmlencode,
+                    "css" : cssencode,
+                    "user" : '{{ session['data']['username'] }}',
+                    "name" : name
+                });
+            }
+            function existsave() {
+                // Initialize Firebase
+                var config = {
+                    apiKey: "AIzaSyD8tlo06pljGXcljlmaynixErjNGrovyeY",
+                    authDomain: "digitalservices-d9e1c.firebaseapp.com",
+                    databaseURL: "https://digitalservices-d9e1c.firebaseio.com",
+                    projectId: "digitalservices-d9e1c",
+                    storageBucket: "digitalservices-d9e1c.appspot.com",
+                    messagingSenderId: "950814978960"
+                };
+                firebase.initializeApp(config);
+                var template = firebase.database().ref("template/" + '{{ session['templateid'] }}');
+                var $page = $(".page");
+                var htmlencode = window.btoa($page.html());
+                var $css = $("#style");
+                var cssencode = window.btoa($css.html());
+                var namechange = confirm('Do you want to change your template name?');
+                if (namechange == true) {
+                    var name = prompt('Enter New Template Name :');
+                    template.set({
                         "html": htmlencode,
-                        "css" : cssencode,
-                        "user" : '{{ session['data']['username'] }}',
-                        "name" : name
+                        "css": cssencode,
+                        "user": '{{ session['data']['username'] }}',
+                        "name": name
+                    });
+                } else {
+                    template.set({
+                        "html": htmlencode,
+                        "css": cssencode,
+                        "user": '{{ session['data']['username'] }}',
+                        "name" : '{{ session['templatename'] }}'
                     });
                 }
-                function HTMLtoPDF(){
-                    var pdf = new jsPDF('p', 'pt', 'letter');
-                    source = $('#HTMLtoPDF')[0];
-                    specialElementHandlers = {
-                        '#bypassme': function(element, renderer){
-                            return true
-                        }
+            }
+            function HTMLtoPDF(){
+                var pdf = new jsPDF('p', 'pt', 'letter');
+                source = $('#HTMLtoPDF')[0];
+                specialElementHandlers = {
+                    '#bypassme': function(element, renderer){
+                        return true
                     }
-                    margins = {
-                        top: 50,
-                        left: 60,
-                        width: 545
-                    };
-                    pdf.fromHTML(
-                        source // HTML string or DOM elem ref.
-                        , margins.left // x coord
-                        , margins.top // y coord
-                        , {
-                            'width': margins.width // max width of content on PDF
-                            , 'elementHandlers': specialElementHandlers
-                        },
-                        function (dispose) {
-                            // dispose: object with X, Y of the last line add to the PDF
-                            //          this allow the insertion of new lines after html
-                            pdf.save('template.pdf');
-                        }
-                    )
                 }
+                margins = {
+                    top: 50,
+                    left: 60,
+                    width: 545
+                };
+                pdf.fromHTML(
+                    source // HTML string or DOM elem ref.
+                    , margins.left // x coord
+                    , margins.top // y coord
+                    , {
+                        'width': margins.width // max width of content on PDF
+                        , 'elementHandlers': specialElementHandlers
+                    },
+                    function (dispose) {
+                        // dispose: object with X, Y of the last line add to the PDF
+                        //          this allow the insertion of new lines after html
+                        pdf.save('template.pdf');
+                    }
+                )
+            }
         {% endif %}
     </script>
 
@@ -86,7 +120,14 @@
             {% endwith %}
             <div class="page" data-size="A4" id="HTMLtoPDF" style="margin-top: 100px;">
             </div>
-            <a href="#" onclick="HTMLtoPDF()">Save to MyPortFolio Workspace</a>
+        </div>
+        <div align='center' style="margin-top : 85px; margin-bottom : 85px;">
+            {% if session['default'] == True %}
+                <a href="#" onclick="save()"><button class="button">Save to MyPortFolio Workspace</button></a>
+            {% else %}
+                <a href="#" onclick="existsave()"><button class="button">Save Existing Template</button></a>
+            {% endif %}
+            <a href="#" onclick="HTMLtoPDF()"><button class="button">Download As PDF</button></a>
         </div>
     {% else %}
         <script>alert("You Need to Sign In First to Use!"); window.location.href = "/";</script>
@@ -102,12 +143,12 @@
     <script src="https://www.gstatic.com/firebasejs/4.8.1/firebase-firestore.js"></script>
     <script src="https://www.gstatic.com/firebasejs/4.8.1/firebase-messaging.js"></script>
     <script>
-        var savedtemplate = '{{ session['template']['html'] }}';
-        var savedcss = '{{ session['template']['css'] }}';
+        var savedtemplate = '{{ session['templatehtml'] }}';
+        var savedcss = '{{ session['templatecss'] }}';
         var decode = window.atob(savedtemplate);
         var css = window.atob(savedcss);
         var $page = $(".page");
-        var $css = $("style");
+        var $css = $("#style");
         cssdecode = $.parseHTML(css);
         htmldecode = $.parseHTML(decode);
         $page.append(htmldecode);
@@ -132,6 +173,15 @@
             relative_urls : false,
             remove_script_host : false,
             convert_urls : true,
+            menubar : false
+        });
+    </script>
+    <script>
+        tinymce.init({
+            selector: '#status',
+            toolbar : false,
+            skin : 'custom',
+            inline: true,
         });
     </script>
 {% endblock %}

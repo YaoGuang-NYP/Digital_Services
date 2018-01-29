@@ -1,184 +1,31 @@
-﻿﻿{% extends 'index.html' %}
+{% extends 'index.html' %}
 
-{% block inlinecss %}
-    <style>
-        .box1 {
-            border : 2px black solid;
-            height : 870px;
-            margin-bottom : 50px;
-            margin-top : 100px;
-        }
-
-        .box2 {
-            border : 2px black solid;
-            border-radius: 5px;
-            height : 500px;
-            margin-bottom : 70px;
-            margin-top : 100px;
-        }
-
-        .template {
-            margin-left : 25px;
-        }
-        
-        .template:hover {
-            -webkit-animation-name: template;
-            -moz-animation-name: template;
-            -o-animation-name: template;
-            animation-name: template;
-            -webkit-animation-fill-mode: forwards;
-            -moz-animation-fill-mode: forwards;
-            -o-animation-fill-mode: forwards;
-            animation-fill-mode: forwards;
-            -webkit-animation-duration: 0.5s;
-            -moz-animation-duration: 0.5s;
-            -o-animation-duration: 0.5s;
-            animation-duration: 0.5s;
-        }
-
-        .box3 {
-            border : 2px black solid;
-            height : 300px;
-            margin-bottom : 50px;
-            border-radius: 5px;
-        }
-
-        .container-fluid.create {
-            background-color: gray;
-            margin-top : 90px;;
-            height:300px
-        }
-
-        #create {
-            margin-top : 50px;
-            border: none;
-            cursor: pointer;
-            color: white;
-            padding: 15px 40px;
-            border-radius: 2px;
-            font-size: 22px;
-            box-shadow: 2px 2px 4px rgba(0, 0, 0, .4);
-            background: green;
-            width:200px;
-        }
-
-        /* Ripple magic */
-        #create{
-            position: relative;
-            overflow: hidden;
-        }
-
-        #create:after {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 5px;
-            height: 5px;
-            background: rgba(255, 255, 255, .5);
-            opacity: 0;
-            border-radius: 100%;
-            transform: scale(1, 1) translate(-50%);
-            transform-origin: 50% 50%;
-        }
-
-        #create:active {
-            -webkit-animation-name: hidebutton;
-            -moz-animation-name: hidebutton;
-            -o-animation-name: hidebutton;
-            animation-name: hidebutton;
-            -webkit-animation-duration: 0.5s;
-            -moz-animation-duration: 0.5s;
-            -o-animation-duration: 0.5s;
-            animation-duration: 0.5s;
-        }
-
-        @keyframes template {
-            0% {opacity: 1;}
-            100% {opacity: 0.4;}
-        }
-
-        @keyframes ripple {
-            0% {
-                transform: scale(0, 0);
-                opacity: 1;
-            }
-            20% {
-                transform: scale(25, 25);
-                opacity: 1;
-            }
-            100% {
-                opacity: 0;
-                transform: scale(60, 60);
+{% block additionalheadscripts %}
+    <script src="https://www.gstatic.com/firebasejs/4.8.1/firebase.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/4.8.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/4.8.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/4.8.1/firebase-database.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/4.8.1/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/4.8.1/firebase-messaging.js"></script>
+    <script>
+        function del(id) {
+            var confirmation = confirm('Are You Sure You Want to Delete This Template?');
+            if (confirmation === true) {
+                var config = {
+                    apiKey: "AIzaSyD8tlo06pljGXcljlmaynixErjNGrovyeY",
+                    authDomain: "digitalservices-d9e1c.firebaseapp.com",
+                    databaseURL: "https://digitalservices-d9e1c.firebaseio.com",
+                    projectId: "digitalservices-d9e1c",
+                    storageBucket: "digitalservices-d9e1c.appspot.com",
+                    messagingSenderId: "950814978960"
+                };
+                firebase.initializeApp(config);
+                var template = firebase.database().ref("template/" + id);
+                template.remove();
+                window.location.reload(true);
             }
         }
-
-        #create:hover:not(:active)::after {
-            animation: ripple 1s ease-out;
-        }
-
-        p.details {
-            color: black;
-            margin: 0 auto;
-            margin-bottom: 20px;
-            font-size: 20px;
-        }
-
-        .button {
-              display: inline-block;
-              background-color: darkgreen;
-              border: none;
-              color: #FFFFFF;
-              text-align: center;
-              font-size: 16px;
-              padding: 20px;
-              width: 200px;
-              transition: all 0.5s;
-              cursor: pointer;
-              margin: 5px;
-              box-shadow: 0 9px #999;
-            }
-
-        .button span {
-          cursor: pointer;
-          display: inline-block;
-          position: relative;
-          transition: 0.5s;
-        }
-
-        .button span:after {
-          content: '\00bb';
-          position: absolute;
-          opacity: 0;
-          top: 0;
-          right: -20px;
-          transition: 0.5s;
-        }
-
-        .button:hover span {
-          padding-right: 25px;
-        }
-
-        .button:hover span:after {
-          opacity: 1;
-          right: 0;
-        }
-
-        .button:active {
-          background-color: #3e8e41;
-          box-shadow: 0 5px #666;
-          transform: translateY(4px);
-        }
-
-        a, a:hover, a:active {
-            color: white;
-        }
-
-        div.box2 a {
-            color : #464a4e;
-        }
-
-    </style>
+    </script>
 {% endblock %}
 
 {% block body %}
@@ -269,17 +116,18 @@
                                 <div class="row" style="text-align: center;">
                                     <p style="margin:0 auto; margin-top: 30px; margin-bottom: 30px; font-size: 25px; font-weight: bold;">Saved Templates</p>
                                 </div>
-                                {% for saves in session['templates'].keys() %}
-                                    <a href="/loadtemplate/{{ saves }}">
-                                        <div class="row" id="{{ saves }}" style="text-align: center; cursor: pointer;">
-                                            <div class="col-4">
-                                                {{ saves }}
-                                            </div>
-                                            <div class="col-8">
-                                                <h3>LOL</h3>
-                                            </div>
+                                {% for saves in session['templates'] %}
+                                    <div class="row" style="text-align: center;">
+                                        <div class="col-4">
+                                            {{ saves }}
                                         </div>
-                                    </a>
+                                        <div class="col-8">
+                                            <a href="/loadtemplate/{{ session['templates'][saves] }}">
+                                                <button class="button" style="width: 80px; height: 50px;">Edit</button>
+                                            </a>
+                                            <a onclick="del('{{ session['templates'][saves] }}')"><button class="button" style="width: 80px; height: 50px;">Delete</button></a>
+                                        </div>
+                                    </div>
                                 {% endfor %}
                             </div>
                         </div>
@@ -291,7 +139,19 @@
                                 <div class="row" style="text-align: center">
                                     <button class="button" style="vertical-align:middle; margin: 0 auto; margin-bottom : 40px;"><a href="{{ url_for('help') }}"><span>FAQ </span></a></button>
                                     <br>
-                                    <button class="button" style="vertical-align:middle; margin: 0 auto;"><span>Search For Jobs </span></button>
+                                    {% if session["data"]["status"] == "user" %}
+                                        <button class="button" style="vertical-align:middle; margin: 0 auto;">
+                                            <a href="{{ url_for("search_job") }}"><span>Search For Jobs </span></a>
+                                        </button>
+
+                                    {% else %}
+                                        <button class="button" style="vertical-align:middle; margin: 0 auto;">
+                                            <a href="{{ url_for("create_job") }}"><span>Create Job Posting </span></a>
+                                        </button>
+                                        <button class="button" style="vertical-align:middle; margin: 0 auto; margin-top:5%">
+                                            <a href="{{ url_for("edit_posts") }}"><span>Edit Job Posting </span></a>
+                                        </button>
+                                    {% endif %}
                                 </div>
                             </div>
                         </div>
@@ -308,12 +168,10 @@
                     <div class="modal-body">
                         <div class="row">
                             <div class="col template">
-                                <button class="button hoveroptions" style="display: none;">Test</button>
-                                <button class="button hoveroptions" style="display: none;">Test</button>
-                                <a href="loadtemplate/default1"><img src="../static/images/template1.JPG" /></a>
+                                <a href="/defaulttemplate/template1"><img src="../static/images/template1.JPG" /></a>
                             </div>
                             <div class="col template">
-                                <a href="loadtemplate/default2"><img src="../static/images/template2.JPG" /></a>
+                                <a href="/defaulttemplate/template2"><img src="../static/images/template2.JPG" /></a>
                             </div>
                         </div>
                     </div>
@@ -377,18 +235,4 @@
 
 {% block additionalscripts %}
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
-    <script>
-        $(document).ready(function () {
-            $(".portfolioedit").click(function () {
-                $(".homeusername").attr('contenteditable', 'true');
-                $(".portfolioedit").html('Save<i class="fa fa-check" style="margin-left : 10px;"></i>');
-                $(".portfolioedit").attr('class', 'saveedit');
-            });
-            $(".saveedit").click(function () {
-                $(".homeusername").removeAttr('contenteditable');
-                $(".saveedit").html('Edit<i class="fa fa-bars" style="margin-left : 10px;"></i>');
-                $(".saveedit").attr('class', 'portfolioedit');
-            });
-        });
-    </script>
 {% endblock %}
