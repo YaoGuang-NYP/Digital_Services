@@ -796,7 +796,7 @@ def accept(job_post,applicant,job_id):
     notifications = person2["applications"]
     person.update({
         'notifications' : notifications_counts + 1,
-        'applications' : notifications + "," + job_post + ":"  + job_id + ":" + "accept"
+        'applications' : notifications + "," + job_post + ":"  + job_id + ":" + "accepted"
     })
 
     applicant_username = root.child("userdata/" + applicant + "/username").get()
@@ -834,7 +834,7 @@ def decline(job_post,applicant,job_id):
     notifications = person2["applications"]
     person.update({
         'notifications' : notifications_counts + 1,
-        'applications' : notifications + "," + job_name + ":"  + job_id + ":" + "reject"
+        'applications' : notifications + "," + job_name + ":"  + job_id + ":" + "rejected"
     })
 
     applicant_username = root.child("userdata/" + applicant_id + "/username").get()
