@@ -7,66 +7,66 @@
     <script src="../static/js/xepOnline.jqPlugin.js"></script>
     <script>
         {% if session['loggedin'] == True %}
-            function save() {
-                // Initialize Firebase
-                var config = {
-                    apiKey: "AIzaSyD8tlo06pljGXcljlmaynixErjNGrovyeY",
-                    authDomain: "digitalservices-d9e1c.firebaseapp.com",
-                    databaseURL: "https://digitalservices-d9e1c.firebaseio.com",
-                    projectId: "digitalservices-d9e1c",
-                    storageBucket: "digitalservices-d9e1c.appspot.com",
-                    messagingSenderId: "950814978960"
-                };
-                firebase.initializeApp(config);
-                var myFirebase = firebase.database().ref();
-                var template = myFirebase.child("template");
-                var $page = $(".page");
-                var htmlencode = window.btoa($page.html());
-                var $css = $("style");
-                var cssencode = window.btoa($css.html());
-                var name = prompt('Enter a name for this template');
-                template.push({
-                    "html": htmlencode,
-                    "css" : cssencode,
-                    "user" : '{{ session['data']['username'] }}',
-                    "name" : name
-                });
-            }
-            function HTMLtoPDF(){
-                var pdf = new jsPDF('p', 'pt', 'letter');
-                source = $('#HTMLtoPDF')[0];
-                specialElementHandlers = {
-                    '#bypassme': function(element, renderer){
-                        return true
-                    }
+                function save() {
+                    // Initialize Firebase
+                    var config = {
+                        apiKey: "AIzaSyD8tlo06pljGXcljlmaynixErjNGrovyeY",
+                        authDomain: "digitalservices-d9e1c.firebaseapp.com",
+                        databaseURL: "https://digitalservices-d9e1c.firebaseio.com",
+                        projectId: "digitalservices-d9e1c",
+                        storageBucket: "digitalservices-d9e1c.appspot.com",
+                        messagingSenderId: "950814978960"
+                    };
+                    firebase.initializeApp(config);
+                    var myFirebase = firebase.database().ref();
+                    var template = myFirebase.child("template");
+                    var $page = $(".page");
+                    var htmlencode = window.btoa($page.html());
+                    var $css = $("#style");
+                    var cssencode = window.btoa($css.html());
+                    var name = prompt('Enter a name for this template');
+                    template.push({
+                        "html": htmlencode,
+                        "css" : cssencode,
+                        "user" : '{{ session['data']['username'] }}',
+                        "name" : name
+                    });
                 }
-                margins = {
-                    top: 50,
-                    left: 60,
-                    width: 545
-                };
-                pdf.fromHTML(
-                    source // HTML string or DOM elem ref.
-                    , margins.left // x coord
-                    , margins.top // y coord
-                    , {
-                        'width': margins.width // max width of content on PDF
-                        , 'elementHandlers': specialElementHandlers
-                    },
-                    function (dispose) {
-                        // dispose: object with X, Y of the last line add to the PDF
-                        //          this allow the insertion of new lines after html
-                        pdf.save('template.pdf');
+                function HTMLtoPDF(){
+                    var pdf = new jsPDF('p', 'pt', 'letter');
+                    source = $('#HTMLtoPDF')[0];
+                    specialElementHandlers = {
+                        '#bypassme': function(element, renderer){
+                            return true
+                        }
                     }
-                )
-            }
+                    margins = {
+                        top: 50,
+                        left: 60,
+                        width: 545
+                    };
+                    pdf.fromHTML(
+                        source // HTML string or DOM elem ref.
+                        , margins.left // x coord
+                        , margins.top // y coord
+                        , {
+                            'width': margins.width // max width of content on PDF
+                            , 'elementHandlers': specialElementHandlers
+                        },
+                        function (dispose) {
+                            // dispose: object with X, Y of the last line add to the PDF
+                            //          this allow the insertion of new lines after html
+                            pdf.save('template.pdf');
+                        }
+                    )
+                }
         {% endif %}
     </script>
 
 {% endblock %}
 
 {% block inlinecss %}
-    <style>
+    <style id="style">
     </style>
 {% endblock %}
 
@@ -86,7 +86,7 @@
             {% endwith %}
             <div class="page" data-size="A4" id="HTMLtoPDF" style="margin-top: 100px;">
             </div>
-            <a href="#" onclick="save()">Save to MyPortFolio Workspace</a>
+            <a href="#" onclick="HTMLtoPDF()">Save to MyPortFolio Workspace</a>
         </div>
     {% else %}
         <script>alert("You Need to Sign In First to Use!"); window.location.href = "/";</script>
