@@ -1509,6 +1509,7 @@ def login():
 @app.route('/logout')
 def logout():
     session.pop('data', None)
+    session.pop('templates', None)
     session['loggedin'] = False
     return redirect(url_for('main'))
 
