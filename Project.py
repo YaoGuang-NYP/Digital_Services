@@ -611,7 +611,7 @@ def search_job():
                 else:
                     format1 = i.split(":")
                     notification.append(format1)
-                return render_template("search_jobs.html", jobs=jobs, notification=notification, notification_counts=notification_counts)
+            return render_template("search_jobs.html", jobs=jobs, notification=notification, notification_counts=notification_counts)
     except :
         return render_template("search_jobs.html", jobs=jobs)
 
