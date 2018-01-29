@@ -488,7 +488,7 @@ def login_register_employer():
             'bio': bio,
             "status": "employer",
             "notifications": 0,
-            "applicants": ''
+            "applications": ''
         }
 
         data_db = root.child("userdata")
@@ -503,7 +503,7 @@ def login_register_employer():
             "bio": bio,
             "status": "employer",
             'notifications': 0,
-            'applicants': ""
+            'applications': ""
         })
         return redirect(url_for("login"))
 
@@ -750,18 +750,18 @@ def apply_job(post_id):
 
 
 
-@app.route('/show_application<applicant><job>')
+@app.route('/show_application/<applicant>/<job>')
 def show_application(applicant,job):
-    applicant = applicant+job
+    #applicant = applicant+job
     form = register_form()
     form2 = create_job_posting()
-    applicant_ = applicant.split("-")
-    job_id = "-" + applicant_[1]
-    applicant_[1] = "-" + applicant_[1]
+    #applicant_ = applicant.split("-")
+    #job_id = "-" + applicant_[1]
+    #applicant_[1] = "-" + applicant_[1]
     find_applicant = root.child("userdata").get()
     for i in find_applicant :
         try :
-            if find_applicant[i]["username"] == applicant_[0] :
+            if find_applicant[i]["username"] == applicant :
                 applicant = i
         except :
             continue
@@ -779,7 +779,7 @@ def show_application(applicant,job):
     form.country.data = get_details['country']
 
     #secondform
-    get_details2 = root.child("jobposts/" + applicant_[1]).get()
+    get_details2 = root.child("jobposts/" + applicant).get()
     form2.job_title.data = get_details2["job_title"]
     form2.career_level.data = get_details2["career"]
     form2.salary.data = get_details2["salary"]
@@ -791,7 +791,7 @@ def show_application(applicant,job):
     form2.employment_type.data = get_details2["employment_type"]
     form2.employment_type_duration.data = get_details2["contract_time"]
 
-    return render_template("show_applicant.html", form = form,form2 = form2 ,user = get_details["firstname"], id=applicant , job_id = job_id)
+    return render_template("show_applicant.html", form = form,form2 = form2 ,user = get_details["firstname"], id=applicant , job_id = job)
 
 @app.route('/accept<job_post><applicant><job_id>')
 def accept(job_post,applicant,job_id):
