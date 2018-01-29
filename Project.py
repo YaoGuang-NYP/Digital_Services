@@ -1087,23 +1087,18 @@ def accept(job_post, applicant, job_id):
     return redirect("home")
 
 
-@app.route('/decline<job_post><applicant><job_id>')
+@app.route('/decline/<job_post>/<applicant>/<job_id>')
 def decline(job_post, applicant, job_id):
-    new_string = job_post + applicant + job_id
-    new_string = new_string.split("-")
-    job_name = new_string[0]
-    applicant_id = "-" + new_string[1]
-    job_id = "-" + new_string[2]
-    person = root.child("userdata/" + applicant_id)
-    person2 = root.child("userdata/" + applicant_id).get()
+    person = root.child("userdata/" + applicant)
+    person2 = root.child("userdata/" + applicant).get()
     notifications_counts = person2["notifications"]
     notifications = person2["applications"]
     person.update({
         'notifications': notifications_counts + 1,
-        'applications': notifications + "," + job_name + ":" + job_id + ":" + "rejected"
+        'applications': notifications + "," + job_post + ":" + job_id + ":" + "rejected"
     })
 
-    applicant_username = root.child("userdata/" + applicant_id + "/username").get()
+    applicant_username = root.child("userdata/" + applicant + "/username").get()
     employer_id = ""
     employer = session["data"]["username"]
     find_employer = root.child("userdata").get()
