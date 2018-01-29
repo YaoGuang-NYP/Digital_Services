@@ -779,7 +779,7 @@ def show_application(applicant,job):
     form.country.data = get_details['country']
 
     #secondform
-    get_details2 = root.child("jobposts/" + applicant).get()
+    get_details2 = root.child("jobposts/" + job).get()
     form2.job_title.data = get_details2["job_title"]
     form2.career_level.data = get_details2["career"]
     form2.salary.data = get_details2["salary"]
