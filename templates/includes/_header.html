@@ -15,18 +15,35 @@ Header
                 {% if session['loggedin'] == True %}
                     <li><a href="/home">Home</a></li>
                     <li><a href="/messages">Messages</a></li>
-                    {% if session["data"]["notifications"] == 0 %}
+                    {% if notification_counts == 0 %}
                         <li><a href="#">No New Notifications</a></li>
                     {% else %}
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#">{{ session['data']['notifications'] }} Notifications</a>
-                            <div class="dropdown-menu">
-                                {% for i in notification %}
-                                    <a class="dropdown-item"
-                                       href="{{ url_for("show_application", applicant = i[0], job = i[1]) }}" style="color:black;display:block">{{ i[0] }} has applied for your job post {{ i[2] }}</a>
-                                {% endfor %}
-                            </div>
-                        </li>
+                        {% if session["data"]["status"] == "employer" %}
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" data-toggle="dropdown"
+                                   href="#">{{ notification_counts }} Notifications</a>
+                                <div class="dropdown-menu">
+                                    {% for i in notification %}
+                                        <a class="dropdown-item"
+                                           href="{{ url_for("show_application", applicant = i[0], job = i[1]) }}"
+                                           style="color:black;display:block">{{ i[0] }} has applied for your job
+                                            post {{ i[2] }}</a>
+                                    {% endfor %}
+                                </div>
+                            </li>
+                        {% else %}
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" data-toggle="dropdown"
+                                   href="#">{{ notification_counts }} Notifications</a>
+                                <div class="dropdown-menu">
+                                    {% for i in notification %}
+                                            <a class="dropdown-item"
+                                               href="{{ url_for(".user", job = i[0], result = i[2], id = i[1]) }}"
+                                               style="color:black;display:block">Your application for {{ i[0] }} has been {{ i[2] }}</a>
+                                    {% endfor %}
+                                </div>
+                            </li>
+                        {% endif %}
                     {% endif %}
                     <li><a href="{{ url_for('help') }}">FAQ</a></li>
 
