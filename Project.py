@@ -523,6 +523,8 @@ def home():
                 job_title = jobpost["job_title"]
                 format_1.append(job_title)
                 notification.append(format_1)
+
+        #template
         list1 = []
         list2 = []
         list3 = []
