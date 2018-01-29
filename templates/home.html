@@ -36,6 +36,7 @@
                     <div class="row">
                         <div class="col" align="center">
                             <p id="template" style="margin-top : 50px; color: white; font-weight: bold; font-size : 30px; position: relative; top: 200px;"> Start Creating A Resume Now!</p>
+                            <p id="template" style="color: white; font-weight: bold; font-size : 25px; position: relative; top: 200px;"> Last Login Session : {{ session['last_login'] }}</p>
                         </div>
                     </div>
                     <div class="row" id="template">
@@ -51,7 +52,7 @@
                     </div>
                     <div class="row" id="template">
                         <div class="col" align="center" style="margin-top : 200px; padding:160px 100px;">
-                            <p id="template" style="color: white; font-weight: bold; font-size : 30px;"> Last Login Period : {{ session['last_login'] }}</p>
+                            <p id="template" style="color: white; font-weight: bold; font-size : 25px;"> Last Login Period : {{ session['last_login'] }}</p>
                         </div>
                     </div>
                 {% endif %}
