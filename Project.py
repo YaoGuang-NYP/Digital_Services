@@ -1087,23 +1087,18 @@ def accept(job_post, applicant, job_id):
     return redirect("home")
 
 
-@app.route('/decline<job_post><applicant><job_id>')
+@app.route('/decline/<job_post>/<applicant>/<job_id>')
 def decline(job_post, applicant, job_id):
-    new_string = job_post + applicant + job_id
-    new_string = new_string.split("-")
-    job_name = new_string[0]
-    applicant_id = "-" + new_string[1]
-    job_id = "-" + new_string[2]
-    person = root.child("userdata/" + applicant_id)
-    person2 = root.child("userdata/" + applicant_id).get()
+    person = root.child("userdata/" + applicant)
+    person2 = root.child("userdata/" + applicant).get()
     notifications_counts = person2["notifications"]
     notifications = person2["applications"]
     person.update({
         'notifications': notifications_counts + 1,
-        'applications': notifications + "," + job_name + ":" + job_id + ":" + "rejected"
+        'applications': notifications + "," + job_post + ":" + job_id + ":" + "rejected"
     })
 
-    applicant_username = root.child("userdata/" + applicant_id + "/username").get()
+    applicant_username = root.child("userdata/" + applicant + "/username").get()
     employer_id = ""
     employer = session["data"]["username"]
     find_employer = root.child("userdata").get()
@@ -1148,7 +1143,43 @@ def user(job, result, id):
         'notifications': int(notifications) - 1
     })
     get_job = root.child("jobposts/" + id).get()
-    return render_template("user_notification.html", job=job, result=result, id=id, details=get_job)
+
+    try:
+        if session["data"]["status"] == "employer":
+            notification = []
+            user_id = ""
+            notifications = root.child("userdata").get()
+            for i in notifications:
+                if notifications[i]["username"] == session["data"]["username"]:
+                    user_id = i
+            notification_counts = notifications[user_id]["notifications"]
+            for i in notifications[user_id]["applications"].split(","):
+                if i == "":
+                    continue
+                else:
+                    format_1 = i.split(":")
+                    jobpost = root.child("jobposts/" + format_1[1]).get()
+                    job_title = jobpost["job_title"]
+                    format_1.append(job_title)
+                    notification.append(format_1)
+            return render_template('user_notification.html',job=job, result=result, id=id, details=get_job,notification=notification,notification_counts=notification_counts)
+        elif session["data"]["status"] == "user":
+            notification = []
+            user_id = ""
+            notifications = root.child("userdata").get()
+            for i in notifications:
+                if notifications[i]["username"] == session["data"]["username"]:
+                    user_id = i
+            notification_counts = notifications[user_id]["notifications"]
+            for i in notifications[user_id]["applications"].split(","):
+                if i == "":
+                    continue
+                else:
+                    format1 = i.split(":")
+                    notification.append(format1)
+            return render_template('user_notification.html',job=job, result=result, id=id, details=get_job, notification=notification,notification_counts=notification_counts)
+    except:
+        return render_template("user_notification.html", job=job, result=result, id=id, details=get_job)
 
 
 # Route to messenger
@@ -1287,6 +1318,11 @@ def loadtemplate(name):
     session['default'] = False
     return redirect(url_for('editor'))
 
+@app.route('/delete/<string:id>')
+def delete(id) :
+    template = root.child('template/' + id)
+    template.delete()
+    return redirect(url_for('home'))
 
 @app.route('/editor')
 def editor():
@@ -1503,6 +1539,16 @@ def help():
 @app.route('/login')
 def login():
     session['loggedin'] = True
+    date = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    lastlogintime = root.child('last_login/' + session['data']['username']).get()
+    if lastlogintime == None :
+        session['last_login'] = 'Never Logged In Before!'
+    else :
+        session['last_login'] = lastlogintime['date']
+    logintime = root.child('last_login/' + session['data']['username'])
+    logintime.set({
+        'date' : date,
+    })
     return redirect(url_for('home'))
 
 

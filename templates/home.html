@@ -11,17 +11,7 @@
         function del(id) {
             var confirmation = confirm('Are You Sure You Want to Delete This Template?');
             if (confirmation === true) {
-                var config = {
-                    apiKey: "AIzaSyDPRQ8NKKp9TJRskaBZwJSRuMM4Klo2ktA",
-                    authDomain: "secondary-d4f0e.firebaseapp.com",
-                    databaseURL: "https://secondary-d4f0e.firebaseio.com",
-                    projectId: "secondary-d4f0e",
-                    storageBucket: "secondary-d4f0e.appspot.com",
-                    messagingSenderId: "650251225114"
-                };
-                firebase.initializeApp(config);
-                firebase.database().ref("template/" + id).remove();
-                window.location.reload(true);
+                window.location.href = '/'
             }
         }
     </script>
@@ -32,16 +22,30 @@
     {% if session['loggedin'] == True %}
         <section id="hero">
             <div class="container-fluid hero-container wow fadeInLeft" data-wow-delay="0.05s">
-                <div class="row">
-                    <div class="col" align="center">
-                        <p id="template" style="margin-top : 50px; color: white; font-weight: bold; font-size : 30px; position: relative; top: 200px;"> Start Creating A Resume Now!</p>
+                {% if session['data']['status'] == 'user' %}
+                    <div class="row">
+                        <div class="col" align="center">
+                            <p id="template" style="margin-top : 50px; color: white; font-weight: bold; font-size : 30px; position: relative; top: 200px;"> Start Creating A Resume Now!</p>
+                            <p id="template" style="color: white; font-weight: bold; font-size : 25px; position: relative; top: 200px;"> Last Login Session : {{ session['last_login'] }}</p>
+                        </div>
                     </div>
-                </div>
-                <div class="row" id="template">
-                    <div class="col" align="center" style="margin-top : 200px; padding:160px 100px;">
-                        <button type="button" id="create" data-toggle="modal" data-target="#myModal">Create      <i href="#" class="fa fa-plus" aria-hidden="false"></i></button>
+                    <div class="row" id="template">
+                        <div class="col" align="center" style="margin-top : 200px; padding:160px 100px;">
+                            <button type="button" id="create" data-toggle="modal" data-target="#myModal">Create      <i href="#" class="fa fa-plus" aria-hidden="false"></i></button>
+                        </div>
                     </div>
-                </div>
+                {% else %}
+                    <div class="row">
+                        <div class="col" align="center">
+                            <h1 style="position : relative; top: 200px;"> Welcome Back, {{ session['data']['username'] }}!</h1>
+                        </div>
+                    </div>
+                    <div class="row" id="template">
+                        <div class="col" align="center" style="margin-top : 200px; padding:160px 100px;">
+                            <p id="template" style="color: white; font-weight: bold; font-size : 25px;"> Last Login Period : {{ session['last_login'] }}</p>
+                        </div>
+                    </div>
+                {% endif %}
             </div>
         </section>
         <section class="alert-secondary">
@@ -124,14 +128,14 @@
                                         </div>
                                         <div class="col-8">
                                             <a href="/loadtemplate/{{ session['templates'][saves] }}">
-                                                <button class="button" style="width: 80px; height: 50px; border: 3px solid darkgreen; background-color : transparent; color: green; border-radius : 30px;">
+                                                <button class="button" style="width: 80px; height: 50px; border: 3px solid darkgreen; background-color : transparent; color: green; border-radius : 10px;">
                                                     <div style="position : relative; bottom : 9px;">
                                                         Edit
                                                     </div>
                                                 </button>
                                             </a>
-                                            <a onclick="del('{{ session['templates'][saves] }}')">
-                                                <button class="button" style="width: 80px; height: 50px; border: 3px solid red; background-color : transparent; color: red; border-radius : 30px;">
+                                            <a href="/delete/{{ session['templates'][saves] }}">
+                                                <button class="button" style="width: 80px; height: 50px; border: 3px solid red; background-color : transparent; color: red; border-radius : 10px;">
                                                     <div style="position : relative; bottom : 9px; right : 6px;">
                                                         Delete
                                                     </div>
