@@ -1503,6 +1503,9 @@ def help():
 @app.route('/login')
 def login():
     session['loggedin'] = True
+    time = datetime.date.today()
+    logintime = root.child('last_login')
+
     return redirect(url_for('home'))
 
 
