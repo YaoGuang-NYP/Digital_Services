@@ -1143,7 +1143,43 @@ def user(job, result, id):
         'notifications': int(notifications) - 1
     })
     get_job = root.child("jobposts/" + id).get()
-    return render_template("user_notification.html", job=job, result=result, id=id, details=get_job)
+
+    try:
+        if session["data"]["status"] == "employer":
+            notification = []
+            user_id = ""
+            notifications = root.child("userdata").get()
+            for i in notifications:
+                if notifications[i]["username"] == session["data"]["username"]:
+                    user_id = i
+            notification_counts = notifications[user_id]["notifications"]
+            for i in notifications[user_id]["applications"].split(","):
+                if i == "":
+                    continue
+                else:
+                    format_1 = i.split(":")
+                    jobpost = root.child("jobposts/" + format_1[1]).get()
+                    job_title = jobpost["job_title"]
+                    format_1.append(job_title)
+                    notification.append(format_1)
+            return render_template('user_notification.html',job=job, result=result, id=id, details=get_job,notification=notification,notification_counts=notification_counts)
+        elif session["data"]["status"] == "user":
+            notification = []
+            user_id = ""
+            notifications = root.child("userdata").get()
+            for i in notifications:
+                if notifications[i]["username"] == session["data"]["username"]:
+                    user_id = i
+            notification_counts = notifications[user_id]["notifications"]
+            for i in notifications[user_id]["applications"].split(","):
+                if i == "":
+                    continue
+                else:
+                    format1 = i.split(":")
+                    notification.append(format1)
+            return render_template('user_notification.html',job=job, result=result, id=id, details=get_job, notification=notification,notification_counts=notification_counts)
+    except:
+        return render_template("user_notification.html", job=job, result=result, id=id, details=get_job)
 
 
 # Route to messenger
