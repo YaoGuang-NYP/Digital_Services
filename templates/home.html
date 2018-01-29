@@ -11,17 +11,7 @@
         function del(id) {
             var confirmation = confirm('Are You Sure You Want to Delete This Template?');
             if (confirmation === true) {
-                var config = {
-                    apiKey: "AIzaSyDPRQ8NKKp9TJRskaBZwJSRuMM4Klo2ktA",
-                    authDomain: "secondary-d4f0e.firebaseapp.com",
-                    databaseURL: "https://secondary-d4f0e.firebaseio.com",
-                    projectId: "secondary-d4f0e",
-                    storageBucket: "secondary-d4f0e.appspot.com",
-                    messagingSenderId: "650251225114"
-                };
-                firebase.initializeApp(config);
-                firebase.database().ref("template/" + id).remove();
-                window.location.reload(true);
+                window.location.href = '/'
             }
         }
     </script>
@@ -144,7 +134,7 @@
                                                     </div>
                                                 </button>
                                             </a>
-                                            <a onclick="del('{{ session['templates'][saves] }}')">
+                                            <a href="/delete/{{ session['templates'][saves] }}">
                                                 <button class="button" style="width: 80px; height: 50px; border: 3px solid red; background-color : transparent; color: red; border-radius : 10px;">
                                                     <div style="position : relative; bottom : 9px; right : 6px;">
                                                         Delete
