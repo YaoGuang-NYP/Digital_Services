@@ -46,12 +46,12 @@
                 {% else %}
                     <div class="row">
                         <div class="col" align="center">
-                            <p id="template" style="margin-top : 50px; color: white; font-weight: bold; font-size : 30px; position: relative; top: 200px;"> Welcome Back, {{ session['data']['username'] }}!</p>
+                            <h1 style="position : relative; top: 200px;"> Welcome Back, {{ session['data']['username'] }}!</h1>
                         </div>
                     </div>
                     <div class="row" id="template">
                         <div class="col" align="center" style="margin-top : 200px; padding:160px 100px;">
-                            <p id="template" style="margin-top : 50px; color: white; font-weight: bold; font-size : 30px; position: relative; top: 200px;"> Last Login Period : </p>
+                            <p id="template" style="color: white; font-weight: bold; font-size : 30px;"> Last Login Period : {{ session['last_login'] }}</p>
                         </div>
                     </div>
                 {% endif %}

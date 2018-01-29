@@ -1498,9 +1498,16 @@ def help():
 @app.route('/login')
 def login():
     session['loggedin'] = True
-    time = datetime.date.today()
-    logintime = root.child('last_login')
-
+    date = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    lastlogintime = root.child('last_login/' + session['data']['username']).get()
+    if lastlogintime == None :
+        session['last_login'] = 'Never Logged In Before!'
+    else :
+        session['last_login'] = lastlogintime['date']
+    logintime = root.child('last_login/' + session['data']['username'])
+    logintime.set({
+        'date' : date,
+    })
     return redirect(url_for('home'))
 
 
