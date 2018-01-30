@@ -19,52 +19,45 @@ Header
                         <li><a href="#">No New Notifications</a></li>
                     {% else %}
                         {% if session["data"]["status"] == "employer" %}
-                            <li class="menu-has-children">
-                                <a href="#">{{ notification_counts }} Notifications</a>
-                                <ul>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" data-toggle="dropdown"
+                                   href="#">{{ notification_counts }} Notifications</a>
+                                <div class="dropdown-menu">
                                     {% for i in notification %}
-                                        <li>
-                                            <a href="{{ url_for("show_application", applicant = i[0], job = i[1]) }}"
-                                               style="color:black;display:block">{{ i[0] }} has applied for your job
-                                                post {{ i[2] }}</a>
-                                        </li>
+                                        <a class="dropdown-item"
+                                           href="{{ url_for("show_application", applicant = i[0], job = i[1]) }}"
+                                           style="color:black;display:block">{{ i[0] }} has applied for your job
+                                            post {{ i[2] }}</a>
                                     {% endfor %}
-                                </ul>
+                                </div>
                             </li>
-
                         {% else %}
-                            <li class="menu-has-children">
-                                <a href="#">{{ notification_counts }} Notifications</a>
-                                <ul>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" data-toggle="dropdown"
+                                   href="#">{{ notification_counts }} Notifications</a>
+                                <div class="dropdown-menu">
                                     {% for i in notification %}
-                                        <li>
-                                            <a href="{{ url_for(".user", job = i[0], result = i[2], id = i[1]) }}"
-                                               style="color:black;display:block">Your application for {{ i[0] }} has
-                                                been {{ i[2] }}</a>
-                                        </li>
+                                            <a class="dropdown-item"
+                                               href="{{ url_for(".user", job = i[0], result = i[2], id = i[1]) }}"
+                                               style="color:black;display:block; position : relative; top: 3px;">Your application for {{ i[0] }} has been {{ i[2] }}</a>
                                     {% endfor %}
-                                </ul>
+                                </div>
                             </li>
                         {% endif %}
                     {% endif %}
                     <li><a href="{{ url_for('help') }}">FAQ</a></li>
 
                     {% if session['data'] != null %}
-                        <li>
-                            <a href="#">
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" id="logindropdown" data-toggle="dropdown"
+                               href="#">
                                 {{ session['data']['username'] }}
                             </a>
-                            <ul>
-                                <li>
-                                    <a style="color:black;display:block" href="{{ url_for("accountsettings") }}">Account
-                                        Settings</a>
-                                </li>
-                                <li>
-                                    <a style="color:black;display:block" href="{{ url_for("logout") }}">Logout</a>
-                                </li>
-                            </ul>
+                            <div class="dropdown-menu" aria-labelledby="logindropdown">
+                                <a class="dropdown-item" style="color:black;display:block; position : relative; top: 3px;" class="dropdown-item" href="{{ url_for("accountsettings") }}">Account Settings</a>
+                                <a class="dropdown-item" style="color:black;display:block; position : relative; top: 3px;" href="{{ url_for("logout") }}">Logout</a>
+                            </div>
                         </li>
-
 
                     {% endif %}
                 {% else %}
