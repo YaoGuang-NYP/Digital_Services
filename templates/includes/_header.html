@@ -50,9 +50,12 @@ Header
                     {% if session['data'] != null %}
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" data-toggle="dropdown"
-                               href="{{ url_for("accountsettings") }}" style="color:black;display:block">
-                                Account Settings
+                               href="#">
+                                {{ session['data']['username'] }}
                             </a>
+                            <div class="dropdown-menu">
+                                <a style="color:black;display:block" class="dropdown-item" href="{{ url_for("accountsettings") }}">Account Settings</a>
+                            </div>
                             <div class="dropdown-menu">
                                 <a style="color:black;display:block" class="dropdown-item" href="{{ url_for("logout") }}">Logout</a>
                             </div>
