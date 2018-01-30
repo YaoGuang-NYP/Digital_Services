@@ -124,18 +124,22 @@
                     <div class="card" id="template-top">
                         <div class="card-header">Previously Created Templates</div>
                         <div class="card-body">
-                            {% for saves in session['templates'] %}
-                                <h3>{{ saves }}
-                                    <span style="right:10px; position:absolute">
-                                        <a href="/loadtemplate/{{ session['templates'][saves] }}">
-                                            <button class="btn btn-primary" style="margin-right:5px; width:100px">Edit</button>
-                                        </a>
-                                        <a href="/delete/{{ session['templates'][saves] }}">
-                                            <button class="btn btn-danger" style="width:100px">Delete</button>
-                                        </a>
-                                    </span>
-                                </h3>
-                            {% endfor %}
+                            {% if session['templates'] %}
+                                {% for saves in session['templates'] %}
+                                    <h3>{{ saves }}
+                                        <span style="right:10px; position:absolute">
+                                            <a href="/loadtemplate/{{ session['templates'][saves] }}">
+                                                <button class="btn btn-primary" style="margin-right:5px; width:100px">Edit</button>
+                                            </a>
+                                            <a href="/delete/{{ session['templates'][saves] }}">
+                                                <button class="btn btn-danger" style="width:100px">Delete</button>
+                                            </a>
+                                        </span>
+                                    </h3>
+                                {% endfor %}
+                            {% else %}
+                                <h3><span>No Found Templates</span></h3>
+                            {% endif %}
                         </div>
                     </div>
                 </div>
