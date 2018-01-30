@@ -124,7 +124,18 @@
                     <div class="card" id="template-top">
                         <div class="card-header">Previously Created Templates</div>
                         <div class="card-body">
-                            <h3>Template 1 <span style="right:10px; position:absolute"><button class="btn btn-primary" style="margin-right:5px; width:100px">Edit</button><button class="btn btn-danger" style="width:100px">Delete</button></span></h3>
+                            {% for saves in session['templates'] %}
+                                <h3>{{ saves }}
+                                    <span style="right:10px; position:absolute">
+                                        <a href="/loadtemplate/{{ session['templates'][saves] }}">
+                                            <button class="btn btn-primary" style="margin-right:5px; width:100px">Edit</button>
+                                        </a>
+                                        <a href="/delete/{{ session['templates'][saves] }}">
+                                            <button class="btn btn-danger" style="width:100px">Delete</button>
+                                        </a>
+                                    </span>
+                                </h3>
+                            {% endfor %}
                         </div>
                     </div>
                 </div>
