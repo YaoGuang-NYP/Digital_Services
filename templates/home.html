@@ -1,49 +1,36 @@
 {% extends 'index.html' %}
 
-{% block additionalheadscripts %}
-    <script src="https://www.gstatic.com/firebasejs/4.8.1/firebase.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/4.8.1/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/4.8.1/firebase-auth.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/4.8.1/firebase-database.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/4.8.1/firebase-firestore.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/4.8.1/firebase-messaging.js"></script>
-    <script>
-        function del(id) {
-            var confirmation = confirm('Are You Sure You Want to Delete This Template?');
-            if (confirmation === true) {
-                window.location.href = '/'
-            }
-        }
-    </script>
-    <style>
-        @media screen and (max-width: 768px) {
-            #top {
-                margin-top: 20%;
-            }
-            #links-top {
-                margin-top: 30px;
-            }
+{% block inlinecss %}
+<style>
+    @media screen and (max-width: 768px) {
+        #top {
+            margin-top: 20%;
         }
 
-        @media screen and (max-width: 1024px) and (min-width: 768px) {
-            #top {
-                margin-top: 15%;
-                margin-bottom: 5%
-            }
+        #links-top {
+            margin-top: 30px;
         }
+    }
 
-        @media screen and (min-width: 1024px) {
-            #top {
-                margin-top: 12%;
-                margin-bottom: 3%
-            }
+    @media screen and (max-width: 1024px) and (min-width: 768px) {
+        #top {
+            margin-top: 15%;
+            margin-bottom: 5%
         }
-        #footer {
-            clear: both;
+    }
+
+    @media screen and (min-width: 1024px) {
+        #top {
+            margin-top: 12%;
+            margin-bottom: 3%
         }
-    </style>
+    }
+
+    #footer {
+        clear: both;
+    }
+</style>
 {% endblock %}
-
 
 
 {% block body %}
@@ -54,9 +41,9 @@
                     <img class="card-img-top" src="../static/images/img_avatar1.png" alt="Card image">
                     <div class="card-body">
                         {% if session["data"]["status"] == "user" %}
-                        <h4 class="card-title">{{ session["data"]["firstname"] }} {{ session["data"]["lastname"] }}</h4>
+                            <h4 class="card-title">{{ session["data"]["firstname"] }} {{ session["data"]["lastname"] }}</h4>
                         {% elif session["data"]["status"] == "employer" %}
-                        <h4 class="card-title">{{ session["data"]["company_name"] }}</h4>
+                            <h4 class="card-title">{{ session["data"]["company_name"] }}</h4>
                         {% endif %}
                         <p class="card-text">Last Login : {{ session["last_login"] }}</p>
                         <a href="#" class="btn btn-primary" style="width:100%">Edit Information</a>
@@ -64,46 +51,49 @@
                 </div>
             </div>
             {% if session["data"]["status"] == "user" %}
-            <div class="col-md-7 col-xs-12">
-                <div class="card bg-primary text-white wow fadeInRight " data-wow-delay="0.15s" id="links-top" style="width:100%; height:30%">
+                <div class="col-md-7 col-xs-12">
+                <div class="card bg-primary text-white wow fadeInRight " data-wow-delay="0.15s" id="links-top"
+                     style="width:100%; height:30%">
                     <div class="card-body">
                         <h3>Create & Print Resume</h3>
-                        <h5>Click here to create and print your resume into a PDF form if you do not want to use our services</h5>
+                        <h5>Click here to create and print your resume into a PDF form if you do not want to use our
+                            services</h5>
                     </div>
                 </div>
-                <div class="card bg-success text-white wow fadeInRight" data-wow-delay="0.4s" style="width:100%; margin-top: 30px; height:30%">
+                <div class="card bg-success text-white wow fadeInRight" data-wow-delay="0.4s"
+                     style="width:100%; margin-top: 30px; height:30%">
                     <div class="card-body">
                         <h3>Search for jobs</h3>
                         <h5>Click here to search for jobs that you are interested in.</h5>
                     </div>
                 </div>
-                {% elif session["data"]["status"] == "employer" %}
+            {% elif session["data"]["status"] == "employer" %}
                 <div class="col-md-7 col-xs-12">
-                <div class="card bg-primary text-white wow fadeInRight " data-wow-delay="0.15s" id="links-top" style="width:100%; height:30%">
+                <div class="card bg-primary text-white wow fadeInRight " data-wow-delay="0.15s" id="links-top"
+                     style="width:100%; height:30%">
                     <div class="card-body">
                         <h3>Create Job Post</h3>
                         <h5>Click here to create a job posting</h5>
                     </div>
                 </div>
-                <div class="card bg-success text-white wow fadeInRight" data-wow-delay="0.4s"style="width:100%; margin-top: 30px; height:30%">
+                <div class="card bg-success text-white wow fadeInRight" data-wow-delay="0.4s"
+                     style="width:100%; margin-top: 30px; height:30%">
                     <div class="card-body">
                         <h3>Edit Job Post</h3>
                         <h5>Click here to edit jobs that you have posted</h5>
                     </div>
                 </div>
-                {% endif %}
+            {% endif %}
+        <!--NotLoggedIn-->
 
-
-
-
-
-
-                <div class="card bg-info text-white wow fadeInRight" data-wow-delay="0.65s" style="width:100%; margin-top: 30px; height:30%;">
-                    <div class="card-body">
-                        <h3>F.A.Q</h3>
-                        <h5>Click here for fequently asked questions</h5>
-                    </div>
+            <div class="card bg-info text-white wow fadeInRight" data-wow-delay="0.65s"
+                 style="width:100%; margin-top: 30px; height:30%;">
+                <div class="card-body">
+                    <h3>F.A.Q</h3>
+                    <h5>Click here for fequently asked questions</h5>
                 </div>
+            </div>
+            </div>
             </div>
         </div>
     </div>
