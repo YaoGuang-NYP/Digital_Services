@@ -1557,7 +1557,7 @@ def logout():
     session.pop('data', None)
     session.pop('templates', None)
     session['loggedin'] = False
-    return redirect(url_for('main'))
+    return render_template('home.html')
 
 
 @socketio.on('my event')
