@@ -11,252 +11,105 @@
         function del(id) {
             var confirmation = confirm('Are You Sure You Want to Delete This Template?');
             if (confirmation === true) {
-                var config = {
-                    apiKey: "AIzaSyDPRQ8NKKp9TJRskaBZwJSRuMM4Klo2ktA",
-                    authDomain: "secondary-d4f0e.firebaseapp.com",
-                    databaseURL: "https://secondary-d4f0e.firebaseio.com",
-                    projectId: "secondary-d4f0e",
-                    storageBucket: "secondary-d4f0e.appspot.com",
-                    messagingSenderId: "650251225114"
-                };
-                firebase.initializeApp(config);
-                firebase.database().ref("template/" + id).remove();
-                window.location.reload(true);
+                window.location.href = '/'
             }
         }
     </script>
+    <style>
+        @media screen and (max-width: 768px) {
+            #top {
+                margin-top: 20%;
+            }
+            #links-top {
+                margin-top: 30px;
+            }
+        }
+
+        @media screen and (max-width: 1024px) and (min-width: 768px) {
+            #top {
+                margin-top: 15%;
+                margin-bottom: 5%
+            }
+        }
+
+        @media screen and (min-width: 1024px) {
+            #top {
+                margin-top: 12%;
+                margin-bottom: 3%
+            }
+        }
+        #footer {
+            clear: both;
+        }
+    </style>
 {% endblock %}
 
-{% block body %}
-<main>
-    {% if session['loggedin'] == True %}
-        <section id="hero">
-            <div class="container-fluid hero-container wow fadeInLeft" data-wow-delay="0.05s">
-                {% if session['data']['status'] == 'user' %}
-                    <div class="row">
-                        <div class="col" align="center">
-                            <p id="template" style="margin-top : 50px; color: white; font-weight: bold; font-size : 30px; position: relative; top: 200px;"> Start Creating A Resume Now!</p>
-                            <p id="template" style="color: white; font-weight: bold; font-size : 25px; position: relative; top: 200px;"> Last Login Session : {{ session['last_login'] }}</p>
-                        </div>
-                    </div>
-                    <div class="row" id="template">
-                        <div class="col" align="center" style="margin-top : 200px; padding:160px 100px;">
-                            <button type="button" id="create" data-toggle="modal" data-target="#myModal">Create      <i href="#" class="fa fa-plus" aria-hidden="false"></i></button>
-                        </div>
-                    </div>
-                {% else %}
-                    <div class="row">
-                        <div class="col" align="center">
-                            <h1 style="position : relative; top: 200px;"> Welcome Back, {{ session['data']['username'] }}!</h1>
-                        </div>
-                    </div>
-                    <div class="row" id="template">
-                        <div class="col" align="center" style="margin-top : 200px; padding:160px 100px;">
-                            <p id="template" style="color: white; font-weight: bold; font-size : 25px;"> Last Login Period : {{ session['last_login'] }}</p>
-                        </div>
-                    </div>
-                {% endif %}
-            </div>
-        </section>
-        <section class="alert-secondary">
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-7">
-                        <div class="container box1 wow fadeInUp" data-wow-delay="0.05s">
-                            <div class="row" style="background-color : gray; color: white; height: 50px; border-bottom-color: black; border-bottom-style: solid; border-bottom-width: 2px;">
-                                <p style="margin-top : 10px; margin-left: 20px;">My Portfolio Details<button type="button" id="saveedit" class="portfolioedit" style="border-radius: 5px; background-color : gray; color : white; border: 2px white solid; margin-left : 50px; cursor: pointer;">Edit<i class="fa fa-bars" style="margin-left : 10px;"></i></button></p>
-                            </div>
-                            <div class="row" style="text-align: center;">
-                                <div class="container" style="width: 200px; height: 200px; border-radius: 100px; border:5px black solid; margin-top : 20px; margin-bottom: 20px;">
-                                    <img src="https://image.flaticon.com/icons/png/128/118/118781.png" style="margin:auto; margin-top: 20px;">
-                                </div>
-                            </div>
-                            <div class="row" style="text-align: center;">
-                                <p class="details">Name : {{ session['data']['username']}}</p>
-                            </div>
-                            <div class="row" style="text-align: center;">
-                                <p class="details">Email : {{ session['data']['email']}}</p>
-                            </div>
-                            <div class="row" style="text-align: center;">
-                                <p class="details">Bio : {{ session['data']['bio']}}</p>
-                             </div>
-                            {% if session['data']['status'] == "user" %}
-                                <div class="row" style="text-align: center;">
-                                    <p class="details">Awards : {{ session['data']['awards']}}</p>
-                                 </div>
-                                <div class="row" style="text-align: center;">
-                                    <p class="details">Age : {{ session['data']['age']}}</p>
-                                 </div>
-                                <div class="row" style="text-align: center;">
-                                    <p class="details">Country : {{ session['data']['country']}}</p>
-                                 </div>
-                                <div class="row" style="text-align: center;">
-                                    <p class="details">Highest Qualification : {{ session['data']['highestqualification']}}</p>
-                                 </div>
-                                <div class="row" style="text-align: center;">
-                                    <p class="details">Work Experiences : {{ session['data']['workexperiences']}}</p>
-                                 </div>
-                                <div class="row" style="text-align: center;">
-                                    <p class="details">Skill Sets : {{ session['data']['skillsets']}}</p>
-                                 </div>
-                                <div class="row" style="text-align: center;">
-                                    <p class="details">First Name : {{ session['data']['firstname']}}</p>
-                                 </div>
-                                <div class="row" style="text-align: center;">
-                                    <p class="details">Last Name : {{ session['data']['lastname']}}</p>
-                                </div>
-                            {% else %}
-                                <div class="row" style="text-align: center;">
-                                    <p class="details">Company Name : {{ session['data']['company_name']}}</p>
-                                </div>
-                                <div class="row" style="text-align: center;">
-                                    <p class="details">Telephone Number : : {{ session['data']['telno']}}</p>
-                                </div>
-                                <div class="row" style="text-align: center;">
-                                    <p class="details">Industry : {{ session['data']['industry']}}</p>
-                                </div>
-                                <div class="row" style="text-align: center;">
-                                    <p class="details">Address : {{ session['data']['address']}}</p>
-                                </div>
-                            {% endif %}
-                        </div>
-                    </div>
-                    <div class="col-lg-1">
-                    </div>
-                    <div class="col-lg-4">
-                        <div class="row">
-                            <div class="container box2 wow fadeInUp" data-wow-delay="0.05s">
-                                <div class="row" style="text-align: center;">
-                                    <p style="margin:0 auto; margin-top: 30px; margin-bottom: 30px; font-size: 25px; font-weight: bold;">Saved Templates</p>
-                                </div>
-                                {% for saves in session['templates'] %}
-                                    <div class="row" style="text-align: center;">
-                                        <div class="col-4">
-                                            <div style="position : relative; top : 15px;">
-                                            {{ saves }}
-                                            </div>
-                                        </div>
-                                        <div class="col-8">
-                                            <a href="/loadtemplate/{{ session['templates'][saves] }}">
-                                                <button class="button" style="width: 80px; height: 50px; border: 3px solid darkgreen; background-color : transparent; color: green; border-radius : 10px;">
-                                                    <div style="position : relative; bottom : 9px;">
-                                                        Edit
-                                                    </div>
-                                                </button>
-                                            </a>
-                                            <a onclick="del('{{ session['templates'][saves] }}')">
-                                                <button class="button" style="width: 80px; height: 50px; border: 3px solid red; background-color : transparent; color: red; border-radius : 10px;">
-                                                    <div style="position : relative; bottom : 9px; right : 6px;">
-                                                        Delete
-                                                    </div>
-                                                </button>
-                                            </a>
-                                        </div>
-                                    </div>
-                                {% endfor %}
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="container box3 wow fadeInUp" data-wow-delay="0.05s">
-                                <div class="row" style="text-align: center;">
-                                    <p style="margin:0 auto; margin-top: 30px; margin-bottom: 20px; font-size: 25px; font-weight: bold;">Useful Links</p>
-                                </div>
-                                <div class="row" style="text-align: center">
-                                    <button class="button" style="vertical-align:middle; margin: 0 auto; margin-bottom : 40px;"><a href="{{ url_for('help') }}"><span>FAQ </span></a></button>
-                                    <br>
-                                    {% if session["data"]["status"] == "user" %}
-                                        <button class="button" style="vertical-align:middle; margin: 0 auto;">
-                                            <a href="{{ url_for("search_job") }}"><span>Search For Jobs </span></a>
-                                        </button>
 
-                                    {% else %}
-                                        <button class="button" style="vertical-align:middle; margin: 0 auto;">
-                                            <a href="{{ url_for("create_job") }}"><span>Create Job Posting </span></a>
-                                        </button>
-                                        <button class="button" style="vertical-align:middle; margin: 0 auto; margin-top:5%">
-                                            <a href="{{ url_for("edit_posts") }}"><span>Edit Job Posting </span></a>
-                                        </button>
-                                    {% endif %}
-                                </div>
-                            </div>
-                        </div>
+
+{% block body %}
+    <div class="container">
+        <div id="top" class="row">
+            <div class="col-md-5 col-xs-12 wow fadeInLeft">
+                <div class="card" style="width:100%">
+                    <img class="card-img-top" src="../static/images/img_avatar1.png" alt="Card image">
+                    <div class="card-body">
+                        {% if session["data"]["status"] == "user" %}
+                        <h4 class="card-title">{{ session["data"]["firstname"] }} {{ session["data"]["lastname"] }}</h4>
+                        {% elif session["data"]["status"] == "employer" %}
+                        <h4 class="card-title">{{ session["data"]["company_name"] }}</h4>
+                        {% endif %}
+                        <p class="card-text">Last Login : {{ session["last_login"] }}</p>
+                        <a href="#" class="btn btn-primary" style="width:100%">Edit Information</a>
                     </div>
                 </div>
             </div>
-        </section>
-        <div id="myModal" class="modal fade" role="dialog">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h4 class="modal-title wow fadeInUp">Select Your Template!</h4>
+            {% if session["data"]["status"] == "user" %}
+            <div class="col-md-7 col-xs-12">
+                <div class="card bg-primary text-white wow fadeInRight " data-wow-delay="0.15s" id="links-top" style="width:100%; height:30%">
+                    <div class="card-body">
+                        <h3>Create & Print Resume</h3>
+                        <h5>Click here to create and print your resume into a PDF form if you do not want to use our services</h5>
                     </div>
-                    <div class="modal-body">
-                        <div class="row">
-                            <div class="col template">
-                                <a href="/defaulttemplate/template1"><img src="../static/images/template1.JPG" /></a>
-                            </div>
-                            <div class="col template">
-                                <a href="/defaulttemplate/template2"><img src="../static/images/template2.JPG" /></a>
-                            </div>
-                        </div>
+                </div>
+                <div class="card bg-success text-white wow fadeInRight" data-wow-delay="0.4s" style="width:100%; margin-top: 30px; height:30%">
+                    <div class="card-body">
+                        <h3>Search for jobs</h3>
+                        <h5>Click here to search for jobs that you are interested in.</h5>
                     </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+                {% elif session["data"]["status"] == "employer" %}
+                <div class="col-md-7 col-xs-12">
+                <div class="card bg-primary text-white wow fadeInRight " data-wow-delay="0.15s" id="links-top" style="width:100%; height:30%">
+                    <div class="card-body">
+                        <h3>Create Job Post</h3>
+                        <h5>Click here to create a job posting</h5>
+                    </div>
+                </div>
+                <div class="card bg-success text-white wow fadeInRight" data-wow-delay="0.4s"style="width:100%; margin-top: 30px; height:30%">
+                    <div class="card-body">
+                        <h3>Edit Job Post</h3>
+                        <h5>Click here to edit jobs that you have posted</h5>
+                    </div>
+                </div>
+                {% endif %}
+
+
+
+
+
+
+                <div class="card bg-info text-white wow fadeInRight" data-wow-delay="0.65s" style="width:100%; margin-top: 30px; height:30%;">
+                    <div class="card-body">
+                        <h3>F.A.Q</h3>
+                        <h5>Click here for fequently asked questions</h5>
                     </div>
                 </div>
             </div>
         </div>
-    {% else %}
-        <section id="hero">
-            <div class="hero-container">
-                <h1>Welcome to MyPortFolio</h1>
-                <h2>Where you can create resumes and search for jobs in this All-In-One website</h2>
-                <a href="#team" class="btn-get-started">Get Started</a>
-            </div>
-        </section>
-        <section id="team" style="margin-top:100px; margin-bottom: 100px;">
-            <div class="container wow fadeInLeft">
-                <div class="section-header">
-                    <h3 class="section-title">About Us</h3>
-                    <p class="section-description">A Few Words About Us</p>
-                </div>
-                <div id="content">
-                    <div id="introduction">
-                        <div class="wrapper">
-                            MY PORTFOLIO is the brainchild of our 4 founders: Jia Jun, Zheng Ting, Argel and Yao Guang. Like many great ideas, it was  discovered through accidental fate (in a random classroom). While constructing a portfolio to bethe basis of a start-up idea, we quickly discovered that creating their own portfolio was difficult, frustrating and very time consuming.
-
-                            The team quickly went on to research and build a platform that empowered anyone to create their own portdolio with minimal skills needed.
-
-                            Better yet, make it free!
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-        </section><!-- #team -->
-        <section id="hero">
-            <div class="container-fluid hero-container wow fadeInUp" data-wow-delay="0.05s">
-                <div class="row">
-                    <div class="col" align="center">
-                        <p style="margin-top : 50px; color: white; font-weight: bold; font-size : 30px;">What are you waiting for? Start Using It Now!</p>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-lg-5" align="center">
-                        <button type="button" id="create" onclick="location.href='{{ url_for('main') }}'">Sign In</button>
-                    </div>
-                    <div class="col-lg-2" align="center">
-                        <strong style="position:relative; top:60%; color: white;">Or</strong>
-                    </div>
-                    <div class="col-lg-5" align="center">
-                        <button type="button" id="create" onclick="location.href='{{ url_for('login_register') }}'">Register</button>
-                    </div>
-                </div>
-            </div>
-        </section>
-    {% endif %}
-</main>
+    </div>
 {% endblock %}
+
+
 
 {% block additionalscripts %}
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>

@@ -1318,6 +1318,11 @@ def loadtemplate(name):
     session['default'] = False
     return redirect(url_for('editor'))
 
+@app.route('/delete/<string:id>')
+def delete(id) :
+    template = root.child('template/' + id)
+    template.delete()
+    return redirect(url_for('home'))
 
 @app.route('/editor')
 def editor():
