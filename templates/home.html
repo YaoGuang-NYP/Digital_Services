@@ -1,35 +1,47 @@
 {% extends 'index.html' %}
 
 {% block inlinecss %}
-<style>
-    @media screen and (max-width: 768px) {
-        #top {
-            margin-top: 20%;
+    <style>
+        @media screen and (max-width: 768px) {
+            #top {
+                margin-top: 20%;
+            }
+
+            #links-top {
+                margin-top: 30px;
+            }
         }
 
-        #links-top {
-            margin-top: 30px;
+        #template-top {
+            margin-top: 13%;
         }
-    }
 
-    @media screen and (max-width: 1024px) and (min-width: 768px) {
-        #top {
-            margin-top: 15%;
-            margin-bottom: 5%
+        @media screen and (max-width: 1024px) and (min-width: 768px) {
+            #top {
+                margin-top: 15%;
+                margin-bottom: 5%
+            }
+
+            #template-top {
+                margin-top: 3%
+            }
         }
-    }
 
-    @media screen and (min-width: 1024px) {
-        #top {
-            margin-top: 12%;
-            margin-bottom: 3%
+        @media screen and (min-width: 1024px) {
+            #top {
+                margin-top: 12%;
+                margin-bottom: 3%
+            }
+
+            #template-top {
+                margin-top: 0%;
+            }
         }
-    }
 
-    #footer {
-        clear: both;
-    }
-</style>
+        #footer {
+            clear: both;
+        }
+    </style>
 {% endblock %}
 
 
@@ -47,7 +59,8 @@
                                 <h4 class="card-title">{{ session["data"]["company_name"] }}</h4>
                             {% endif %}
                             <p class="card-text">Last Login : {{ session["last_login"] }}</p>
-                            <a href="{{ url_for('accountsettings') }}" class="btn btn-primary" style="width:100%">Edit Information</a>
+                            <a href="{{ url_for('accountsettings') }}" class="btn btn-primary" style="width:100%">Edit
+                                Information</a>
                         </div>
                     </div>
                 </div>
@@ -57,55 +70,86 @@
                          style="width:100%; height:30%">
                         <div class="card-body" data-toggle="modal" data-target="#myModal" style="cursor: pointer;">
                             <h3>Create & Print Resume</h3>
-                            <h5>Click here to create and print your resume into a PDF form if you do not want to use our
+                            <h5>Click here to create and print your resume into a PDF form if you do not want to use
+                                our
                                 services</h5>
                         </div>
                     </div>
-                    <div class="card bg-success text-white wow fadeInRight" data-wow-delay="0.4s"
-                         style="width:100%; margin-top: 30px; height:30%">
-                        <a href="{{ url_for('search_job') }}" style="color: white;">
+                    <a href="{{ url_for('search_job') }}" style="color: white;">
+                        <div class="card bg-success text-white wow fadeInRight" data-wow-delay="0.4s"
+                             style="width:100%; margin-top: 30px; height:30%">
                             <div class="card-body">
                                 <h3>Search for jobs</h3>
                                 <h5>Click here to search for jobs that you are interested in.</h5>
                             </div>
-                        </a>
-                    </div>
+                        </div>
+                    </a>
                 {% elif session["data"]["status"] == "employer" %}
                     <div class="col-md-7 col-xs-12">
-                    <div class="card bg-primary text-white wow fadeInRight " data-wow-delay="0.15s" id="links-top"
-                         style="width:100%; height:30%">
-                        <a href="{{ url_for("create_job") }}" style="color: white;">
+                    <a href="{{ url_for("create_job") }}" style="color: white;">
+                        <div class="card bg-primary text-white wow fadeInRight " data-wow-delay="0.15s" id="links-top"
+                             style="width:100%; height:30%">
                             <div class="card-body">
                                 <h3>Create Job Post</h3>
                                 <h5>Click here to create a job posting</h5>
                             </div>
-                        </a>
-                    </div>
-                    <div class="card bg-success text-white wow fadeInRight" data-wow-delay="0.4s"
-                         style="width:100%; margin-top: 30px; height:30%">
-                        <a href="{{ url_for("edit_posts") }}" style="color: white;">
+                        </div>
+                    </a>
+                    <a href="{{ url_for("edit_posts") }}" style="color: white;">
+                        <div class="card bg-success text-white wow fadeInRight" data-wow-delay="0.4s"
+                             style="width:100%; margin-top: 30px; height:30%">
+
                             <div class="card-body">
                                 <h3>Edit Job Post</h3>
                                 <h5>Click here to edit jobs that you have posted</h5>
                             </div>
-                        </a>
-                    </div>
-                {% endif %}
-            <!--NotLoggedIn-->
-
-                <div class="card bg-info text-white wow fadeInRight" data-wow-delay="0.65s"
-                     style="width:100%; margin-top: 30px; height:30%;">
-                    <a href="{{ url_for('help') }}" style="color: white;">
-                        <div class="card-body">
-                            <h3>F.A.Q</h3>
-                            <h5>Click here for fequently asked questions</h5>
                         </div>
                     </a>
-                </div>
+                {% endif %}
+                <!--NotLoggedIn-->
+                <a href="{{ url_for('help') }}" style="color: white;">
+                    <div class="card bg-info text-white wow fadeInRight" data-wow-delay="0.65s"
+                         style="width:100%; margin-top: 30px; height:30%;">
+                        <div class="card-body">
+                            <h3>F.A.Q</h3>
+                            <h5>Click here for frequently asked questions</h5>
+                        </div>
+                    </div>
+                </a>
                 </div>
                 </div>
             </div>
         </div>
+
+        <!--template-->
+        <div class="container wow fadeInUp" data-wow-delay="0.1s">
+            <div class="row" style="margin-bottom : 5%">
+                <div class="col-md-12 col-xs-12">
+                    <div class="card" id="template-top">
+                        <div class="card-header">Previously Created Templates</div>
+                        <div class="card-body">
+                            {% if session['templates'] %}
+                                {% for saves in session['templates'] %}
+                                    <h3>{{ saves }}
+                                        <span style="right:10px; position:absolute">
+                                            <a href="/loadtemplate/{{ session['templates'][saves] }}">
+                                                <button class="btn btn-primary" style="margin-right:5px; width:100px">Edit</button>
+                                            </a>
+                                            <a href="/delete/{{ session['templates'][saves] }}">
+                                                <button class="btn btn-danger" style="width:100px">Delete</button>
+                                            </a>
+                                        </span>
+                                    </h3>
+                                {% endfor %}
+                            {% else %}
+                                <h3><span>No Found Templates</span></h3>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <div id="myModal" class="modal fade" role="dialog">
             <div class="modal-dialog">
                 <div class="modal-content">
@@ -115,10 +159,10 @@
                     <div class="modal-body">
                         <div class="row">
                             <div class="col template">
-                                <a href="/defaulttemplate/template1"><img src="../static/images/template1.JPG" /></a>
+                                <a href="/defaulttemplate/template1"><img src="../static/images/template1.JPG"/></a>
                             </div>
                             <div class="col template">
-                                <a href="/defaulttemplate/template2"><img src="../static/images/template2.JPG" /></a>
+                                <a href="/defaulttemplate/template2"><img src="../static/images/template2.JPG"/></a>
                             </div>
                         </div>
                     </div>
@@ -128,6 +172,8 @@
                 </div>
             </div>
         </div>
+
+
     {% else %}
         <section id="hero">
             <div class="hero-container">
@@ -145,9 +191,13 @@
                 <div id="content">
                     <div id="introduction">
                         <div class="wrapper">
-                            MY PORTFOLIO is the brainchild of our 4 founders: Jia Jun, Zheng Ting, Argel and Yao Guang. Like many great ideas, it was  discovered through accidental fate (in a random classroom). While constructing a portfolio to bethe basis of a start-up idea, we quickly discovered that creating their own portfolio was difficult, frustrating and very time consuming.
+                            MY PORTFOLIO is the brainchild of our 4 founders: Jia Jun, Zheng Ting, Argel and Yao Guang.
+                            Like many great ideas, it was discovered through accidental fate (in a random classroom).
+                            While constructing a portfolio to bethe basis of a start-up idea, we quickly discovered that
+                            creating their own portfolio was difficult, frustrating and very time consuming.
 
-                            The team quickly went on to research and build a platform that empowered anyone to create their own portdolio with minimal skills needed.
+                            The team quickly went on to research and build a platform that empowered anyone to create
+                            their own portdolio with minimal skills needed.
 
                             Better yet, make it free!
                         </div>
@@ -160,18 +210,22 @@
             <div class="container-fluid hero-container wow fadeInUp" data-wow-delay="0.05s">
                 <div class="row">
                     <div class="col" align="center">
-                        <p style="margin-top : 50px; color: white; font-weight: bold; font-size : 30px;">What are you waiting for? Start Using It Now!</p>
+                        <p style="margin-top : 50px; color: white; font-weight: bold; font-size : 30px;">What are you
+                            waiting for? Start Using It Now!</p>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-lg-5" align="center">
-                        <button type="button" id="create" onclick="location.href='{{ url_for('main') }}'">Sign In</button>
+                        <button type="button" id="create" onclick="location.href='{{ url_for('main') }}'">Sign In
+                        </button>
                     </div>
                     <div class="col-lg-2" align="center">
                         <strong style="position:relative; top:60%; color: white;">Or</strong>
                     </div>
                     <div class="col-lg-5" align="center">
-                        <button type="button" id="create" onclick="location.href='{{ url_for('login_register') }}'">Register</button>
+                        <button type="button" id="create" onclick="location.href='{{ url_for('login_register') }}'">
+                            Register
+                        </button>
                     </div>
                 </div>
             </div>
