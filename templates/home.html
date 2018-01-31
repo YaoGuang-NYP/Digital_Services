@@ -11,15 +11,17 @@
                 margin-top: 30px;
             }
         }
-            #template-top {
-                margin-top: 13%;
-            }
+
+        #template-top {
+            margin-top: 13%;
+        }
 
         @media screen and (max-width: 1024px) and (min-width: 768px) {
             #top {
                 margin-top: 15%;
                 margin-bottom: 5%
             }
+
             #template-top {
                 margin-top: 3%
             }
@@ -30,6 +32,7 @@
                 margin-top: 12%;
                 margin-bottom: 3%
             }
+
             #template-top {
                 margin-top: 0%;
             }
@@ -67,57 +70,58 @@
                          style="width:100%; height:30%">
                         <div class="card-body" data-toggle="modal" data-target="#myModal" style="cursor: pointer;">
                             <h3>Create & Print Resume</h3>
-                            <h5>Click here to create and print your resume into a PDF form if you do not want to use our
+                            <h5>Click here to create and print your resume into a PDF form if you do not want to use
+                                our
                                 services</h5>
                         </div>
                     </div>
-                    <div class="card bg-success text-white wow fadeInRight" data-wow-delay="0.4s"
-                         style="width:100%; margin-top: 30px; height:30%">
-                        <a href="{{ url_for('search_job') }}" style="color: white;">
+                    <a href="{{ url_for('search_job') }}" style="color: white;">
+                        <div class="card bg-success text-white wow fadeInRight" data-wow-delay="0.4s"
+                             style="width:100%; margin-top: 30px; height:30%">
                             <div class="card-body">
                                 <h3>Search for jobs</h3>
                                 <h5>Click here to search for jobs that you are interested in.</h5>
                             </div>
-                        </a>
-                    </div>
+                        </div>
+                    </a>
                 {% elif session["data"]["status"] == "employer" %}
                     <div class="col-md-7 col-xs-12">
-                    <div class="card bg-primary text-white wow fadeInRight " data-wow-delay="0.15s" id="links-top"
-                         style="width:100%; height:30%">
-                        <a href="{{ url_for("create_job") }}" style="color: white;">
+                    <a href="{{ url_for("create_job") }}" style="color: white;">
+                        <div class="card bg-primary text-white wow fadeInRight " data-wow-delay="0.15s" id="links-top"
+                             style="width:100%; height:30%">
                             <div class="card-body">
                                 <h3>Create Job Post</h3>
                                 <h5>Click here to create a job posting</h5>
                             </div>
-                        </a>
-                    </div>
-                    <div class="card bg-success text-white wow fadeInRight" data-wow-delay="0.4s"
-                         style="width:100%; margin-top: 30px; height:30%">
-                        <a href="{{ url_for("edit_posts") }}" style="color: white;">
+                        </div>
+                    </a>
+                    <a href="{{ url_for("edit_posts") }}" style="color: white;">
+                        <div class="card bg-success text-white wow fadeInRight" data-wow-delay="0.4s"
+                             style="width:100%; margin-top: 30px; height:30%">
+
                             <div class="card-body">
                                 <h3>Edit Job Post</h3>
                                 <h5>Click here to edit jobs that you have posted</h5>
                             </div>
-                        </a>
-                    </div>
+                        </div>
+                    </a>
                 {% endif %}
                 <!--NotLoggedIn-->
-
-                <div class="card bg-info text-white wow fadeInRight" data-wow-delay="0.65s"
-                     style="width:100%; margin-top: 30px; height:30%;">
-                    <a href="{{ url_for('help') }}" style="color: white;">
+                <a href="{{ url_for('help') }}" style="color: white;">
+                    <div class="card bg-info text-white wow fadeInRight" data-wow-delay="0.65s"
+                         style="width:100%; margin-top: 30px; height:30%;">
                         <div class="card-body">
                             <h3>F.A.Q</h3>
                             <h5>Click here for frequently asked questions</h5>
                         </div>
-                    </a>
-                </div>
+                    </div>
+                </a>
                 </div>
                 </div>
             </div>
         </div>
 
-            <!--template-->
+        <!--template-->
         <div class="container wow fadeInUp" data-wow-delay="0.1s">
             <div class="row" style="margin-bottom : 5%">
                 <div class="col-md-12 col-xs-12">
