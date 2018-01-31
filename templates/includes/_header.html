@@ -14,7 +14,14 @@ Header
             <ul class="nav-menu">
                 {% if session['loggedin'] == True %}
                     <li><a href="/home">Home</a></li>
-                    <li><a href="{{ url_for("blog") }}">Blog</a></li>
+
+                    <!-- Blog -->
+                    <li class="dropdown"><a data-toggle="dropdown" href="{{ url_for("blog") }}">Manage Blog</a>
+                      <ul class="dropdown">
+                         <li><a href="/newpublication">New Blog</a></li>
+                         <li><a href="/viewpublications">View/Update Blog</a></li>
+                      </ul>
+                    </li>
                     {% if notification_counts == 0 %}
                         <li><a href="#">No New Notifications</a></li>
                     {% else %}
