@@ -1191,9 +1191,25 @@ class BlogForm(Form):
     title = StringField('Title')
     pubtype = RadioField('Type of Content', choices=[('leisure', 'Leisure'), ('business', 'Business')],
                          default='business')
-    category = SelectField('Category', choices=[('', 'Select'), ])
+    category = SelectField('Category', choices=[('', 'Select'), ('AUTOMOTIVE', 'Automotive'), ('TECHNOLOGY', 'Technology'),
+                                                ('POLITICS', 'Politics'), ('HEALTH', 'Health'), ('OPPORTUNITIES', 'Opportunities'),
+                                                ('TRANSPORTATION'), ('Transportation'), ('RETAIL', 'Retails'), ('BUSINESS', 'Business'),
+                                                ('OTHERS', 'Others')], default='')
+    company = StringField('Company')
+    status = SelectField('status', choices=[('', 'Select'), ('E', 'Employed'), ('S', 'Self-Employed'),
+                                            ('ST', 'Student'), ('U', 'Unemployed'), ('F', 'Freelancer'),
+                                            ('I', 'Internee')], default='')
+    author = StringField('Author')
+    contents = TextAreaField('Contents')
 
+@app.route('/new_blog')
+def new():
+    form = BlogForm(request.form)
+    return  render_template('create_blog.html')
 
+@app.route('/update_blog')
+def update_blog():
+    # Setting value to the update_blog.html
 
 
 @app.route('/accountsettings', methods=['GET', 'POST'])
