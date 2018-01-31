@@ -1182,10 +1182,17 @@ def user(job, result, id):
         return render_template("user_notification.html", job=job, result=result, id=id, details=get_job)
 
 
-# Route to Blog
+# Blog
 @app.route('/blog')
 def blog():
     return render_template('Blog.html')
+
+class BlogForm(Form):
+    title = StringField('Title')
+    pubtype = RadioField('Type of Content', choices=[('leisure', 'Leisure'), ('business', 'Business')],
+                         default='business')
+    category = SelectField('Category', choices=[('', 'Select'), ])
+
 
 
 

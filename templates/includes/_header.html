@@ -18,10 +18,12 @@ Header
                     <!-- Blog -->
                     <li class="dropdown"><a data-toggle="dropdown" href="{{ url_for("blog") }}">Manage Blog</a>
                       <ul class="dropdown">
-                         <li><a href="/newpublication">New Blog</a></li>
-                         <li><a href="/viewpublications">View/Update Blog</a></li>
+                         <li><a href="/new_blog">New Blog</a></li>
+                         <li><a href="/view_blog">View/Update Blog</a></li>
                       </ul>
                     </li>
+                    <!-- End of Blog Tags -->
+
                     {% if notification_counts == 0 %}
                         <li><a href="#">No New Notifications</a></li>
                     {% else %}
