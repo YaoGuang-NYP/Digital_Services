@@ -1182,14 +1182,11 @@ def user(job, result, id):
         return render_template("user_notification.html", job=job, result=result, id=id, details=get_job)
 
 
-# Route to messenger
-@app.route('/messages')
-def hello():
-    return render_template('ChatApp.html')
+# Route to Blog
+@app.route('/blog')
+def blog():
+    return render_template('Blog.html')
 
-
-def messageRecived():
-    print('message was received!!!')
 
 
 @app.route('/accountsettings', methods=['GET', 'POST'])

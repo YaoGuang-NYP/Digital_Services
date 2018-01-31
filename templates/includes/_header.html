@@ -14,7 +14,7 @@ Header
             <ul class="nav-menu">
                 {% if session['loggedin'] == True %}
                     <li><a href="/home">Home</a></li>
-                    <li><a href="/messages">Messages</a></li>
+                    <li><a href="{{ url_for("blog") }}">Blog</a></li>
                     {% if notification_counts == 0 %}
                         <li><a href="#">No New Notifications</a></li>
                     {% else %}
