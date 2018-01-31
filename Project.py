@@ -1192,11 +1192,12 @@ def messageRecived():
     print('message was received!!!')
 
 
+listnum = []
+randnum = randint(1000, 9999)
+listnum.append(randnum)
 @app.route('/accountsettings', methods=['GET', 'POST'])
 def accountsettings():
-    listnum = []
-    randnum = randint(1000, 4000)
-    listnum.append(randnum)
+
     print(randnum)
     email_session = session["data"]["email"]
     print(email_session)
@@ -1244,7 +1245,7 @@ def accountsettings():
         awards = form.awards.data
         bio = form.bio.data
 
-        if listnum[0] == randnum:
+        if listnum[0] == int(otp):
 
             setting = RegisterForm(username, password, email, firstname, lastname, age, country, highestqualification,
                                    workexperiences, skillsets, awards, bio)
@@ -1267,7 +1268,7 @@ def accountsettings():
 
         else:
             print("Incorrect!")
-
+            return '<script> alert("Wrong OTP!!"); window.location.href = "/";</script>'
     try :
         if session["data"]["status"] == "employer":
             notification = []
