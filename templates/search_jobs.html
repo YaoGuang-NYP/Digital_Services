@@ -57,7 +57,7 @@
         <div class="row">
             <div class="col-12">
                 <h3 style="display:inline">Sort By : </h3>
-                <button class="btn btn-primary" style="display:inline;width:30%;margin-right:2%">All</button>
+                <a href="{{ url_for("search_job") }}"><button class="btn btn-primary" style="display:inline;width:30%;margin-right:2%">All</button></a>
 
                 <div style="display:inline;" class="dropdown show">
                     <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
@@ -67,14 +67,14 @@
 
                     <div class="dropdown-menu scrollable-menu" role="menu" aria-labelledby="dropdownMenuLink">
                         <a class="dropdown-item"
-                           href="{{ url_for("search_job_relevance", industry="Abortion Policy/Anti-Abortion") }}">Abortion
-                            Policy/Anti-Abortion</a>
+                           href="{{ url_for("search_job_relevance", industry="Abortion Policy or Anti-Abortion") }}">Abortion
+                            Policy or Anti-Abortion</a>
                         <a class="dropdown-item"
-                           href="{{ url_for("search_job_relevance", industry="Abortion Policy/Pro-Abortion Rights") }}">Abortion
-                            Policy/Pro-Abortion Rights</a>
+                           href="{{ url_for("search_job_relevance", industry="Abortion Policy or Pro-Abortion Rights") }}">Abortion
+                            Policy or Pro-Abortion Rights</a>
                         <a class="dropdown-item" href="{{ url_for("search_job_relevance", industry="Accountants") }}">Accountants</a>
                         <a class="dropdown-item"
-                           href="{{ url_for("search_job_relevance", industry="Advertising/Public Relations") }}">Advertising/Public
+                           href="{{ url_for("search_job_relevance", industry="Advertising or Public Relations") }}">Advertising or Public
                             Relations</a>
                         <a class="dropdown-item"
                            href="{{ url_for("search_job_relevance", industry="Aerospace, Defense Contractors") }}">Aerospace,
@@ -100,7 +100,7 @@
                            href="{{ url_for("search_job_relevance", industry="Architectural Services") }}">Architectural
                             Services</a>
                         <a class="dropdown-item"
-                           href="{{ url_for("search_job_relevance", industry="Attorneys/Law Firms") }}">Attorneys/Law
+                           href="{{ url_for("search_job_relevance", industry="Attorneys or Law Firms") }}">Attorneys or Law
                             Firms</a>
                         <a class="dropdown-item" href="{{ url_for("search_job_relevance", industry="Auto Dealers") }}">Auto
                             Dealers</a>
@@ -130,13 +130,13 @@
                            href="{{ url_for("search_job_relevance", industry="Books, Magazines & Newspapers") }}">Books,
                             Magazines & Newspapers</a>
                         <a class="dropdown-item"
-                           href="{{ url_for("search_job_relevance", industry="Broadcasters, Radio/TV") }}">Broadcasters,
-                            Radio/TV</a>
+                           href="{{ url_for("search_job_relevance", industry="Broadcasters, Radio or TV") }}">Broadcasters,
+                            Radio or TV</a>
                         <a class="dropdown-item"
-                           href="{{ url_for("search_job_relevance", industry="Builders/General Contractors") }}">Builders/General
+                           href="{{ url_for("search_job_relevance", industry="Builders or General Contractors") }}">Builders or General
                             Contractors</a>
                         <a class="dropdown-item"
-                           href="{{ url_for("search_job_relevance", industry="Builders/Residential") }}">Builders/Residential</a>
+                           href="{{ url_for("search_job_relevance", industry="Builders or Residential") }}">Builders or Residential</a>
                         <a class="dropdown-item"
                            href="{{ url_for("search_job_relevance", industry="Building Materials & Equipment") }}">Building
                             Materials & Equipment</a>
@@ -170,18 +170,18 @@
                            href="{{ url_for("search_job_relevance", industry="Car Manufacturers") }}">Car
                             Manufacturers</a>
                         <a class="dropdown-item"
-                           href="{{ url_for("search_job_relevance", industry="Casinos / Gambling") }}">Casinos /
+                           href="{{ url_for("search_job_relevance", industry="Casinos  or  Gambling") }}">Casinos  or
                             Gambling</a>
                         <a class="dropdown-item"
-                           href="{{ url_for("search_job_relevance", industry="Cattle Ranchers/Livestock") }}">Cattle
-                            Ranchers/Livestock</a>
+                           href="{{ url_for("search_job_relevance", industry="Cattle Ranchers or Livestock") }}">Cattle
+                            Ranchers or Livestock</a>
                         <a class="dropdown-item"
                            href="{{ url_for("search_job_relevance", industry="Chemical & Related Manufacturing") }}">Chemical
                             & Related Manufacturing</a>
                         <a class="dropdown-item" href="{{ url_for("search_job_relevance", industry="Chiropractors") }}">Chiropractors</a>
                         <a class="dropdown-item"
-                           href="{{ url_for("search_job_relevance", industry="Civil Servants/Public Officials") }}">Civil
-                            Servants/Public Officials</a>
+                           href="{{ url_for("search_job_relevance", industry="Civil Servants or Public Officials") }}">Civil
+                            Servants or Public Officials</a>
                         <a class="dropdown-item"
                            href="{{ url_for("search_job_relevance", industry="Clergy & Religious Organizations") }}">Clergy
                             & Religious Organizations</a>
@@ -200,12 +200,12 @@
                            href="{{ url_for("search_job_relevance", industry="Commercial TV & Radio Stations") }}">Commercial
                             TV & Radio Stations</a>
                         <a class="dropdown-item"
-                           href="{{ url_for("search_job_relevance", industry="Communications/Electronics") }}">Communications/Electronics</a>
+                           href="{{ url_for("search_job_relevance", industry="Communications or Electronics") }}">Communications or Electronics</a>
                         <a class="dropdown-item"
                            href="{{ url_for("search_job_relevance", industry="Computer Software") }}">Computer
                             Software</a>
                         <a class="dropdown-item"
-                           href="{{ url_for("search_job_relevance", industry="Conservative/Republican") }}">Conservative/Republican</a>
+                           href="{{ url_for("search_job_relevance", industry="Conservative or Republican") }}">Conservative or Republican</a>
                         <a class="dropdown-item" href="{{ url_for("search_job_relevance", industry="Construction") }}">Construction</a>
                         <a class="dropdown-item"
                            href="{{ url_for("search_job_relevance", industry="Construction Services") }}">Construction
@@ -233,7 +233,7 @@
                            href="{{ url_for("search_job_relevance", industry="Defense Electronics") }}">Defense
                             Electronics</a>
                         <a class="dropdown-item"
-                           href="{{ url_for("search_job_relevance", industry="Defense/Foreign Policy Advocates") }}">Defense/Foreign
+                           href="{{ url_for("search_job_relevance", industry="Defense or Foreign Policy Advocates") }}">Defense or Foreign
                             Policy Advocates</a>
                         <a class="dropdown-item"
                            href="{{ url_for("search_job_relevance", industry="Democratic Candidate Committees") }}">Democratic
@@ -242,7 +242,7 @@
                            href="{{ url_for("search_job_relevance", industry="Democratic Leadership PACs") }}">Democratic
                             Leadership PACs</a>
                         <a class="dropdown-item"
-                           href="{{ url_for("search_job_relevance", industry="Democratic/Liberal") }}">Democratic/Liberal</a>
+                           href="{{ url_for("search_job_relevance", industry="Democratic or Liberal") }}">Democratic or Liberal</a>
                         <a class="dropdown-item" href="{{ url_for("search_job_relevance", industry="Dentists") }}">Dentists</a>
                         <a class="dropdown-item"
                            href="{{ url_for("search_job_relevance", industry="Doctors & Other Health Professionals") }}">Doctors
@@ -271,7 +271,7 @@
                             Bureaus</a>
                         <a class="dropdown-item" href="{{ url_for("search_job_relevance", industry="Farming") }}">Farming</a>
                         <a class="dropdown-item"
-                           href="{{ url_for("search_job_relevance", industry="Finance / Credit Companies") }}">Finance /
+                           href="{{ url_for("search_job_relevance", industry="Finance  or  Credit Companies") }}">Finance /
                             Credit Companies</a>
                         <a class="dropdown-item"
                            href="{{ url_for("search_job_relevance", industry="Finance, Insurance & Real Estate") }}">Finance,
@@ -311,8 +311,8 @@
                            href="{{ url_for("search_job_relevance", industry="Gambling, Indian Casinos") }}">Gambling,
                             Indian Casinos</a>
                         <a class="dropdown-item"
-                           href="{{ url_for("search_job_relevance", industry="Garbage Collection/Waste Management") }}">Garbage
-                            Collection/Waste Management</a>
+                           href="{{ url_for("search_job_relevance", industry="Garbage Collection or Waste Management") }}">Garbage
+                            Collection or Waste Management</a>
                         <a class="dropdown-item" href="{{ url_for("search_job_relevance", industry="Gas & Oil") }}">Gas
                             & Oil</a>
                         <a class="dropdown-item"
@@ -337,8 +337,8 @@
                            href="{{ url_for("search_job_relevance", industry="Health Professionals") }}">Health
                             Professionals</a>
                         <a class="dropdown-item"
-                           href="{{ url_for("search_job_relevance", industry="Health Services/HMOs") }}">Health
-                            Services/HMOs</a>
+                           href="{{ url_for("search_job_relevance", industry="Health Services or HMOs") }}">Health
+                            Services or HMOs</a>
                         <a class="dropdown-item" href="{{ url_for("search_job_relevance", industry="Hedge Funds") }}">Hedge
                             Funds</a>
                         <a class="dropdown-item"
@@ -355,7 +355,7 @@
                         <a class="dropdown-item" href="{{ url_for("search_job_relevance", industry="Human Rights") }}">Human
                             Rights</a>
                         <a class="dropdown-item"
-                           href="{{ url_for("search_job_relevance", industry="Ideological/Single-Issue") }}">Ideological/Single-Issue</a>
+                           href="{{ url_for("search_job_relevance", industry="Ideological or Single-Issue") }}">Ideological or Single-Issue</a>
                         <a class="dropdown-item" href="{{ url_for("search_job_relevance", industry="Indian Gaming") }}">Indian
                             Gaming</a>
                         <a class="dropdown-item"
@@ -371,19 +371,19 @@
                            href="{{ url_for("search_job_relevance", industry="Lawyers & Lobbyists") }}">Lawyers &
                             Lobbyists</a>
                         <a class="dropdown-item"
-                           href="{{ url_for("search_job_relevance", industry="Lawyers / Law Firms") }}">Lawyers / Law
+                           href="{{ url_for("search_job_relevance", industry="Lawyers  or  Law Firms") }}">Lawyers  or  Law
                             Firms</a>
                         <a class="dropdown-item"
                            href="{{ url_for("search_job_relevance", industry="Leadership PACs") }}">Leadership PACs</a>
                         <a class="dropdown-item"
-                           href="{{ url_for("search_job_relevance", industry="Liberal/Democratic") }}">Liberal/Democratic</a>
+                           href="{{ url_for("search_job_relevance", industry="Liberal or Democratic") }}">Liberal or Democratic</a>
                         <a class="dropdown-item"
                            href="{{ url_for("search_job_relevance", industry="Liquor, Wine & Beer") }}">Liquor, Wine &
                             Beer</a>
                         <a class="dropdown-item" href="{{ url_for("search_job_relevance", industry="Livestock") }}">Livestock</a>
                         <a class="dropdown-item" href="{{ url_for("search_job_relevance", industry="Lobbyists") }}">Lobbyists</a>
                         <a class="dropdown-item"
-                           href="{{ url_for("search_job_relevance", industry="Lodging / Tourism") }}">Lodging /
+                           href="{{ url_for("search_job_relevance", industry="Lodging  or  Tourism") }}">Lodging  or
                             Tourism</a>
                         <a class="dropdown-item"
                            href="{{ url_for("search_job_relevance", industry="Logging, Timber & Paper Mills") }}">Logging,
@@ -438,7 +438,7 @@
                         <a class="dropdown-item"
                            href="{{ url_for("search_job_relevance", industry="Nurses") }}">Nurses</a>
                         <a class="dropdown-item"
-                           href="{{ url_for("search_job_relevance", industry="Nursing Homes/Hospitals") }}">Nursing
+                           href="{{ url_for("search_job_relevance", industry="Nursing Homes or Hospitals") }}">Nursing
                             Homes/Hospitals</a>
                         <a class="dropdown-item"
                            href="{{ url_for("search_job_relevance", industry="Nutritional & Dietary Supplements") }}">Nutritional
@@ -453,8 +453,8 @@
                            href="{{ url_for("search_job_relevance", industry="Pharmaceutical Manufacturing") }}">Pharmaceutical
                             Manufacturing</a>
                         <a class="dropdown-item"
-                           href="{{ url_for("search_job_relevance", industry="Pharmaceuticals / Health Products") }}">Pharmaceuticals
-                            / Health Products</a>
+                           href="{{ url_for("search_job_relevance", industry="Pharmaceuticals  or  Health Products") }}">Pharmaceuticals
+                             or  Health Products</a>
                         <a class="dropdown-item"
                            href="{{ url_for("search_job_relevance", industry="Phone Companies") }}">Phone Companies</a>
                         <a class="dropdown-item"
@@ -477,7 +477,7 @@
                            href="{{ url_for("search_job_relevance", industry="Professional Sports, Sports Arenas & Related Equipment & Services") }}">Professional
                             Sports, Sports Arenas & Related Equipment & Services</a>
                         <a class="dropdown-item"
-                           href="{{ url_for("search_job_relevance", industry="Progressive/Democratic") }}">Progressive/Democratic</a>
+                           href="{{ url_for("search_job_relevance", industry="Progressive or Democratic") }}">Progressive or Democratic</a>
                         <a class="dropdown-item"
                            href="{{ url_for("search_job_relevance", industry="Public Employees") }}">Public
                             Employees</a>
@@ -488,23 +488,23 @@
                            href="{{ url_for("search_job_relevance", industry="Publishing & Printing") }}">Publishing &
                             Printing</a>
                         <a class="dropdown-item"
-                           href="{{ url_for("search_job_relevance", industry="Radio/TV Stations") }}">Radio/TV
+                           href="{{ url_for("search_job_relevance", industry="Radio or TV Stations") }}">Radio or TV
                             Stations</a>
                         <a class="dropdown-item" href="{{ url_for("search_job_relevance", industry="Railroads") }}">Railroads</a>
                         <a class="dropdown-item" href="{{ url_for("search_job_relevance", industry="Real Estate") }}">Real
                             Estate</a>
                         <a class="dropdown-item"
-                           href="{{ url_for("search_job_relevance", industry="Record Companies/Singers") }}">Record
-                            Companies/Singers</a>
+                           href="{{ url_for("search_job_relevance", industry="Record Companies or Singers") }}">Record
+                            Companies or Singers</a>
                         <a class="dropdown-item"
                            href="{{ url_for("search_job_relevance", industry="Recorded Music & Music Production") }}">Recorded
                             Music & Music Production</a>
                         <a class="dropdown-item"
-                           href="{{ url_for("search_job_relevance", industry="Recreation / Live Entertainment") }}">Recreation
-                            / Live Entertainment</a>
+                           href="{{ url_for("search_job_relevance", industry="Recreation  or  Live Entertainment") }}">Recreation
+                             or  Live Entertainment</a>
                         <a class="dropdown-item"
-                           href="{{ url_for("search_job_relevance", industry="Religious Organizations/Clergy") }}">Religious
-                            Organizations/Clergy</a>
+                           href="{{ url_for("search_job_relevance", industry="Religious Organizations or Clergy") }}">Religious
+                            Organizations or Clergy</a>
                         <a class="dropdown-item"
                            href="{{ url_for("search_job_relevance", industry="Republican Candidate Committees") }}">Republican
                             Candidate Committees</a>
@@ -512,7 +512,7 @@
                            href="{{ url_for("search_job_relevance", industry="Republican Leadership PACs") }}">Republican
                             Leadership PACs</a>
                         <a class="dropdown-item"
-                           href="{{ url_for("search_job_relevance", industry="Republican/Conservative") }}">Republican/Conservative</a>
+                           href="{{ url_for("search_job_relevance", industry="Republican or Conservative") }}">Republican or Conservative</a>
                         <a class="dropdown-item"
                            href="{{ url_for("search_job_relevance", industry="Residential Construction") }}">Residential
                             Construction</a>
@@ -525,7 +525,7 @@
                         <a class="dropdown-item"
                            href="{{ url_for("search_job_relevance", industry="Savings & Loans") }}">Savings & Loans</a>
                         <a class="dropdown-item"
-                           href="{{ url_for("search_job_relevance", industry="Schools/Education") }}">Schools/Education</a>
+                           href="{{ url_for("search_job_relevance", industry="Schools or Education") }}">Schools or Education</a>
                         <a class="dropdown-item" href="{{ url_for("search_job_relevance", industry="Sea Transport") }}">Sea
                             Transport</a>
                         <a class="dropdown-item"
@@ -541,8 +541,8 @@
                            href="{{ url_for("search_job_relevance", industry="Steel Production") }}">Steel
                             Production</a>
                         <a class="dropdown-item"
-                           href="{{ url_for("search_job_relevance", industry="Stock Brokers/Investment Industry") }}">Stock
-                            Brokers/Investment Industry</a>
+                           href="{{ url_for("search_job_relevance", industry="Stock Brokers or Investment Industry") }}">Stock
+                            Brokers or Investment Industry</a>
                         <a class="dropdown-item"
                            href="{{ url_for("search_job_relevance", industry="Student Loan Companies") }}">Student Loan
                             Companies</a>
@@ -552,7 +552,7 @@
                         <a class="dropdown-item"
                            href="{{ url_for("search_job_relevance", industry="Teachers Unions") }}">Teachers Unions</a>
                         <a class="dropdown-item"
-                           href="{{ url_for("search_job_relevance", industry="Teachers/Education") }}">Teachers/Education</a>
+                           href="{{ url_for("search_job_relevance", industry="Teachers or Education") }}">Teachers or Education</a>
                         <a class="dropdown-item"
                            href="{{ url_for("search_job_relevance", industry="Telecom Services & Equipment") }}">Telecom
                             Services & Equipment</a>
@@ -570,11 +570,11 @@
                            href="{{ url_for("search_job_relevance", industry="Transportation Unions") }}">Transportation
                             Unions</a>
                         <a class="dropdown-item"
-                           href="{{ url_for("search_job_relevance", industry="Trash Collection/Waste Management") }}">Trash
-                            Collection/Waste Management</a>
+                           href="{{ url_for("search_job_relevance", industry="Trash Collection or Waste Management") }}">Trash
+                            Collection or Waste Management</a>
                         <a class="dropdown-item" href="{{ url_for("search_job_relevance", industry="Trucking") }}">Trucking</a>
                         <a class="dropdown-item"
-                           href="{{ url_for("search_job_relevance", industry="TV / Movies / Music") }}">TV / Movies /
+                           href="{{ url_for("search_job_relevance", industry="TV  or  Movies  or  Music") }}">TV  or  Movies  or
                             Music</a>
                         <a class="dropdown-item" href="{{ url_for("search_job_relevance", industry="TV Production") }}">TV
                             Production</a>
@@ -674,7 +674,7 @@
                                                     </div>
                                                     <br><br><br>
                                                     <div class="col-md-6 col-xs-12">
-                                                        <h6><b>Salary</b> : {{ jobs[i]["salary"] }}</h6>
+                                                        <h6><b>Salary</b> : ${{ jobs[i]["salary"] }}</h6>
                                                     </div>
                                                 </div>
                                                 <br>
@@ -687,7 +687,7 @@
                                                     <div class="col-md-6 col-xs-12">
                                                         {% if jobs[i]["contract_time"] != "" %}
                                                             <h6><b>Contract Time</b>
-                                                                : {{ jobs[i]["contract_time"] }}</h6>
+                                                                : {{ jobs[i]["contract_time"] }} months</h6>
                                                         {% else %}
                                                             <h6><b>Contract Time : Not Applicable</b></h6>
                                                         {% endif %}
@@ -831,7 +831,7 @@
 
     <script>
         $(document).ready(function () {
-            $('#here').after('<div class="col-12" style="text-align:center"><ul id="nav" class="pagination" style="display:inline-block;"></ul></div>');
+            $('#here').after('<div class="col-12" style="text-align:center;"><ul id="nav" class="pagination" style="display:inline-block;text-align:left"></ul></div>');
             var rowsShown = 15;
             var rowsTotal = $('#data tbody tr').length;
             var numPages = rowsTotal / rowsShown;

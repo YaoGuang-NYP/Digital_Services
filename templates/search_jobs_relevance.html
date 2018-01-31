@@ -34,6 +34,27 @@
 
         ::-webkit-scrollbar {
             display: none;
+
+        }
+
+        {% if jobs_count < 5 %}
+        #footer {
+            position: absolute;
+            bottom: 0px;
+            width: 100%
+        }
+        {% else %}
+        #footer {
+            position: relative;
+            bottom: 0px;
+            width: 100%
+        }
+        {% endif %}
+
+        .scrollable-menu {
+            height: auto;
+            max-height: 400px;
+            overflow-x: hidden;
         }
 
     </style>
@@ -51,14 +72,573 @@
         <div class="row">
             <div class="col-12">
                 <h3 style="display:inline">Sort By : </h3>
-                <a href="{{ url_for("search_job") }}"><button class="btn btn-basic" style="width:30%;margin-right:2%">All</button></a>
-                <button class="btn btn-primary" style="width:30%">Relevance</button>
+                <a href="{{ url_for("search_job") }}">
+                    <button class="btn btn-basic" style="width:30%;margin-right:2%">All</button>
+                </a>
+
+                <div style="display:inline;" class="dropdown show">
+                    <a class="btn btn-primary dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
+                       data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="width : 30%">
+                        Relevance
+                    </a>
+
+                    <div class="dropdown-menu scrollable-menu" role="menu" aria-labelledby="dropdownMenuLink">
+                        <a class="dropdown-item"
+                           href="{{ url_for("search_job_relevance", industry="Abortion Policy or Anti-Abortion") }}">Abortion
+                            Policy or Anti-Abortion</a>
+                        <a class="dropdown-item"
+                           href="{{ url_for("search_job_relevance", industry="Abortion Policy or Pro-Abortion Rights") }}">Abortion
+                            Policy or Pro-Abortion Rights</a>
+                        <a class="dropdown-item" href="{{ url_for("search_job_relevance", industry="Accountants") }}">Accountants</a>
+                        <a class="dropdown-item"
+                           href="{{ url_for("search_job_relevance", industry="Advertising or Public Relations") }}">Advertising or Public
+                            Relations</a>
+                        <a class="dropdown-item"
+                           href="{{ url_for("search_job_relevance", industry="Aerospace, Defense Contractors") }}">Aerospace,
+                            Defense Contractors</a>
+                        <a class="dropdown-item" href="{{ url_for("search_job_relevance", industry="Agribusiness") }}">Agribusiness</a>
+                        <a class="dropdown-item"
+                           href="{{ url_for("search_job_relevance", industry="Agricultural Services & Products") }}">Agricultural
+                            Services & Products</a>
+                        <a class="dropdown-item" href="{{ url_for("search_job_relevance", industry="Agriculture") }}">Agriculture</a>
+                        <a class="dropdown-item" href="{{ url_for("search_job_relevance", industry="Air Transport") }}">Air
+                            Transport</a>
+                        <a class="dropdown-item"
+                           href="{{ url_for("search_job_relevance", industry="Air Transport Unions") }}">Air Transport
+                            Unions</a>
+                        <a class="dropdown-item" href="{{ url_for("search_job_relevance", industry="Airlines") }}">Airlines</a>
+                        <a class="dropdown-item"
+                           href="{{ url_for("search_job_relevance", industry="Alcoholic Beverages") }}">Alcoholic
+                            Beverages</a>
+                        <a class="dropdown-item"
+                           href="{{ url_for("search_job_relevance", industry="Alternative Energy Production & Services") }}">Alternative
+                            Energy Production & Services</a>
+                        <a class="dropdown-item"
+                           href="{{ url_for("search_job_relevance", industry="Architectural Services") }}">Architectural
+                            Services</a>
+                        <a class="dropdown-item"
+                           href="{{ url_for("search_job_relevance", industry="Attorneys or Law Firms") }}">Attorneys or Law
+                            Firms</a>
+                        <a class="dropdown-item" href="{{ url_for("search_job_relevance", industry="Auto Dealers") }}">Auto
+                            Dealers</a>
+                        <a class="dropdown-item"
+                           href="{{ url_for("search_job_relevance", industry="Auto Dealers, Japanese") }}">Auto Dealers,
+                            Japanese</a>
+                        <a class="dropdown-item"
+                           href="{{ url_for("search_job_relevance", industry="Auto Manufacturers") }}">Auto
+                            Manufacturers</a>
+                        <a class="dropdown-item" href="{{ url_for("search_job_relevance", industry="Automotive") }}">Automotive</a>
+                        <a class="dropdown-item"
+                           href="{{ url_for("search_job_relevance", industry="Banking, Mortgage") }}">Banking,
+                            Mortgage</a>
+                        <a class="dropdown-item"
+                           href="{{ url_for("search_job_relevance", industry="Banks, Commercial") }}">Banks,
+                            Commercial</a>
+                        <a class="dropdown-item"
+                           href="{{ url_for("search_job_relevance", industry="Banks, Savings & Loans") }}">Banks,
+                            Savings & Loans</a>
+                        <a class="dropdown-item"
+                           href="{{ url_for("search_job_relevance", industry="Bars & Restaurants") }}">Bars &
+                            Restaurants</a>
+                        <a class="dropdown-item"
+                           href="{{ url_for("search_job_relevance", industry="Beer, Wine & Liquor") }}">Beer, Wine &
+                            Liquor</a>
+                        <a class="dropdown-item"
+                           href="{{ url_for("search_job_relevance", industry="Books, Magazines & Newspapers") }}">Books,
+                            Magazines & Newspapers</a>
+                        <a class="dropdown-item"
+                           href="{{ url_for("search_job_relevance", industry="Broadcasters, Radio or TV") }}">Broadcasters,
+                            Radio or TV</a>
+                        <a class="dropdown-item"
+                           href="{{ url_for("search_job_relevance", industry="Builders or General Contractors") }}">Builders or General
+                            Contractors</a>
+                        <a class="dropdown-item"
+                           href="{{ url_for("search_job_relevance", industry="Builders or Residential") }}">Builders or Residential</a>
+                        <a class="dropdown-item"
+                           href="{{ url_for("search_job_relevance", industry="Building Materials & Equipment") }}">Building
+                            Materials & Equipment</a>
+                        <a class="dropdown-item"
+                           href="{{ url_for("search_job_relevance", industry="Building Trade Unions") }}">Building Trade
+                            Unions</a>
+                        <a class="dropdown-item"
+                           href="{{ url_for("search_job_relevance", industry="Business Associations") }}">Business
+                            Associations</a>
+                        <a class="dropdown-item"
+                           href="{{ url_for("search_job_relevance", industry="Business Services") }}">Business
+                            Services</a>
+                        <a class="dropdown-item"
+                           href="{{ url_for("search_job_relevance", industry="Cable & Satellite TV Production & Distribution") }}">Cable
+                            & Satellite TV Production & Distribution</a>
+                        <a class="dropdown-item"
+                           href="{{ url_for("search_job_relevance", industry="Candidate Committees") }}">Candidate
+                            Committees</a>
+                        <a class="dropdown-item"
+                           href="{{ url_for("search_job_relevance", industry="Candidate Committees, Democratic") }}">Candidate
+                            Committees, Democratic</a>
+                        <a class="dropdown-item"
+                           href="{{ url_for("search_job_relevance", industry="Candidate Committees, Republican") }}">Candidate
+                            Committees, Republican</a>
+                        <a class="dropdown-item" href="{{ url_for("search_job_relevance", industry="Car Dealers") }}">Car
+                            Dealers</a>
+                        <a class="dropdown-item"
+                           href="{{ url_for("search_job_relevance", industry="Car Dealers, Imports") }}">Car Dealers,
+                            Imports</a>
+                        <a class="dropdown-item"
+                           href="{{ url_for("search_job_relevance", industry="Car Manufacturers") }}">Car
+                            Manufacturers</a>
+                        <a class="dropdown-item"
+                           href="{{ url_for("search_job_relevance", industry="Casinos  or  Gambling") }}">Casinos  or
+                            Gambling</a>
+                        <a class="dropdown-item"
+                           href="{{ url_for("search_job_relevance", industry="Cattle Ranchers or Livestock") }}">Cattle
+                            Ranchers or Livestock</a>
+                        <a class="dropdown-item"
+                           href="{{ url_for("search_job_relevance", industry="Chemical & Related Manufacturing") }}">Chemical
+                            & Related Manufacturing</a>
+                        <a class="dropdown-item" href="{{ url_for("search_job_relevance", industry="Chiropractors") }}">Chiropractors</a>
+                        <a class="dropdown-item"
+                           href="{{ url_for("search_job_relevance", industry="Civil Servants or Public Officials") }}">Civil
+                            Servants or Public Officials</a>
+                        <a class="dropdown-item"
+                           href="{{ url_for("search_job_relevance", industry="Clergy & Religious Organizations") }}">Clergy
+                            & Religious Organizations</a>
+                        <a class="dropdown-item"
+                           href="{{ url_for("search_job_relevance", industry="Clothing Manufacturing") }}">Clothing
+                            Manufacturing</a>
+                        <a class="dropdown-item" href="{{ url_for("search_job_relevance", industry="Coal Mining") }}">Coal
+                            Mining</a>
+                        <a class="dropdown-item"
+                           href="{{ url_for("search_job_relevance", industry="Colleges, Universities & Schools") }}">Colleges,
+                            Universities & Schools</a>
+                        <a class="dropdown-item"
+                           href="{{ url_for("search_job_relevance", industry="Commercial Banks") }}">Commercial
+                            Banks</a>
+                        <a class="dropdown-item"
+                           href="{{ url_for("search_job_relevance", industry="Commercial TV & Radio Stations") }}">Commercial
+                            TV & Radio Stations</a>
+                        <a class="dropdown-item"
+                           href="{{ url_for("search_job_relevance", industry="Communications or Electronics") }}">Communications or Electronics</a>
+                        <a class="dropdown-item"
+                           href="{{ url_for("search_job_relevance", industry="Computer Software") }}">Computer
+                            Software</a>
+                        <a class="dropdown-item"
+                           href="{{ url_for("search_job_relevance", industry="Conservative or Republican") }}">Conservative or Republican</a>
+                        <a class="dropdown-item" href="{{ url_for("search_job_relevance", industry="Construction") }}">Construction</a>
+                        <a class="dropdown-item"
+                           href="{{ url_for("search_job_relevance", industry="Construction Services") }}">Construction
+                            Services</a>
+                        <a class="dropdown-item"
+                           href="{{ url_for("search_job_relevance", industry="Construction Unions") }}">Construction
+                            Unions</a>
+                        <a class="dropdown-item" href="{{ url_for("search_job_relevance", industry="Credit Unions") }}">Credit
+                            Unions</a>
+                        <a class="dropdown-item"
+                           href="{{ url_for("search_job_relevance", industry="Crop Production & Basic Processing") }}">Crop
+                            Production & Basic Processing</a>
+                        <a class="dropdown-item" href="{{ url_for("search_job_relevance", industry="Cruise Lines") }}">Cruise
+                            Lines</a>
+                        <a class="dropdown-item"
+                           href="{{ url_for("search_job_relevance", industry="Cruise Ships & Lines") }}">Cruise Ships &
+                            Lines</a>
+                        <a class="dropdown-item"
+                           href="{{ url_for("search_job_relevance", industry="Dairy") }}">Dairy</a>
+                        <a class="dropdown-item" href="{{ url_for("search_job_relevance", industry="Defense") }}">Defense</a>
+                        <a class="dropdown-item"
+                           href="{{ url_for("search_job_relevance", industry="Defense Aerospace") }}">Defense
+                            Aerospace</a>
+                        <a class="dropdown-item"
+                           href="{{ url_for("search_job_relevance", industry="Defense Electronics") }}">Defense
+                            Electronics</a>
+                        <a class="dropdown-item"
+                           href="{{ url_for("search_job_relevance", industry="Defense or Foreign Policy Advocates") }}">Defense or Foreign
+                            Policy Advocates</a>
+                        <a class="dropdown-item"
+                           href="{{ url_for("search_job_relevance", industry="Democratic Candidate Committees") }}">Democratic
+                            Candidate Committees</a>
+                        <a class="dropdown-item"
+                           href="{{ url_for("search_job_relevance", industry="Democratic Leadership PACs") }}">Democratic
+                            Leadership PACs</a>
+                        <a class="dropdown-item"
+                           href="{{ url_for("search_job_relevance", industry="Democratic or Liberal") }}">Democratic or Liberal</a>
+                        <a class="dropdown-item" href="{{ url_for("search_job_relevance", industry="Dentists") }}">Dentists</a>
+                        <a class="dropdown-item"
+                           href="{{ url_for("search_job_relevance", industry="Doctors & Other Health Professionals") }}">Doctors
+                            & Other Health Professionals</a>
+                        <a class="dropdown-item"
+                           href="{{ url_for("search_job_relevance", industry="Drug Manufacturers") }}">Drug
+                            Manufacturers</a>
+                        <a class="dropdown-item" href="{{ url_for("search_job_relevance", industry="Education") }}">Education</a>
+                        <a class="dropdown-item"
+                           href="{{ url_for("search_job_relevance", industry="Electric Utilities") }}">Electric
+                            Utilities</a>
+                        <a class="dropdown-item"
+                           href="{{ url_for("search_job_relevance", industry="Electronics Manufacturing & Equipment") }}">Electronics
+                            Manufacturing & Equipment</a>
+                        <a class="dropdown-item"
+                           href="{{ url_for("search_job_relevance", industry="Electronics, Defense Contractors") }}">Electronics,
+                            Defense Contractors</a>
+                        <a class="dropdown-item"
+                           href="{{ url_for("search_job_relevance", industry="Energy & Natural Resources") }}">Energy &
+                            Natural Resources</a>
+                        <a class="dropdown-item"
+                           href="{{ url_for("search_job_relevance", industry="Entertainment Industry") }}">Entertainment
+                            Industry</a>
+                        <a class="dropdown-item" href="{{ url_for("search_job_relevance", industry="Environment") }}">Environment</a>
+                        <a class="dropdown-item" href="{{ url_for("search_job_relevance", industry="Farm Bureaus") }}">Farm
+                            Bureaus</a>
+                        <a class="dropdown-item" href="{{ url_for("search_job_relevance", industry="Farming") }}">Farming</a>
+                        <a class="dropdown-item"
+                           href="{{ url_for("search_job_relevance", industry="Finance  or  Credit Companies") }}">Finance  or
+                            Credit Companies</a>
+                        <a class="dropdown-item"
+                           href="{{ url_for("search_job_relevance", industry="Finance, Insurance & Real Estate") }}">Finance,
+                            Insurance & Real Estate</a>
+                        <a class="dropdown-item"
+                           href="{{ url_for("search_job_relevance", industry="Food & Beverage") }}">Food & Beverage</a>
+                        <a class="dropdown-item"
+                           href="{{ url_for("search_job_relevance", industry="Food Processing & Sales") }}">Food
+                            Processing & Sales</a>
+                        <a class="dropdown-item"
+                           href="{{ url_for("search_job_relevance", industry="Food Products Manufacturing") }}">Food
+                            Products Manufacturing</a>
+                        <a class="dropdown-item" href="{{ url_for("search_job_relevance", industry="Food Stores") }}">Food
+                            Stores</a>
+                        <a class="dropdown-item"
+                           href="{{ url_for("search_job_relevance", industry="For-profit Education") }}">For-profit
+                            Education</a>
+                        <a class="dropdown-item"
+                           href="{{ url_for("search_job_relevance", industry="For-profit Prisons") }}">For-profit
+                            Prisons</a>
+                        <a class="dropdown-item"
+                           href="{{ url_for("search_job_relevance", industry="Foreign & Defense Policy") }}">Foreign &
+                            Defense Policy</a>
+                        <a class="dropdown-item"
+                           href="{{ url_for("search_job_relevance", industry="Forestry & Forest Products") }}">Forestry
+                            & Forest Products</a>
+                        <a class="dropdown-item"
+                           href="{{ url_for("search_job_relevance", industry="Foundations, Philanthropists & Non-Profits") }}">Foundations,
+                            Philanthropists & Non-Profits</a>
+                        <a class="dropdown-item"
+                           href="{{ url_for("search_job_relevance", industry="Funeral Services") }}">Funeral
+                            Services</a>
+                        <a class="dropdown-item"
+                           href="{{ url_for("search_job_relevance", industry="Gambling & Casinos") }}">Gambling &
+                            Casinos</a>
+                        <a class="dropdown-item"
+                           href="{{ url_for("search_job_relevance", industry="Gambling, Indian Casinos") }}">Gambling,
+                            Indian Casinos</a>
+                        <a class="dropdown-item"
+                           href="{{ url_for("search_job_relevance", industry="Garbage Collection or Waste Management") }}">Garbage
+                            Collection or Waste Management</a>
+                        <a class="dropdown-item" href="{{ url_for("search_job_relevance", industry="Gas & Oil") }}">Gas
+                            & Oil</a>
+                        <a class="dropdown-item"
+                           href="{{ url_for("search_job_relevance", industry="Gay & Lesbian Rights & Issues") }}">Gay &
+                            Lesbian Rights & Issues</a>
+                        <a class="dropdown-item"
+                           href="{{ url_for("search_job_relevance", industry="General Contractors") }}">General
+                            Contractors</a>
+                        <a class="dropdown-item"
+                           href="{{ url_for("search_job_relevance", industry="Government Employee Unions") }}">Government
+                            Employee Unions</a>
+                        <a class="dropdown-item"
+                           href="{{ url_for("search_job_relevance", industry="Government Employees") }}">Government
+                            Employees</a>
+                        <a class="dropdown-item" href="{{ url_for("search_job_relevance", industry="Gun Control") }}">Gun
+                            Control</a>
+                        <a class="dropdown-item" href="{{ url_for("search_job_relevance", industry="Gun Rights") }}">Gun
+                            Rights</a>
+                        <a class="dropdown-item"
+                           href="{{ url_for("search_job_relevance", industry="Health") }}">Health</a>
+                        <a class="dropdown-item"
+                           href="{{ url_for("search_job_relevance", industry="Health Professionals") }}">Health
+                            Professionals</a>
+                        <a class="dropdown-item"
+                           href="{{ url_for("search_job_relevance", industry="Health Services or HMOs") }}">Health
+                            Services or HMOs</a>
+                        <a class="dropdown-item" href="{{ url_for("search_job_relevance", industry="Hedge Funds") }}">Hedge
+                            Funds</a>
+                        <a class="dropdown-item"
+                           href="{{ url_for("search_job_relevance", industry="HMOs & Health Care Services") }}">HMOs &
+                            Health Care Services</a>
+                        <a class="dropdown-item" href="{{ url_for("search_job_relevance", industry="Home Builders") }}">Home
+                            Builders</a>
+                        <a class="dropdown-item"
+                           href="{{ url_for("search_job_relevance", industry="Hospitals & Nursing Homes") }}">Hospitals
+                            & Nursing Homes</a>
+                        <a class="dropdown-item"
+                           href="{{ url_for("search_job_relevance", industry="Hotels, Motels & Tourism") }}">Hotels,
+                            Motels & Tourism</a>
+                        <a class="dropdown-item" href="{{ url_for("search_job_relevance", industry="Human Rights") }}">Human
+                            Rights</a>
+                        <a class="dropdown-item"
+                           href="{{ url_for("search_job_relevance", industry="Ideological or Single-Issue") }}">Ideological or Single-Issue</a>
+                        <a class="dropdown-item" href="{{ url_for("search_job_relevance", industry="Indian Gaming") }}">Indian
+                            Gaming</a>
+                        <a class="dropdown-item"
+                           href="{{ url_for("search_job_relevance", industry="Industrial Unions") }}">Industrial
+                            Unions</a>
+                        <a class="dropdown-item" href="{{ url_for("search_job_relevance", industry="Insurance") }}">Insurance</a>
+                        <a class="dropdown-item" href="{{ url_for("search_job_relevance", industry="Internet") }}">Internet</a>
+                        <a class="dropdown-item" href="{{ url_for("search_job_relevance", industry="Israel Policy") }}">Israel
+                            Policy</a>
+                        <a class="dropdown-item"
+                           href="{{ url_for("search_job_relevance", industry="Labor") }}">Labor</a>
+                        <a class="dropdown-item"
+                           href="{{ url_for("search_job_relevance", industry="Lawyers & Lobbyists") }}">Lawyers &
+                            Lobbyists</a>
+                        <a class="dropdown-item"
+                           href="{{ url_for("search_job_relevance", industry="Lawyers  or  Law Firms") }}">Lawyers  or  Law
+                            Firms</a>
+                        <a class="dropdown-item"
+                           href="{{ url_for("search_job_relevance", industry="Leadership PACs") }}">Leadership PACs</a>
+                        <a class="dropdown-item"
+                           href="{{ url_for("search_job_relevance", industry="Liberal or Democratic") }}">Liberal or Democratic</a>
+                        <a class="dropdown-item"
+                           href="{{ url_for("search_job_relevance", industry="Liquor, Wine & Beer") }}">Liquor, Wine &
+                            Beer</a>
+                        <a class="dropdown-item" href="{{ url_for("search_job_relevance", industry="Livestock") }}">Livestock</a>
+                        <a class="dropdown-item" href="{{ url_for("search_job_relevance", industry="Lobbyists") }}">Lobbyists</a>
+                        <a class="dropdown-item"
+                           href="{{ url_for("search_job_relevance", industry="Lodging  or  Tourism") }}">Lodging  or
+                            Tourism</a>
+                        <a class="dropdown-item"
+                           href="{{ url_for("search_job_relevance", industry="Logging, Timber & Paper Mills") }}">Logging,
+                            Timber & Paper Mills</a>
+                        <a class="dropdown-item"
+                           href="{{ url_for("search_job_relevance", industry="Manufacturing, Misc") }}">Manufacturing,
+                            Misc</a>
+                        <a class="dropdown-item"
+                           href="{{ url_for("search_job_relevance", industry="Marine Transport") }}">Marine
+                            Transport</a>
+                        <a class="dropdown-item"
+                           href="{{ url_for("search_job_relevance", industry="Meat processing & products") }}">Meat
+                            processing & products</a>
+                        <a class="dropdown-item"
+                           href="{{ url_for("search_job_relevance", industry="Medical Supplies") }}">Medical
+                            Supplies</a>
+                        <a class="dropdown-item"
+                           href="{{ url_for("search_job_relevance", industry="Mining") }}">Mining</a>
+                        <a class="dropdown-item" href="{{ url_for("search_job_relevance", industry="Misc Business") }}">Misc
+                            Business</a>
+                        <a class="dropdown-item" href="{{ url_for("search_job_relevance", industry="Misc Finance") }}">Misc
+                            Finance</a>
+                        <a class="dropdown-item"
+                           href="{{ url_for("search_job_relevance", industry="Misc Manufacturing & Distributing") }}">Misc
+                            Manufacturing & Distributing</a>
+                        <a class="dropdown-item" href="{{ url_for("search_job_relevance", industry="Misc Unions") }}">Misc
+                            Unions</a>
+                        <a class="dropdown-item"
+                           href="{{ url_for("search_job_relevance", industry="Miscellaneous Defense") }}">Miscellaneous
+                            Defense</a>
+                        <a class="dropdown-item"
+                           href="{{ url_for("search_job_relevance", industry="Miscellaneous Services") }}">Miscellaneous
+                            Services</a>
+                        <a class="dropdown-item"
+                           href="{{ url_for("search_job_relevance", industry="Mortgage Bankers & Brokers") }}">Mortgage
+                            Bankers & Brokers</a>
+                        <a class="dropdown-item"
+                           href="{{ url_for("search_job_relevance", industry="Motion Picture Production & Distribution") }}">Motion
+                            Picture Production & Distribution</a>
+                        <a class="dropdown-item"
+                           href="{{ url_for("search_job_relevance", industry="Music Production") }}">Music
+                            Production</a>
+                        <a class="dropdown-item"
+                           href="{{ url_for("search_job_relevance", industry="Natural Gas Pipelines") }}">Natural Gas
+                            Pipelines</a>
+                        <a class="dropdown-item"
+                           href="{{ url_for("search_job_relevance", industry="Newspaper, Magazine & Book Publishing") }}">Newspaper,
+                            Magazine & Book Publishing</a>
+                        <a class="dropdown-item"
+                           href="{{ url_for("search_job_relevance", industry="Non-profits, Foundations & Philanthropists") }}">Non-profits,
+                            Foundations & Philanthropists</a>
+                        <a class="dropdown-item"
+                           href="{{ url_for("search_job_relevance", industry="Nurses") }}">Nurses</a>
+                        <a class="dropdown-item"
+                           href="{{ url_for("search_job_relevance", industry="Nursing Homes or Hospitals") }}">Nursing
+                            Homes or Hospitals</a>
+                        <a class="dropdown-item"
+                           href="{{ url_for("search_job_relevance", industry="Nutritional & Dietary Supplements") }}">Nutritional
+                            & Dietary Supplements</a>
+                        <a class="dropdown-item" href="{{ url_for("search_job_relevance", industry="Oil & Gas") }}">Oil
+                            & Gas</a>
+                        <a class="dropdown-item"
+                           href="{{ url_for("search_job_relevance", industry="Other") }}">Other</a>
+                        <a class="dropdown-item"
+                           href="{{ url_for("search_job_relevance", industry="Payday Lenders") }}">Payday Lenders</a>
+                        <a class="dropdown-item"
+                           href="{{ url_for("search_job_relevance", industry="Pharmaceutical Manufacturing") }}">Pharmaceutical
+                            Manufacturing</a>
+                        <a class="dropdown-item"
+                           href="{{ url_for("search_job_relevance", industry="Pharmaceuticals  or  Health Products") }}">Pharmaceuticals
+                             or  Health Products</a>
+                        <a class="dropdown-item"
+                           href="{{ url_for("search_job_relevance", industry="Phone Companies") }}">Phone Companies</a>
+                        <a class="dropdown-item"
+                           href="{{ url_for("search_job_relevance", industry="Physicians & Other Health Professionals") }}">Physicians
+                            & Other Health Professionals</a>
+                        <a class="dropdown-item" href="{{ url_for("search_job_relevance", industry="Postal Unions") }}">Postal
+                            Unions</a>
+                        <a class="dropdown-item"
+                           href="{{ url_for("search_job_relevance", industry="Poultry & Eggs") }}">Poultry & Eggs</a>
+                        <a class="dropdown-item"
+                           href="{{ url_for("search_job_relevance", industry="Power Utilities") }}">Power Utilities</a>
+                        <a class="dropdown-item"
+                           href="{{ url_for("search_job_relevance", industry="Printing & Publishing") }}">Printing &
+                            Publishing</a>
+                        <a class="dropdown-item"
+                           href="{{ url_for("search_job_relevance", industry="Private Equity & Investment Firms") }}">Private
+                            Equity & Investment Firms</a>
+                        <a class="dropdown-item" href="{{ url_for("search_job_relevance", industry="Pro-Israel") }}">Pro-Israel</a>
+                        <a class="dropdown-item"
+                           href="{{ url_for("search_job_relevance", industry="Professional Sports, Sports Arenas & Related Equipment & Services") }}">Professional
+                            Sports, Sports Arenas & Related Equipment & Services</a>
+                        <a class="dropdown-item"
+                           href="{{ url_for("search_job_relevance", industry="Progressive or Democratic") }}">Progressive or Democratic</a>
+                        <a class="dropdown-item"
+                           href="{{ url_for("search_job_relevance", industry="Public Employees") }}">Public
+                            Employees</a>
+                        <a class="dropdown-item"
+                           href="{{ url_for("search_job_relevance", industry="Public Sector Unions") }}">Public Sector
+                            Unions</a>
+                        <a class="dropdown-item"
+                           href="{{ url_for("search_job_relevance", industry="Publishing & Printing") }}">Publishing &
+                            Printing</a>
+                        <a class="dropdown-item"
+                           href="{{ url_for("search_job_relevance", industry="Radio or TV Stations") }}">Radio or TV
+                            Stations</a>
+                        <a class="dropdown-item" href="{{ url_for("search_job_relevance", industry="Railroads") }}">Railroads</a>
+                        <a class="dropdown-item" href="{{ url_for("search_job_relevance", industry="Real Estate") }}">Real
+                            Estate</a>
+                        <a class="dropdown-item"
+                           href="{{ url_for("search_job_relevance", industry="Record Companies or Singers") }}">Record
+                            Companies or Singers</a>
+                        <a class="dropdown-item"
+                           href="{{ url_for("search_job_relevance", industry="Recorded Music & Music Production") }}">Recorded
+                            Music & Music Production</a>
+                        <a class="dropdown-item"
+                           href="{{ url_for("search_job_relevance", industry="Recreation  or  Live Entertainment") }}">Recreation
+                             or  Live Entertainment</a>
+                        <a class="dropdown-item"
+                           href="{{ url_for("search_job_relevance", industry="Religious Organizations or Clergy") }}">Religious
+                            Organizations or Clergy</a>
+                        <a class="dropdown-item"
+                           href="{{ url_for("search_job_relevance", industry="Republican Candidate Committees") }}">Republican
+                            Candidate Committees</a>
+                        <a class="dropdown-item"
+                           href="{{ url_for("search_job_relevance", industry="Republican Leadership PACs") }}">Republican
+                            Leadership PACs</a>
+                        <a class="dropdown-item"
+                           href="{{ url_for("search_job_relevance", industry="Republican or Conservative") }}">Republican or Conservative</a>
+                        <a class="dropdown-item"
+                           href="{{ url_for("search_job_relevance", industry="Residential Construction") }}">Residential
+                            Construction</a>
+                        <a class="dropdown-item"
+                           href="{{ url_for("search_job_relevance", industry="Restaurants & Drinking Establishments") }}">Restaurants
+                            & Drinking Establishments</a>
+                        <a class="dropdown-item" href="{{ url_for("search_job_relevance", industry="Retail Sales") }}">Retail
+                            Sales</a>
+                        <a class="dropdown-item" href="{{ url_for("search_job_relevance", industry="Retired") }}">Retired</a>
+                        <a class="dropdown-item"
+                           href="{{ url_for("search_job_relevance", industry="Savings & Loans") }}">Savings & Loans</a>
+                        <a class="dropdown-item"
+                           href="{{ url_for("search_job_relevance", industry="Schools or Education") }}">Schools or Education</a>
+                        <a class="dropdown-item" href="{{ url_for("search_job_relevance", industry="Sea Transport") }}">Sea
+                            Transport</a>
+                        <a class="dropdown-item"
+                           href="{{ url_for("search_job_relevance", industry="Securities & Investment") }}">Securities &
+                            Investment</a>
+                        <a class="dropdown-item"
+                           href="{{ url_for("search_job_relevance", industry="Special Trade Contractors") }}">Special
+                            Trade Contractors</a>
+                        <a class="dropdown-item"
+                           href="{{ url_for("search_job_relevance", industry="Sports, Professional") }}">Sports,
+                            Professional</a>
+                        <a class="dropdown-item"
+                           href="{{ url_for("search_job_relevance", industry="Steel Production") }}">Steel
+                            Production</a>
+                        <a class="dropdown-item"
+                           href="{{ url_for("search_job_relevance", industry="Stock Brokers or Investment Industry") }}">Stock
+                            Brokers or Investment Industry</a>
+                        <a class="dropdown-item"
+                           href="{{ url_for("search_job_relevance", industry="Student Loan Companies") }}">Student Loan
+                            Companies</a>
+                        <a class="dropdown-item"
+                           href="{{ url_for("search_job_relevance", industry="Sugar Cane & Sugar Beets") }}">Sugar Cane
+                            & Sugar Beets</a>
+                        <a class="dropdown-item"
+                           href="{{ url_for("search_job_relevance", industry="Teachers Unions") }}">Teachers Unions</a>
+                        <a class="dropdown-item"
+                           href="{{ url_for("search_job_relevance", industry="Teachers or Education") }}">Teachers or Education</a>
+                        <a class="dropdown-item"
+                           href="{{ url_for("search_job_relevance", industry="Telecom Services & Equipment") }}">Telecom
+                            Services & Equipment</a>
+                        <a class="dropdown-item"
+                           href="{{ url_for("search_job_relevance", industry="Telephone Utilities") }}">Telephone
+                            Utilities</a>
+                        <a class="dropdown-item" href="{{ url_for("search_job_relevance", industry="Textiles") }}">Textiles</a>
+                        <a class="dropdown-item"
+                           href="{{ url_for("search_job_relevance", industry="Timber, Logging & Paper Mills") }}">Timber,
+                            Logging & Paper Mills</a>
+                        <a class="dropdown-item" href="{{ url_for("search_job_relevance", industry="Tobacco") }}">Tobacco</a>
+                        <a class="dropdown-item"
+                           href="{{ url_for("search_job_relevance", industry="Transportation") }}">Transportation</a>
+                        <a class="dropdown-item"
+                           href="{{ url_for("search_job_relevance", industry="Transportation Unions") }}">Transportation
+                            Unions</a>
+                        <a class="dropdown-item"
+                           href="{{ url_for("search_job_relevance", industry="Trash Collection or Waste Management") }}">Trash
+                            Collection or Waste Management</a>
+                        <a class="dropdown-item" href="{{ url_for("search_job_relevance", industry="Trucking") }}">Trucking</a>
+                        <a class="dropdown-item"
+                           href="{{ url_for("search_job_relevance", industry="TV  or  Movies  or  Music") }}">TV  or  Movies  or
+                            Music</a>
+                        <a class="dropdown-item" href="{{ url_for("search_job_relevance", industry="TV Production") }}">TV
+                            Production</a>
+                        <a class="dropdown-item"
+                           href="{{ url_for("search_job_relevance", industry="Unions") }}">Unions</a>
+                        <a class="dropdown-item"
+                           href="{{ url_for("search_job_relevance", industry="Unions, Airline") }}">Unions, Airline</a>
+                        <a class="dropdown-item"
+                           href="{{ url_for("search_job_relevance", industry="Unions, Building Trades") }}">Unions,
+                            Building Trades</a>
+                        <a class="dropdown-item"
+                           href="{{ url_for("search_job_relevance", industry="Unions, Industrial") }}">Unions,
+                            Industrial</a>
+                        <a class="dropdown-item" href="{{ url_for("search_job_relevance", industry="Unions, Misc") }}">Unions,
+                            Misc</a>
+                        <a class="dropdown-item"
+                           href="{{ url_for("search_job_relevance", industry="Unions, Public Sector") }}">Unions, Public
+                            Sector</a>
+                        <a class="dropdown-item"
+                           href="{{ url_for("search_job_relevance", industry="Unions, Teacher") }}">Unions, Teacher</a>
+                        <a class="dropdown-item"
+                           href="{{ url_for("search_job_relevance", industry="Unions, Transportation") }}">Unions,
+                            Transportation</a>
+                        <a class="dropdown-item"
+                           href="{{ url_for("search_job_relevance", industry="Universities, Colleges & Schools") }}">Universities,
+                            Colleges & Schools</a>
+                        <a class="dropdown-item"
+                           href="{{ url_for("search_job_relevance", industry="Vegetables & Fruits") }}">Vegetables &
+                            Fruits</a>
+                        <a class="dropdown-item"
+                           href="{{ url_for("search_job_relevance", industry="Venture Capital") }}">Venture Capital</a>
+                        <a class="dropdown-item"
+                           href="{{ url_for("search_job_relevance", industry="Waste Management") }}">Waste
+                            Management</a>
+                        <a class="dropdown-item"
+                           href="{{ url_for("search_job_relevance", industry="Wine, Beer & Liquor") }}">Wine, Beer &
+                            Liquor</a>
+                        <a class="dropdown-item"
+                           href="{{ url_for("search_job_relevance", industry="Women's Issues") }}">Women's Issues</a>
+                    </div>
+                </div>
             </div>
         </div>
         <br>
         <div class="row">
-            <div class="col-12">
-                <table class="table table-striped table-bordered table-hover" style="margin-bottom : 5%">
+            <div id="here" class="col-12">
+                <table id="data" class="table table-striped table-bordered table-hover" style="margin-bottom : 5%">
                     <thead class="thead-dark" style="background-color: black ; color:white">
                     <tr>
                         <td style="width:30% ; text-align: center ; vertical-align: middle"><b>Job Title</b></td>
@@ -68,141 +648,140 @@
                     </tr>
                     </thead>
                     <tbody>
-                        {% for i in jobs %}
-                            <tr>
-                                <td style="text-align: center ; vertical-align: middle">{{ jobs[i]["job_title"].capitalize() }}</td>
-                                <td style="text-align: center ; vertical-align: middle">{{ jobs[i]["company_name"].capitalize() }}</td>
-                                <td style="text-align: center ; vertical-align: middle">{{ jobs[i]["date"] }}</td>
-                                <td style="text-align: center ; vertical-align: middle">
-                                    <button id="btn{{ i }}" class="btn btn-primary" data-toggle="modal"
-                                            data-target="#{{ i }}">View
-                                        Details
-                                    </button>
-                                </td>
-                                <div class="modal fade" id="{{ i }}">
-                                    <div class="modal-dialog modal-lg">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h4 class="modal-title"><b>{{ jobs[i]["job_title"].capitalize() }}</b>
-                                                </h4>
-                                                <button type="button" class="close" data-dismiss="modal">&times;
-                                                </button>
-                                            </div>
-                                            <br>
-                                            <div class="modal-body">
-                                                <div class="container">
-                                                    <div class="row">
-                                                        <div class="col-md-6 col-xs-12">
-                                                            <h6><b>Job Title</b>
-                                                                : {{ jobs[i]["job_title"].capitalize() }}</h6>
-                                                        </div>
-                                                        <br><br><br>
-                                                        <div class="col-md-6 col-xs-12">
-                                                            <h6><b>Qualification</b>
-                                                                : {{ jobs[i]["qualification"].capitalize() }}</h6>
-                                                        </div>
+                    {% for i in jobs %}
+                        <tr>
+                            <td style="text-align: center ; vertical-align: middle">{{ jobs[i]["job_title"].capitalize() }}</td>
+                            <td style="text-align: center ; vertical-align: middle">{{ jobs[i]["company_name"].capitalize() }}</td>
+                            <td style="text-align: center ; vertical-align: middle">{{ jobs[i]["date"] }}</td>
+                            <td style="text-align: center ; vertical-align: middle">
+                                <button id="btn{{ i }}" class="btn btn-primary" data-toggle="modal"
+                                        data-target="#{{ i }}">View
+                                    Details
+                                </button>
+                            </td>
+                            <div class="modal fade" id="{{ i }}">
+                                <div class="modal-dialog modal-lg">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h4 class="modal-title"><b>{{ jobs[i]["job_title"].capitalize() }}</b>
+                                            </h4>
+                                            <button type="button" class="close" data-dismiss="modal">&times;
+                                            </button>
+                                        </div>
+                                        <br>
+                                        <div class="modal-body">
+                                            <div class="container">
+                                                <div class="row">
+                                                    <div class="col-md-6 col-xs-12">
+                                                        <h6><b>Job Title</b>
+                                                            : {{ jobs[i]["job_title"].capitalize() }}</h6>
                                                     </div>
-                                                    <br>
-                                                    <div class="row">
-                                                        <div class="col-md-6 col-xs-12">
-                                                            <h6><b>Location</b> : {{ jobs[i]["location"].capitalize() }}
-                                                            </h6>
-                                                        </div>
-                                                        <br><br><br>
-                                                        <div class="col-md-6 col-xs-12">
-                                                            <h6><b>Salary</b> : {{ jobs[i]["salary"] }}</h6>
-                                                        </div>
+                                                    <br><br><br>
+                                                    <div class="col-md-6 col-xs-12">
+                                                        <h6><b>Qualification</b>
+                                                            : {{ jobs[i]["qualification"].capitalize() }}</h6>
                                                     </div>
-                                                    <br>
-                                                    <div class="row">
-                                                        <div class="col-md-6 col-xs-12">
-                                                            <h6><b>Employment Type</b>
-                                                                : {{ jobs[i]["employment_type"].capitalize() }}</h6>
-                                                        </div>
-                                                        <br><br><br>
-                                                        <div class="col-md-6 col-xs-12">
-                                                            {% if jobs[i]["contract_time"] != "" %}
-                                                                <h6><b>Contract Time</b>
-                                                                    : {{ jobs[i]["contract_time"] }}</h6>
-                                                            {% else %}
-                                                                <h6><b>Contract Time : Not Applicable</b></h6>
-                                                            {% endif %}
-                                                        </div>
+                                                </div>
+                                                <br>
+                                                <div class="row">
+                                                    <div class="col-md-6 col-xs-12">
+                                                        <h6><b>Location</b> : {{ jobs[i]["location"].capitalize() }}
+                                                        </h6>
                                                     </div>
-                                                    <br>
-                                                    <div class="row">
-                                                        <div class="col-12">
-                                                            <h6><b>Location
-                                                                : </b> {{ jobs[i]["location"].capitalize() }}</h6>
-                                                        </div>
+                                                    <br><br><br>
+                                                    <div class="col-md-6 col-xs-12">
+                                                        <h6><b>Salary</b> : ${{ jobs[i]["salary"] }}</h6>
+                                                    </div>
+                                                </div>
+                                                <br>
+                                                <div class="row">
+                                                    <div class="col-md-6 col-xs-12">
+                                                        <h6><b>Employment Type</b>
+                                                            : {{ jobs[i]["employment_type"].capitalize() }}</h6>
+                                                    </div>
+                                                    <br><br><br>
+                                                    <div class="col-md-6 col-xs-12">
+                                                        {% if jobs[i]["contract_time"] != "" %}
+                                                            <h6><b>Contract Time</b>
+                                                                : {{ jobs[i]["contract_time"] }} months</h6>
+                                                        {% else %}
+                                                            <h6><b>Contract Time : Not Applicable</b></h6>
+                                                        {% endif %}
+                                                    </div>
+                                                </div>
+                                                <br>
+                                                <div class="row">
+                                                    <div class="col-12">
+                                                        <h6><b>Location
+                                                            : </b> {{ jobs[i]["location"].capitalize() }}</h6>
+                                                    </div>
 
+                                                </div>
+                                                <br>
+                                                <div class="row">
+                                                    <div class="col-12">
+                                                        <label for id="dec{{ i }}"><b>Job Description</b> : </label>
+                                                        <textarea class="form-control"
+                                                                  style="resize : none; overflow-x : hidden"
+                                                                  cols="9" rows="5" id="dec{{ i }}"
+                                                                  readonly>{{ jobs[i]["job_dec"] }}</textarea>
                                                     </div>
-                                                    <br>
-                                                    <div class="row">
-                                                        <div class="col-12">
-                                                            <label for id="dec{{ i }}"><b>Job Description</b> : </label>
-                                                            <textarea class="form-control"
-                                                                      style="resize : none; overflow-x : hidden"
-                                                                      cols="9" rows="5" id="dec{{ i }}"
-                                                                      readonly>{{ jobs[i]["job_dec"] }}</textarea>
-                                                        </div>
+                                                </div>
+                                                <br>
+                                                <br>
+                                                <div class="row">
+                                                    <div id="map{{ i }}"
+                                                         style="width:98%; height:400px;margin-left: auto;margin-right:auto">
                                                     </div>
-                                                    <br>
-                                                    <br>
-                                                    <div class="row">
-                                                        <div id="map{{ i }}"
-                                                             style="width:98%; height:400px;margin-left: auto;margin-right:auto">
-                                                        </div>
-                                                    </div>
-                                                    <br>
-                                                    <br>
-                                                    <div class="row">
-                                                        <div class="col-12">
-                                                            <button class="btn btn-warning collapsing_button"
-                                                                    style="width:100%"
-                                                                    data-toggle="collapse"
-                                                                    data-target="#collapse{{ i }}">
-                                                                Show Company Details
-                                                            </button>
-                                                            <br>
-                                                            <br>
-                                                            <div id="collapse{{ i }}" class="collapse">
-                                                                <div class="container">
-                                                                    <div class="row">
-                                                                        <div class="col-md-6 col-xs-12">
-                                                                            <h6><b>Company Name</b>
-                                                                                : {{ jobs[i]["company_name"] }}</h6>
-                                                                        </div>
-                                                                        <br>
-                                                                        <div class="col-md-6 col-xs-12">
-                                                                            <h6><b>Company Tel</b>
-                                                                                : {{ jobs[i]["company_tel"] }}</h6>
-                                                                        </div>
+                                                </div>
+                                                <br>
+                                                <br>
+                                                <div class="row">
+                                                    <div class="col-12">
+                                                        <button class="btn btn-warning collapsing_button"
+                                                                style="width:100%"
+                                                                data-toggle="collapse"
+                                                                data-target="#collapse{{ i }}">
+                                                            Show Company Details
+                                                        </button>
+                                                        <br>
+                                                        <br>
+                                                        <div id="collapse{{ i }}" class="collapse">
+                                                            <div class="container">
+                                                                <div class="row">
+                                                                    <div class="col-md-6 col-xs-12">
+                                                                        <h6><b>Company Name</b>
+                                                                            : {{ jobs[i]["company_name"] }}</h6>
                                                                     </div>
                                                                     <br>
-                                                                    <div class="row">
-                                                                        <div class="col-md-6 col-xs-12">
-                                                                            <h6><b>Company Industry</b>
-                                                                                : {{ jobs[i]["company_industry"] }}</h6>
-                                                                        </div>
-                                                                        <div class="col-md-6 col-xs-12">
-                                                                            <h6><b>Company Email</b>
-                                                                                : {{ jobs[i]["company_email"] }}</h6>
-                                                                        </div>
+                                                                    <div class="col-md-6 col-xs-12">
+                                                                        <h6><b>Company Tel</b>
+                                                                            : {{ jobs[i]["company_tel"] }}</h6>
                                                                     </div>
-                                                                    <br>
-                                                                    <div class="row">
-                                                                        <div class="col-12">
-                                                                            <h6><b>Company Bio</b>
-                                                                                : {{ jobs[i]["company_bio"] }}</h6>
-                                                                        </div>
+                                                                </div>
+                                                                <br>
+                                                                <div class="row">
+                                                                    <div class="col-md-6 col-xs-12">
+                                                                        <h6><b>Company Industry</b>
+                                                                            : {{ jobs[i]["company_industry"] }}</h6>
                                                                     </div>
-                                                                    <br>
-                                                                    <div class="row">
-                                                                        <div class="col-12">
-                                                                            <h6><b>Company Address</b>
-                                                                                : {{ jobs[i]["company_address"] }}</h6>
-                                                                        </div>
+                                                                    <div class="col-md-6 col-xs-12">
+                                                                        <h6><b>Company Email</b>
+                                                                            : {{ jobs[i]["company_email"] }}</h6>
+                                                                    </div>
+                                                                </div>
+                                                                <br>
+                                                                <div class="row">
+                                                                    <div class="col-12">
+                                                                        <h6><b>Company Bio</b>
+                                                                            : {{ jobs[i]["company_bio"] }}</h6>
+                                                                    </div>
+                                                                </div>
+                                                                <br>
+                                                                <div class="row">
+                                                                    <div class="col-12">
+                                                                        <h6><b>Company Address</b>
+                                                                            : {{ jobs[i]["company_address"] }}</h6>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -210,21 +789,22 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="modal-footer" style="text-align: center">
-                                                <a href="{{ url_for("apply_job", post_id = i) }}" style="width:50%">
+                                        </div>
+                                        <div class="modal-footer" style="text-align: center">
+                                            <a href="{{ url_for("apply_job", post_id = i) }}" style="width:50%">
                                                 <button type="button" class="btn btn-danger" style="width:100%">Apply
                                                 </button>
-                                                </a>
-                                                <button type="button" class="btn btn-secondary" data-dismiss="modal"
-                                                        style="width:50%">
-                                                    Close
-                                                </button>
-                                            </div>
+                                            </a>
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal"
+                                                    style="width:50%">
+                                                Close
+                                            </button>
                                         </div>
                                     </div>
                                 </div>
-                            </tr>
-                        {% endfor %}
+                            </div>
+                        </tr>
+                    {% endfor %}
                     </tbody>
                 </table>
             </div>
@@ -262,6 +842,28 @@
             });
         {% endfor %}
 
+        $(document).ready(function () {
+            $('#here').after('<div class="col-12" style="text-align:center;margin-bottom:%"><ul id="nav" class="pagination" style="display:inline-block;text-align:left"></ul></div>');
+            var rowsShown = 15;
+            var rowsTotal = $('#data tbody tr').length;
+            var numPages = rowsTotal / rowsShown;
+            for (i = 0; i < numPages; i++) {
+                var pageNum = i + 1;
+                $('#nav').append('<li class="page-item" style="display:inline-block"><a class="page-link" href="#" rel="' + i + '">' + pageNum + '</a></li> ');
+            }
+            $('#data tbody tr').hide();
+            $('#data tbody tr').slice(0, rowsShown).show();
+            $('#nav a:first').addClass('active');
+            $('#nav a').bind('click', function () {
+
+                $('#nav a').removeClass('active');
+                $(this).addClass('active');
+                var currPage = $(this).attr('rel');
+                var startItem = currPage * rowsShown;
+                var endItem = startItem + rowsShown;
+                $('#data tbody tr').css('opacity', '0.0').hide().slice(startItem, endItem).css('display', 'table-row').animate({opacity: 1}, 300);
+            });
+        });
     </script>
     <script async defer
             src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBuKc700OWcOyHcuBQ_9mQWSgmOsYKHI7c">

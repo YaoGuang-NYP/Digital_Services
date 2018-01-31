@@ -36,7 +36,7 @@
                     {{ form.job_title.label }}
                     {{ form.job_title(class="form-control", placeholder="Job Title") }}
                     {% for i in form.job_title.errors %}
-                    <h6 style="color:red">{{ i }}</h6>
+                        <h6 style="color:red">{{ i }}</h6>
                     {% endfor %}
                 </div>
                 <br><br><br><br>
@@ -44,7 +44,7 @@
                     {{ form.salary.label }}
                     {{ form.salary(class="form-control", placeholder="Salary") }}
                     {% for i in form.salary.errors %}
-                    <h6 style="color:red">{{ i }}</h6>
+                        <h6 style="color:red">{{ i }}</h6>
                     {% endfor %}
                 </div>
                 <br><br><br><br>
@@ -70,7 +70,7 @@
                     {{ form.employment_type_duration.label }}
                     {{ form.employment_type_duration(class="form-control", placeholder="Required only for Contract Full Time") }}
                     {% for i in form.employment_type_duration.errors %}
-                    <h6 style="color:red">{{ i }}</h6>
+                        <h6 style="color:red">{{ i }}</h6>
                     {% endfor %}
                 </div>
                 <br><br><br>
@@ -79,17 +79,17 @@
             <div class="row">
                 <div class="col-md-4 col-xs-12">
                     {{ form.lat.label }}
-                    {{ form.lat(class="form-control" ,readonly=true) }}
+                    {{ form.lat(class="form-control") }}
                 </div>
                 <br><br><br><br>
                 <div class="col-md-4 col-xs-12">
                     {{ form.lng.label }}
-                    {{ form.lng(class="form-control" ,readonly=true) }}
+                    {{ form.lng(class="form-control") }}
                 </div>
                 <br><br><br><br>
                 <div class="col-md-4 col-xs-12">
                     {{ form.location.label }}
-                    {{ form.location(class="form-control", readonly=true) }}
+                    {{ form.location(class="form-control") }}
                 </div>
                 <br><br><br>
             </div>
@@ -98,12 +98,12 @@
                     <div id="map" style="width:100%;height:600px;margin-top:5%"></div>
                 </div>
             </div>
-        <div clsss="row" style="margin-top:2%">
-            <div class="col-12">
-                {{ form.job_des.label }}
-                {{ form.job_des(class="form-control", cols = "5", rows = "9") }}
+            <div clsss="row" style="margin-top:2%">
+                <div class="col-12">
+                    {{ form.job_des.label }}
+                    {{ form.job_des(class="form-control", cols = "5", rows = "9") }}
+                </div>
             </div>
-        </div>
             <div class="row">
                 <div class="col-12" style="text-align: center ; margin-top: 4% ; margin-bottom: 4%">
                     {{ form.submit(class = "btn btn-primary") }}
@@ -115,32 +115,104 @@
 
 {% block additionalscripts %}
     <script>
+        var map;
+        var markers = [];
+
         function initMap() {
-            var uluru = {lat: 1.290270, lng: 103.851959};
-            var map = new google.maps.Map(document.getElementById('map'), {
+            var geocoder = new google.maps.Geocoder;
+            var location = {lat: 1.3521, lng: 103.8198};
+            map = new google.maps.Map(document.getElementById('map'), {
                 zoom: 15,
-                center: uluru,
+                center: location,
                 gestureHandling: 'greedy'
             });
-            var geocoder = new google.maps.Geocoder;
-
             var marker = new google.maps.Marker({
-                position: uluru,
+                position: location,
                 map: map,
-                draggable: true,
+                draggable: true
             });
             marker.setAnimation(google.maps.Animation.BOUNCE);
-            map.addListener("click", function (event) {
-                var lat = event.latLng.lat();
-                var long = event.latLng.lng();
-                marker.setPosition({lat: lat, lng: long});
-                $("#lat").val(marker.getPosition().lat);
-                $("#lng").val(marker.getPosition().lng);
-                geocodeLatLng(geocoder, map, lat, long);
+            markers.push(marker);
+
+            map.addListener('click', function (event) {
+                deleteMarkers();
+                addMarker(event.latLng.lat(), event.latLng.lng());
+                geocodeLatLng(geocoder, map, event.latLng.lat(), event.latLng.lng());
                 setTimeout(function () {
-                    map.panTo({lat: lat, lng: long})
+                    map.panTo({lat: event.latLng.lat(), lng: event.latLng.lng()})
                 }, 3000);
             });
+            addMarker(location);
+            $("#lat").val(1.351);
+            $("#lng").val(103.8198);
+
+            $("#lat").change(function () {
+                deleteMarkers();
+                var lat = parseFloat($("#lat").val());
+                var lng = parseFloat($("#lng").val());
+                addMarker(lat, lng);
+                geocodeLatLng(geocoder, map, lat, lng);
+                setTimeout(function () {
+                    map.panTo({lat: lat, lng: lng})
+                }, 1000);
+            });
+
+            $("#lng").change(function () {
+                deleteMarkers();
+                var lat = parseFloat($("#lat").val());
+                var lng = parseFloat($("#lng").val());
+                addMarker(lat, lng);
+                geocodeLatLng(geocoder, map, lat, lng);
+                setTimeout(function () {
+                    map.panTo({lat: lat, lng: lng})
+                }, 1000);
+            });
+
+            $("#location").change(function () {
+                codeAddress();
+            });
+
+            function codeAddress() {
+                var address = $("#location").val()
+                geocoder.geocode({'address': address}, function (results, status) {
+                    if (status == 'OK') {
+                        map.setCenter(results[0].geometry.location);
+                        deleteMarkers();
+                        addMarker(results[0].geometry.location.lat(), results[0].geometry.location.lng());
+                        map.panTo({lat : results[0].geometry.location.lat(), lng : results[0].geometry.location.lng()})
+                    } else {
+                        alert('Geocode was not successful for the following reason: ' + status);
+                    }
+                });
+            }
+
+        }
+
+        function addMarker(lat, lng) {
+            var marker = new google.maps.Marker({
+                position: {lat: parseFloat(lat), lng: parseFloat(lng)},
+                map: map,
+                draggable: true
+            });
+            marker.setAnimation(google.maps.Animation.BOUNCE);
+            $("#lat").val(lat);
+            $("#lng").val(lng);
+            markers.push(marker);
+        }
+
+        function setMapOnAll(map) {
+            for (var i = 0; i < markers.length; i++) {
+                markers[i].setMap(map);
+            }
+        }
+
+        function clearMarkers() {
+            setMapOnAll(null);
+        }
+
+        function deleteMarkers() {
+            clearMarkers();
+            markers = [];
         }
 
         function geocodeLatLng(geocoder, map, lat, lng) {
@@ -154,8 +226,6 @@
                 }
             });
         }
-
-
     </script>
     <script async defer
             src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBuKc700OWcOyHcuBQ_9mQWSgmOsYKHI7c&callback=initMap">
