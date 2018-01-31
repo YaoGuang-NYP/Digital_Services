@@ -41,6 +41,7 @@
         #footer {
             clear: both;
         }
+
     </style>
 {% endblock %}
 
@@ -122,40 +123,36 @@
         </div>
 
         <!--template-->
-        {% if session['data']['status'] == 'user' %}
-            <div class="container wow fadeInUp" data-wow-delay="0.1s">
-                <div class="row" style="margin-bottom : 5%">
-                    <div class="col-md-12 col-xs-12">
-                        <div class="card" id="template-top">
-                            <div class="card-header">Previously Created Templates</div>
-                            <div class="card-body">
-                                {% if session['templates'] %}
-                                    {% for saves in session['templates'] %}
-                                        <h3>{{ saves }}
-                                            <span style="right:10px; position:absolute">
-                                                <a href="/loadtemplate/{{ session['templates'][saves] }}">
-                                                    <button class="btn btn-primary" style="margin-right:5px; width:100px">Edit</button>
-                                                </a>
-                                                <a href="/delete/{{ session['templates'][saves] }}">
-                                                    <button class="btn btn-danger" style="width:100px">Delete</button>
-                                                </a>
-                                            </span>
-                                        </h3>
-                                    {% endfor %}
-                                {% else %}
-                                    <div style="text-align: center">
+        <div class="container wow fadeInUp" data-wow-delay="0.1s">
+            <div class="row" style="margin-bottom : 5%">
+                <div class="col-md-12 col-xs-12">
+                    <div class="card" id="template-top">
+                        <div class="card-header">Previously Created Templates</div>
+                        <div class="card-body">
+                            {% if session['templates'] %}
+                                {% for saves in session['templates'] %}
+                                    <h3>{{ saves }}
+                                        <span style="right:10px; position:absolute">
+                                            <a href="/loadtemplate/{{ session['templates'][saves] }}">
+                                                <button class="btn btn-primary" style="margin-right:5px; width:100px">Edit</button>
+                                            </a>
+                                            <a href="/delete/{{ session['templates'][saves] }}">
+                                                <button class="btn btn-danger" style="width:100px">Delete</button>
+                                            </a>
+                                        </span>
+                                    </h3>
+                                {% endfor %}
+                            {% else %}
+                                <div style="text-align: center">
                                     <h3><span>No Found Templates</span></h3>
-                                    <button class="btn btn-primary" style="width:200px">Create</button>
-                                    </div><!---->
-                                {% endif %}
-                            </div>
+                                    <button data-toggle="modal" data-target="#myModal" class="btn btn-primary" style="width:200px">Create</button>
+                                </div>
+                            {% endif %}
                         </div>
                     </div>
                 </div>
             </div>
-        {% else %}
-            <div></div>
-        {% endif %}
+        </div>
 
         <div id="myModal" class="modal fade" role="dialog">
             <div class="modal-dialog">
