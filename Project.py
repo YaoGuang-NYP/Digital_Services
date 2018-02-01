@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, flash, redirect, url_for, session
+from flask import Flask, render_template, request, flash, redirect, url_for, session, make_response
 from wtforms import Form, StringField, TextAreaField, RadioField, SelectField, validators, SubmitField, IntegerField, \
     PasswordField
 from forms import Forms
@@ -7,6 +7,9 @@ from flask_socketio import SocketIO, emit
 import datetime
 import smtplib
 from random import randint
+import pdfkit
+path_wkthmltopdf = r'C:\Program Files\wkhtmltopdf\bin\wkhtmltopdf.exe'
+configuration = pdfkit.configuration(wkhtmltopdf=path_wkthmltopdf)
 
 app = Flask(__name__)
 app.secret_key = "development key"
@@ -1313,7 +1316,7 @@ def loadtemplate(name):
     templates = root.child('template/' + name).get()
     session['templateid'] = name
     session['templatehtml'] = templates['html']
-    session['templatecss'] = templates['css']
+    session['templatecss'] = templates['template']
     session['templatename'] = templates['name']
     session['default'] = False
     return redirect(url_for('editor'))
@@ -1383,7 +1386,7 @@ def defaulttemplate(name):
         template = default[templates]
         if template['name'] == name:
             session['templatehtml'] = template['html']
-            session['templatecss'] = template['css']
+            session['templatecss'] = template['name']
             session['default'] = True
 
     return redirect(url_for('editor'))
@@ -1534,6 +1537,18 @@ def help():
                                        notification_counts=notification_counts)
     except :
         return render_template('help.html')
+
+@app.route('/pdf_template/<string:templatename>')
+def pdf_template(templatename) :
+    rendered = render_template('pdf.html')
+    css = ['static/css/templates/' + templatename + '.css', 'static/css/style.css']
+    pdf = pdfkit.from_string(rendered, False, css=css, configuration=configuration)
+
+    response = make_response(pdf)
+    response.headers['Content-Type'] = 'application/pdf'
+    response.headers['Content-Disposition'] = 'attachment; filename=template.pdf'
+
+    return response
 
 
 @app.route('/login')
