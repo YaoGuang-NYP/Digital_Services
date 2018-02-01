@@ -8,6 +8,8 @@ import datetime
 import smtplib
 from random import randint
 import pdfkit
+from Leisure import Leisure
+from Business import Business
 path_wkthmltopdf = r'C:\Program Files\wkhtmltopdf\bin\wkhtmltopdf.exe'
 configuration = pdfkit.configuration(wkhtmltopdf=path_wkthmltopdf)
 
@@ -1185,22 +1187,32 @@ def user(job, result, id):
         return render_template("user_notification.html", job=job, result=result, id=id, details=get_job)
 
 
-# Route to messenger
-@app.route('/messages')
-def hello():
-    return render_template('ChatApp.html')
+# Blog
+@app.route('/blog')
+def blog():
+    return render_template('Blog.html')
+
+class BlogForm(Form):
+    title = StringField('Title')
+    pubtype = RadioField('Type of Content', choices=[('leisure', 'Leisure'), ('business', 'Business')],
+                         default='business')
+    category = SelectField('Category', choices=[('', 'Select'), ('AUTOMOTIVE', 'Automotive'), ('TECHNOLOGY', 'Technology'),
+                                                ('POLITICS', 'Politics'), ('HEALTH', 'Health'), ('OPPORTUNITIES', 'Opportunities'),
+                                                ('TRANSPORTATION'), ('Transportation'), ('RETAIL', 'Retails'), ('BUSINESS', 'Business'),
+                                                ('OTHERS', 'Others')], default='')
+    company = StringField('Company')
+    status = SelectField('status', choices=[('', 'Select'), ('E', 'Employed'), ('S', 'Self-Employed'),
+                                            ('ST', 'Student'), ('U', 'Unemployed'), ('F', 'Freelancer'),
+                                            ('I', 'Internee')], default='')
+    author = StringField('Author')
+    contents = TextAreaField('Contents')
 
 
-def messageRecived():
-    print('message was received!!!')
-
-
-listnum = []
-randnum = randint(1000, 9999)
-listnum.append(randnum)
 @app.route('/accountsettings', methods=['GET', 'POST'])
 def accountsettings():
-
+    listnum = []
+    randnum = randint(1000, 9999)
+    listnum.append(randnum)
     print(randnum)
     email_session = session["data"]["email"]
     print(email_session)
@@ -1575,12 +1587,233 @@ def logout():
     session['loggedin'] = False
     return render_template('home.html')
 
+# Blog
+@app.route('/view_blogs')
+def viewblogs():
+    blogs = root.child('blogs').get()
+    list = []  # create a list to store all the publication objects
+    for blogid in blogs:
 
-@socketio.on('my event')
-def handle_my_custom_event(json):
-    # store to database
-    print('recived my event: ' + str(json))
-    socketio.emit('my response', json, callback=messageRecived())
+        eachblog = blogs[blogid]
+
+        if eachblog['type'] == 'leisure':
+            leisure = Leisure(eachblog['title'], eachblog['publisher'], eachblog['status'],
+                                eachblog['created_by'], eachblog['category'], eachblog['type'],
+                                eachblog['frequency'])
+            leisure.set_blogid(blogid)
+            print(leisure.get_blogid())
+            list.append(leisure)
+        else:
+            business = Business(eachblog['title'], eachblog['publisher'], eachblog['status'],
+                        eachblog['created_by'], eachblog['category'], eachblog['type'],
+                        eachblog['synopsis'], eachblog['author'], eachblog['isbn'])
+            business.set_blogid(blogid)
+            list.append(business)
+    return render_template('view_all_blogs.html', publications=list)
+
+
+# WTForms validations
+class RequiredIf(object):
+
+    def __init__(self, *args, **kwargs):
+        self.conditions = kwargs
+
+    def __call__(self, form, field):
+        for name, data in self.conditions.items():
+            if name not in form._fields:
+                validators.Optional()(field)
+            else:
+                condition_field = form._fields.get(name)
+                if condition_field.data == data:
+                    validators.DataRequired().__call__(form, field)
+                else:
+                    validators.Optional().__call__(form, field)
+
+
+class BlogForm(Form):
+    title = StringField('Title', [validators.Length(min=1, max=150), validators.DataRequired()])
+    blogtype = RadioField('Type Of Blog', choices=[('business', 'Business'), ('leisure', 'Leisure')], default='business')
+    category = SelectField('Caterory', [validators.DataRequired()],
+                           choices=[('', 'Select'), ('FANTASY', 'Fantasy'), ('FASHION', 'Fashion'),
+                                    ('THRILLER', 'Thriller'), ('CRIME', 'Crime'), ('BUSINESS', 'Business')],
+                           default='')
+    publisher = StringField('Publisher', [validators.Length(min=1, max=100), validators.DataRequired()])
+    status = SelectField('status', [validators.DataRequired()],
+                         choices=[('', 'Select'), ('P', 'Pending'), ('A', 'Available For Borrowing'),
+                                  ('R', 'Only For Reference')], default='')
+    isbn = StringField('ISBN No', [validators.Length(min=1, max=100), RequiredIf(pubtype='sbook')])
+    author = StringField('Author', [validators.Length(min=1, max=100), RequiredIf(pubtype='sbook')])
+    synopsis = TextAreaField('Synopsis', [validators.Length(min=1, max=100), RequiredIf(pubtype='sbook')])
+    frequency = RadioField('Frequency', [RequiredIf(pubtype='smag')],
+                           choices=[('D', 'Daily'), ('W', 'Weekly'), ('M', 'Monthly')])
+
+
+@app.route('/new_blog', methods=['GET', 'POST'])
+def new():
+    form = BlogForm(request.form)
+    if request.method == 'POST' and form.validate():
+        if form.blogtype.data == 'leisure':
+            title = form.title.data
+            type = form.blogtype.data
+            category = form.category.data
+            status = form.status.data
+            frequency = form.frequency.data
+            publisher = form.publisher.data
+            created_by = "U001"  # hardcoded value
+
+            leisure = Leisure(title, publisher, status, created_by,
+                              category, type, frequency)
+
+            leisure_db = root.child('blogs')
+            leisure_db.push({
+                'title': leisure.get_title(),
+                'type': leisure.get_type(),
+                'category': leisure.get_category(),
+                'status': leisure.get_status(),
+                'frequency': leisure.get_frequency(),
+                'publisher': leisure.get_publisher(),
+                'created_by': leisure.get_created_by(),
+                'create_date': leisure.get_created_date()
+            })
+
+            flash('Leisure Contents Inserted Successfully.', 'success')
+
+        elif form.blogtype.data == 'business':
+            title = form.title.data
+            type = form.blogtype.data
+            category = form.category.data
+            status = form.status.data
+            isbn = form.isbn.data
+            author = form.author.data
+            synopsis = form.synopsis.data
+            publisher = form.publisher.data
+            created_by = "U0001"  # hardcoded value
+
+            business = Business(title, publisher, status, created_by, category, type,
+                        synopsis, author, isbn)
+            business_db = root.child('blogs')
+            business_db.push({
+                'title': business.get_title(),
+                'type': business.get_type(),
+                'category': business.get_category(),
+                'status': business.get_status(),
+                'author': business.get_author(),
+                'publisher': business.get_publisher(),
+                'isbn': business.get_isbnno(),
+                'synopsis': business.get_synopsis(),
+                'created_by': business.get_created_by(),
+                'create_date': business.get_created_date()
+            })
+
+            flash('Business Contents Insert Successfully.', 'success')
+        return redirect(url_for('view_blogs'))
+
+    return render_template('create_blog.html', form=form)
+
+
+@app.route('/update/<string:id>/', methods=['GET', 'POST'])
+def update_blog(id):
+    form = BlogForm(request.form)
+    if request.method == 'POST' and form.validate():
+        if form.blogtype.data == 'smag':
+            title = form.title.data
+            type = form.blogtype.data
+            category = form.category.data
+            status = form.status.data
+            frequency = form.frequency.data
+            publisher = form.publisher.data
+            created_by = 'U0001'  # hardcoded value
+            leisure = Leisure(title, publisher, status, created_by, category, type, frequency)
+
+            # create the leisure object
+            leisure_db = root.child('blogs/' + db)
+            leisure_db.set({
+                'title': leisure.get_title(),
+                'type': leisure.get_type(),
+                'category': leisure.get_category(),
+                'status': leisure.get_status(),
+                'frequency': leisure.get_frequency(),
+                'publisher': leisure.get_publisher(),
+                'create_by': leisure.get_created_by(),
+                'create_data': leisure.get_created_date()
+            })
+
+            flash('Leisure Contents Updated Successfully.', 'success')
+
+        elif form.blogtype.data == 'business':
+            title = form.title.data
+            type = form.blogtype.data
+            category = form.category.data
+            status = form.status.data
+            isbn = form.isbn.data
+            author = form.author.data
+            synopsis = form.synopsis.data
+            publisher = form.publisher.data
+            created_by = 'U0001'  # hardcoded value
+
+            business = Business(title, publisher, status, created_by, category, type
+                        , synopsis, author, isbn)
+            business_db = root.child('blogs/' + id)
+            business_db.set({
+                'title': business.get_title(),
+                'type': business.get_type(),
+                'category': business.get_category(),
+                'status': business.get_status(),
+                'author': business.get_author(),
+                'publisher': business.get_publisher(),
+                'isbn': business.get_isbnno(),
+                'synopsis': business.get_synopsis(),
+                'created_by': business.get_created_by(),
+                'create_date': business.get_created_date()
+            })
+
+            flash('Business Contents Updated Successfully', 'success')
+
+        return redirect(url_for('view_blogs'))
+
+    else:
+        url = 'blogs/' + id
+        eachblog = root.child(url).get()
+
+        if eachblog['type'] == 'leisure':
+            leisure = Leisure(eachblog['title'], eachblog['publisher'], eachblog['status'],
+                                eachblog['created_by'], eachblog['category'], eachblog['type'],
+                                eachblog['frequency'])
+
+            leisure.set_blogid(id)
+            form.title.data = leisure.get_title()
+            form.blogtype.data = leisure.get_type()
+            form.category.data = leisure.get_category()
+            form.publisher.data = leisure.get_publisher()
+            form.status.data = leisure.get_status()
+            form.frequency.data = leisure.get_frequency()
+
+        elif eachblog['type'] == 'business':
+            business = Business(eachblog['title'], eachblog['publisher'], eachblog['status'],
+                        eachblog['created_by'], eachblog['category'], eachblog['type'],
+                        eachblog['synopsis'], eachblog['author'], eachblog['isbn'])
+
+            business.set_blogid(id)
+            form.title.data = business.get_title()
+            form.blogtype.data = business.get_type()
+            form.category.data = business.get_category()
+            form.publisher.data = business.get_publisher()
+            form.status.data = business.get_status()
+            form.synopsis.data = business.get_synopsis()
+            form.author.data = business.get_author()
+            form.isbn.data = business.get_isbnno()
+
+    return render_template('update_blog.html', form=form)
+
+@app.route('/delete_blog/<string:id>', methods=['POST'])
+def delete_blog(id):
+    leisure_db = root.child('blogs/' + id)
+    leisure_db.delete()
+    flash('Blog Deleted', 'success')
+
+    return redirect(url_for('view_blogs'))
+
+
 
 
 if __name__ == '__main__':
