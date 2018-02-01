@@ -1,6 +1,29 @@
 {% extends 'index.html' %}
 
+{% block inlinecss %}
+    <style>
+        @media screen and (max-width: 768px) {
+            h1 {
+                margin-top: 20%;
+            }
+        }
+
+        @media screen and (max-width: 1024px) and (min-width: 768px) {
+            h1 {
+                margin-top: 15%;
+            }
+        }
+
+        @media screen and (min-width: 1024px) {
+            h1 {
+                margin-top: 10%;
+            }
+        }
+    </style>
+{% endblock %}
+
 {% block body %}
+
     {% from "includes/_formhelper.html" import render_field %}
     <h1>New Blog</h1>
 
@@ -16,7 +39,7 @@
         </div>
     {% endif %}
 
-    <form method="POST" action="">
+    <form method="POST" action="/create_blog">
 
         <div class="form-group">
             <div class="form-row">

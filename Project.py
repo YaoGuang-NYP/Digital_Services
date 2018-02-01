@@ -1659,7 +1659,7 @@ def new():
             status = form.status.data
             frequency = form.frequency.data
             publisher = form.publisher.data
-            created_by = "U001"  # hardcoded value
+            created_by = "User"  # hardcoded value
 
             leisure = Leisure(title, publisher, status, created_by,
                               category, type, frequency)
@@ -1687,7 +1687,7 @@ def new():
             author = form.author.data
             synopsis = form.synopsis.data
             publisher = form.publisher.data
-            created_by = "U0001"  # hardcoded value
+            created_by = "User"  # hardcoded value
 
             business = Business(title, publisher, status, created_by, category, type,
                         synopsis, author, isbn)
