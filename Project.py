@@ -1641,10 +1641,10 @@ class BlogForm(Form):
     status = SelectField('status', [validators.DataRequired()],
                          choices=[('', 'Select'), ('P', 'Pending'), ('A', 'Available For Borrowing'),
                                   ('R', 'Only For Reference')], default='')
-    isbn = StringField('ISBN No', [validators.Length(min=1, max=100), RequiredIf(pubtype='sbook')])
-    author = StringField('Author', [validators.Length(min=1, max=100), RequiredIf(pubtype='sbook')])
-    synopsis = TextAreaField('Synopsis', [validators.Length(min=1, max=100), RequiredIf(pubtype='sbook')])
-    frequency = RadioField('Frequency', [RequiredIf(pubtype='smag')],
+    isbn = StringField('ISBN No', [validators.Length(min=1, max=100), RequiredIf(blogtype='business')])
+    author = StringField('Author', [validators.Length(min=1, max=100), RequiredIf(blogtype='business')])
+    synopsis = TextAreaField('Synopsis', [validators.Length(min=1, max=100), RequiredIf(blogtype='business')])
+    frequency = RadioField('Frequency', [RequiredIf(blogtype='leisure')],
                            choices=[('D', 'Daily'), ('W', 'Weekly'), ('M', 'Monthly')])
 
 
