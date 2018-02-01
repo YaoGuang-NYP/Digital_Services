@@ -9,8 +9,6 @@
     {% endif %}
     <script src="../static/js/tinymce/tinymce.min.js"></script>
     <script src="../static/js/tinymce/jquery.tinymce.min.js"></script>
-    <script src="../static/js/jspdf.js"></script>
-    <script type="text/javascript" src="../static/js/html2canvas.js"></script>
     <script>
         {% if session['loggedin'] == True %}
             function save() {
@@ -31,7 +29,7 @@
                 var name = prompt('Enter a name for this template');
                 template.push({
                     "html": htmlencode,
-                    "template" : {{ session['templatecss'] }},
+                    "template" : '{{ session['templatecss'] }}',
                     "user" : '{{ session['data']['username'] }}',
                     "name" : name
                 });
@@ -55,14 +53,14 @@
                     var name = prompt('Enter New Template Name :');
                     template.set({
                         "html": htmlencode,
-                        "template": {{ session['templatecss'] }},
+                        "template": '{{ session['templatecss'] }}',
                         "user": '{{ session['data']['username'] }}',
                         "name": name
                     });
                 } else {
                     template.set({
                         "html": htmlencode,
-                        "template": {{ session['templatecss'] }},
+                        "template": '{{ session['templatecss'] }}',
                         "user": '{{ session['data']['username'] }}',
                         "name" : '{{ session['templatename'] }}'
                     });
@@ -115,7 +113,7 @@
         var savedtemplate = '{{ session['templatehtml'] }}';
         var decode = window.atob(savedtemplate);
         var $page = $(".page");
-        htmldecode = $.parseHTML(decode);
+        var htmldecode = $.parseHTML(decode);
         $page.append(htmldecode);
     </script>
     <script>

@@ -1385,9 +1385,9 @@ def defaulttemplate(name):
     default = root.child('default_template').get()
     for templates in default:
         template = default[templates]
-        if template['name'] == name:
+        if template['template'] == name:
             session['templatehtml'] = template['html']
-            session['templatecss'] = template['name']
+            session['templatecss'] = template['template']
             session['default'] = True
 
     return redirect(url_for('editor'))
