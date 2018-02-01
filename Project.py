@@ -1539,17 +1539,17 @@ def help():
     except :
         return render_template('help.html')
 
-@app.route('/pdf_template/<string:templatename>')
-def pdf_template(templatename) :
-    rendered = render_template('pdf.html')
-    css = ['static/css/templates/' + templatename + '.css', 'static/css/style.css']
-    pdf = pdfkit.from_string(rendered, False, css=css, configuration=configuration)
+#@app.route('/pdf_template/<string:templatename>')
+#def pdf_template(templatename) :
+#    rendered = render_template('pdf.html')
+#    css = ['static/css/templates/' + templatename + '.css', 'static/css/style.css']
+#    pdf = pdfkit.from_string(rendered, False, css=css, configuration=configuration)
 
-    response = make_response(pdf)
-    response.headers['Content-Type'] = 'application/pdf'
-    response.headers['Content-Disposition'] = 'attachment; filename=template.pdf'
+#    response = make_response(pdf)
+#    response.headers['Content-Type'] = 'application/pdf'
+#    response.headers['Content-Disposition'] = 'attachment; filename=template.pdf'
 
-    return response
+#    return response
 
 
 @app.route('/login')
