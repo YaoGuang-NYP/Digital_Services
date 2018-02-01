@@ -42,6 +42,20 @@
             overflow-x: hidden;
         }
 
+        {% if job_count <= 4 %}
+        #footer {
+            position : absolute;
+            width : 100%;
+            bottom : 0;
+        }
+        {% else %}
+        #footer {
+            position: relative;
+            width : 100%;
+            bottom : 0;
+        }
+        {% endif %}
+
     </style>
 {% endblock %}
 
