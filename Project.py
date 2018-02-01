@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, flash, redirect, url_for, session
+from flask import Flask, render_template, request, flash, redirect, url_for, session, make_response
 from wtforms import Form, StringField, TextAreaField, RadioField, SelectField, validators, SubmitField, IntegerField, \
     PasswordField
 from forms import Forms
@@ -7,6 +7,9 @@ from flask_socketio import SocketIO, emit
 import datetime
 import smtplib
 from random import randint
+import pdfkit
+path_wkthmltopdf = r'C:\Program Files\wkhtmltopdf\bin\wkhtmltopdf.exe'
+configuration = pdfkit.configuration(wkhtmltopdf=path_wkthmltopdf)
 
 app = Flask(__name__)
 app.secret_key = "development key"
@@ -611,7 +614,7 @@ def search_job():
                 else:
                     format1 = i.split(":")
                     notification.append(format1)
-            return render_template("search_jobs.html", jobs=jobs, notification=notification, notification_counts=notification_counts)
+            return render_template("search_jobs.html", jobs=jobs, notification=notification, notification_counts=notification_counts, job_count = len(jobs))
     except :
         return render_template("search_jobs.html", jobs=jobs)
 
@@ -1212,11 +1215,12 @@ def update_blog():
     # Setting value to the update_blog.html
 
 
+listnum = []
+randnum = randint(1000, 9999)
+listnum.append(randnum)
 @app.route('/accountsettings', methods=['GET', 'POST'])
 def accountsettings():
-    listnum = []
-    randnum = randint(1000, 4000)
-    listnum.append(randnum)
+
     print(randnum)
     email_session = session["data"]["email"]
     print(email_session)
@@ -1264,7 +1268,7 @@ def accountsettings():
         awards = form.awards.data
         bio = form.bio.data
 
-        if listnum[0] == randnum:
+        if listnum[0] == int(otp):
 
             setting = RegisterForm(username, password, email, firstname, lastname, age, country, highestqualification,
                                    workexperiences, skillsets, awards, bio)
@@ -1287,7 +1291,7 @@ def accountsettings():
 
         else:
             print("Incorrect!")
-
+            return '<script> alert("Wrong OTP!!"); window.location.href = "/";</script>'
     try :
         if session["data"]["status"] == "employer":
             notification = []
@@ -1333,7 +1337,7 @@ def loadtemplate(name):
     templates = root.child('template/' + name).get()
     session['templateid'] = name
     session['templatehtml'] = templates['html']
-    session['templatecss'] = templates['css']
+    session['templatecss'] = templates['template']
     session['templatename'] = templates['name']
     session['default'] = False
     return redirect(url_for('editor'))
@@ -1401,9 +1405,9 @@ def defaulttemplate(name):
     default = root.child('default_template').get()
     for templates in default:
         template = default[templates]
-        if template['name'] == name:
+        if template['template'] == name:
             session['templatehtml'] = template['html']
-            session['templatecss'] = template['css']
+            session['templatecss'] = template['template']
             session['default'] = True
 
     return redirect(url_for('editor'))
@@ -1554,6 +1558,18 @@ def help():
                                        notification_counts=notification_counts)
     except :
         return render_template('help.html')
+
+@app.route('/pdf_template/<string:templatename>')
+def pdf_template(templatename) :
+    rendered = render_template('pdf.html')
+    css = ['static/css/templates/' + templatename + '.css', 'static/css/style.css']
+    pdf = pdfkit.from_string(rendered, False, css=css, configuration=configuration)
+
+    response = make_response(pdf)
+    response.headers['Content-Type'] = 'application/pdf'
+    response.headers['Content-Disposition'] = 'attachment; filename=template.pdf'
+
+    return response
 
 
 @app.route('/login')

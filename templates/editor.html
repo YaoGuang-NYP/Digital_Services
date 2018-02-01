@@ -2,9 +2,13 @@
 
 
 {% block additionalheadscripts %}
+    {% if session['templatecss'] == 'template1' %}
+        <link href="../static/css/templates/template1.css" rel="stylesheet">
+    {% elif session['templatecss'] == 'template2' %}
+        <link href="../static/css/templates/template2.css" rel="stylesheet">
+    {% endif %}
     <script src="../static/js/tinymce/tinymce.min.js"></script>
     <script src="../static/js/tinymce/jquery.tinymce.min.js"></script>
-    <script src="../static/js/jspdf.js"></script>
     <script>
         {% if session['loggedin'] == True %}
             function save() {
@@ -22,12 +26,10 @@
                 var template = myFirebase.child("template");
                 var $page = $(".page");
                 var htmlencode = window.btoa($page.html());
-                var $css = $("#style");
-                var cssencode = window.btoa($css.html());
                 var name = prompt('Enter a name for this template');
                 template.push({
                     "html": htmlencode,
-                    "css" : cssencode,
+                    "template" : '{{ session['templatecss'] }}',
                     "user" : '{{ session['data']['username'] }}',
                     "name" : name
                 });
@@ -46,62 +48,27 @@
                 var template = firebase.database().ref("template/" + '{{ session['templateid'] }}');
                 var $page = $(".page");
                 var htmlencode = window.btoa($page.html());
-                var $css = $("#style");
-                var cssencode = window.btoa($css.html());
                 var namechange = confirm('Do you want to change your template name?');
                 if (namechange == true) {
                     var name = prompt('Enter New Template Name :');
                     template.set({
                         "html": htmlencode,
-                        "css": cssencode,
+                        "template": '{{ session['templatecss'] }}',
                         "user": '{{ session['data']['username'] }}',
                         "name": name
                     });
                 } else {
                     template.set({
                         "html": htmlencode,
-                        "css": cssencode,
+                        "template": '{{ session['templatecss'] }}',
                         "user": '{{ session['data']['username'] }}',
                         "name" : '{{ session['templatename'] }}'
                     });
                 }
             }
-            function HTMLtoPDF(){
-                var pdf = new jsPDF('p', 'pt', 'letter');
-                source = $('#HTMLtoPDF')[0];
-                specialElementHandlers = {
-                    '#bypassme': function(element, renderer){
-                        return true
-                    }
-                }
-                margins = {
-                    top: 50,
-                    left: 60,
-                    width: 545
-                };
-                pdf.fromHTML(
-                    source // HTML string or DOM elem ref.
-                    , margins.left // x coord
-                    , margins.top // y coord
-                    , {
-                        'width': margins.width // max width of content on PDF
-                        , 'elementHandlers': specialElementHandlers
-                    },
-                    function (dispose) {
-                        // dispose: object with X, Y of the last line add to the PDF
-                        //          this allow the insertion of new lines after html
-                        pdf.save('template.pdf');
-                    }
-                )
-            }
         {% endif %}
     </script>
 
-{% endblock %}
-
-{% block inlinecss %}
-    <style id="style">
-    </style>
 {% endblock %}
 
 {% block body %}
@@ -127,7 +94,7 @@
             {% else %}
                 <a href="#" onclick="existsave()"><button class="button editor">Save Existing Template</button></a>
             {% endif %}
-            <a href="#" onclick="HTMLtoPDF()"><button class="button editor">Download As PDF</button></a>
+            <a href="/pdf_template/{{ session['templatecss'] }}"><button class="button editor">Download As PDF</button></a>
         </div>
     {% else %}
         <script>alert("You Need to Sign In First to Use!"); window.location.href = "/";</script>
@@ -144,15 +111,10 @@
     <script src="https://www.gstatic.com/firebasejs/4.8.1/firebase-messaging.js"></script>
     <script>
         var savedtemplate = '{{ session['templatehtml'] }}';
-        var savedcss = '{{ session['templatecss'] }}';
         var decode = window.atob(savedtemplate);
-        var css = window.atob(savedcss);
         var $page = $(".page");
-        var $css = $("#style");
-        cssdecode = $.parseHTML(css);
-        htmldecode = $.parseHTML(decode);
+        var htmldecode = $.parseHTML(decode);
         $page.append(htmldecode);
-        $css.append(cssdecode);
     </script>
     <script>
         tinymce.init({
