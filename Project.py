@@ -7,11 +7,11 @@ from flask_socketio import SocketIO, emit
 import datetime
 import smtplib
 from random import randint
-import pdfkit
+#import pdfkit
 from Leisure import Leisure
 from Business import Business
-path_wkthmltopdf = r'C:\Program Files\wkhtmltopdf\bin\wkhtmltopdf.exe'
-configuration = pdfkit.configuration(wkhtmltopdf=path_wkthmltopdf)
+#path_wkthmltopdf = r'C:\Program Files\wkhtmltopdf\bin\wkhtmltopdf.exe'
+#configuration = pdfkit.configuration(wkhtmltopdf=path_wkthmltopdf)
 
 app = Flask(__name__)
 app.secret_key = "development key"
