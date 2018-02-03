@@ -10,6 +10,8 @@ from random import randint
 import pdfkit
 from Leisure import Leisure
 from Business import Business
+import base64
+from bs4 import BeautifulSoup
 path_wkthmltopdf = r'C:\Program Files\wkhtmltopdf\bin\wkhtmltopdf.exe'
 configuration = pdfkit.configuration(wkhtmltopdf=path_wkthmltopdf)
 
@@ -1557,6 +1559,13 @@ def help():
 
 @app.route('/pdf_template/<string:templatename>')
 def pdf_template(templatename) :
+    html = base64.b64decode(session['templatehtml'])
+    htmldecode = BeautifulSoup(html)
+    html_str = str(htmldecode)
+    f = open('templates/pdf.html', 'a')
+    f.write(html_str)
+    f.write("""</div></body></html>""")
+    f.close()
     rendered = render_template('pdf.html')
     css = ['static/css/templates/' + templatename + '.css', 'static/css/style.css']
     pdf = pdfkit.from_string(rendered, False, css=css, configuration=configuration)
@@ -1565,6 +1574,18 @@ def pdf_template(templatename) :
     response.headers['Content-Type'] = 'application/pdf'
     response.headers['Content-Disposition'] = 'attachment; filename=template.pdf'
 
+    nf = open('templates/pdf.html', 'w')
+    nf.write("""<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>PDF</title>
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,700,700i|Poppins:300,400,500,700" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href='http://fonts.googleapis.com/css?family=Rokkitt:400,700|Lato:400,300' rel='stylesheet' type='text/css'>
+</head>
+<body>
+    <div class="page" data-size="A4">""")
+    nf.close()
     return response
 
 
