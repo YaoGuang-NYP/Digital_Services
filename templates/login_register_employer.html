@@ -84,7 +84,7 @@
                 <br>
                 <div class="col-md-4 col-xs-12">
                     {{ company.telno.label(class = "wow fadeInUp") }}
-                    {{ company.telno(class = "form-control wow fadeInUp ", placeholder = "Company Telephone No.") }}
+                    {{ company.telno(class = "form-control wow fadeInUp ", placeholder = "Company Telephone No.", maxlength=8, minlength=8) }}
                     {% for message in company.telno.errors %}
                         <h6 style="color:red">{{ message }}</h6>
                     {% endfor %}
