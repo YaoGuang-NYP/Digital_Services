@@ -58,8 +58,9 @@
                 margin-top: 10%;
             }
         }
+
         {% if result == "accept" or result == "accepted" %}
-        #footer {
+            #footer {
             position: relative;
             bottom: 0;
             width: 100%;
@@ -68,6 +69,7 @@
             bottom: 0;
             width: 100%;
         {% endif %}
+
         }
     </style>
     <!-- =======================================================
@@ -114,6 +116,44 @@
             </div>
         </div>
         <div class="row">
+            <div class="col-12">
+                <button type="button" class="btn btn-warning" data-toggle="collapse" data-target="#directions"
+                        style="width:100%">
+                    Directions
+                </button>
+            </div>
+        </div>
+        <br>
+        <div id="directions" class="collapse">
+            <div class="row" style="vertical-align: center">
+                <div class="col-md-2 col-xs-12">Start :</div>
+                <div class="col-md-10 col-xs-12">
+                    <input class="form-control" id="start_point" type="text" style="width:100%">
+                </div>
+            </div>
+            <br>
+            <div class="row">
+                <div class="col-12">
+                    <h6>Travel Method</h6>
+                </div>
+            </div>
+            <div class="row" style="text-align: center">
+                <div class="col-md-4 col-xs-12">
+                    <button id="walk" class="btn btn-primary" style="width:80%">Walking</button>
+                </div>
+                <br>
+                <div class="col-md-4 col-xs-12">
+                    <button id="drive" class="btn btn-danger" style="width:80%">Driving</button>
+                </div>
+                <br>
+                <div class="col-md-4 col-xs-12">
+                    <button id="transit" class="btn btn-success" style="width:80%">Transit</button>
+                </div>
+                <br>
+            </div>
+        </div>
+        <br>
+        <div class="row">
             <div class="col-12" style="text-align: center">
                 <div id="map" style="height:400px; width: 100%;"></div>
             </div>
@@ -157,18 +197,68 @@
 
 <!-- JavaScript Libraries -->
 <script>
+    var marker;
+    var start;
     function initMap() {
-        var position = {lat: parseFloat({{ details["lat"] }}), lng: parseFloat({{ details["lng"] }})};
+        var directionsDisplay = new google.maps.DirectionsRenderer;
+        var directionsService = new google.maps.DirectionsService;
         var map = new google.maps.Map(document.getElementById('map'), {
-            zoom: 15,
-            center: position,
-            gestureHandling: 'greedy'
+            zoom: 16,
+            center: {lat: {{ details["lat"] }}, lng: {{ details["lng"] }} },
+            gestureHandling: "greedy"
         });
-        var marker = new google.maps.Marker({
-            position: position,
-            map: map
+        directionsDisplay.setMap(map);
+        marker = new google.maps.Marker({
+                position: {lat: {{ details["lat"] }}, lng: {{ details["lng"] }} },
+                map: map
+            });
+        marker.setAnimation(google.maps.Animation.BOUNCE);
+        document.getElementById('walk').addEventListener('click', function () {
+            calculateAndDisplayRoute(directionsService, directionsDisplay, 'WALKING');
+        });
+        document.getElementById('drive').addEventListener('click', function () {
+            calculateAndDisplayRoute(directionsService, directionsDisplay, 'DRIVING');
+        });
+        document.getElementById('transit').addEventListener('click', function () {
+            calculateAndDisplayRoute(directionsService, directionsDisplay, 'TRANSIT');
+        });
+        var geocoder = new google.maps.Geocoder();
+        document.getElementById('start_point').addEventListener('change', function() {
+            geocodeAddress(geocoder, map)
+        });
+        map.addListener('click', function (event) {
+            start = { lat : event.latLng.lat() , lng : event.latLng.lng() };
+            calculateAndDisplayRoute(directionsService, directionsDisplay, 'WALKING')
+        })
+    }
+
+    function calculateAndDisplayRoute(directionsService, directionsDisplay, mode) {
+        marker.setMap(null);
+        directionsService.route({
+            origin: start,  // Haight.
+            destination: {lat: {{ details["lat"] }}, lng: {{ details["lng"] }} },
+            travelMode: mode
+        }, function (response, status) {
+            if (status == 'OK') {
+                directionsDisplay.setDirections(response);
+            } else {
+                window.alert('Could not find a way to destination!');
+            }
         });
     }
+
+    function geocodeAddress(geocoder, resultsMap) {
+        var address = document.getElementById('start_point').value;
+        geocoder.geocode({'address': address}, function(results, status) {
+          if (status === 'OK') {
+            start = results[0].geometry.location;
+          } else {
+            alert('Location was not found!');
+          }
+        });
+      }
+
+
 </script>
 <script async defer
         src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBuKc700OWcOyHcuBQ_9mQWSgmOsYKHI7c&callback=initMap">
