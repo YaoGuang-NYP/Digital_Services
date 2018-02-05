@@ -7,9 +7,8 @@ from flask_socketio import SocketIO, emit
 import datetime
 import smtplib
 from random import randint
+from Articles import Articles
 import pdfkit
-from Leisure import Leisure
-from Business import Business
 import base64
 from bs4 import BeautifulSoup
 path_wkthmltopdf = r'C:\Program Files\wkhtmltopdf\bin\wkhtmltopdf.exe'
@@ -827,7 +826,7 @@ def edit_posts():
                     format_1.append(job_title)
                     notification.append(format_1)
             return render_template("edit_posts.html", jobs=jobs , notification=notification,
-                                       notification_counts=notification_counts)
+                                   notification_counts=notification_counts)
         elif session["data"]["status"] == "user":
             notification = []
             user_id = ""
@@ -843,7 +842,7 @@ def edit_posts():
                     format1 = i.split(":")
                     notification.append(format1)
             return render_template("edit_posts.html", jobs=jobs , notification=notification,
-                                       notification_counts=notification_counts)
+                                   notification_counts=notification_counts)
     except :
         return render_template("edit_posts.html", jobs=jobs)
 
@@ -1309,7 +1308,7 @@ def accountsettings():
                     format_1.append(job_title)
                     notification.append(format_1)
             return render_template('accountsettings.html', form=form , notification=notification,
-                                       notification_counts=notification_counts)
+                                   notification_counts=notification_counts)
         elif session["data"]["status"] == "user":
             notification = []
             user_id = ""
@@ -1325,7 +1324,7 @@ def accountsettings():
                     format1 = i.split(":")
                     notification.append(format1)
             return render_template('accountsettings.html', form=form , notification=notification,
-                                       notification_counts=notification_counts)
+                                   notification_counts=notification_counts)
     except :
         return render_template('accountsettings.html', form=form)
 
@@ -1367,7 +1366,7 @@ def editor():
                     format_1.append(job_title)
                     notification.append(format_1)
             return render_template('editor.html', notification=notification,
-                                       notification_counts=notification_counts)
+                                   notification_counts=notification_counts)
         elif session["data"]["status"] == "user":
             notification = []
             user_id = ""
@@ -1383,7 +1382,7 @@ def editor():
                     format1 = i.split(":")
                     notification.append(format1)
             return render_template('editor.html', notification=notification,
-                                       notification_counts=notification_counts)
+                                   notification_counts=notification_counts)
     except:
         return render_template('editor.html')
 
@@ -1495,7 +1494,7 @@ def contact():
                     format_1.append(job_title)
                     notification.append(format_1)
             return render_template('contactus.html', form=form, notification=notification,
-                                       notification_counts=notification_counts)
+                                   notification_counts=notification_counts)
         elif session["data"]["status"] == "user":
             notification = []
             user_id = ""
@@ -1511,7 +1510,7 @@ def contact():
                     format1 = i.split(":")
                     notification.append(format1)
             return render_template('contactus.html', form=form, notification=notification,
-                                       notification_counts=notification_counts)
+                                   notification_counts=notification_counts)
     except :
         return render_template('contactus.html', form=form)
 
@@ -1537,7 +1536,7 @@ def help():
                     format_1.append(job_title)
                     notification.append(format_1)
             return render_template('help.html', notification=notification,
-                                       notification_counts=notification_counts)
+                                   notification_counts=notification_counts)
         elif session["data"]["status"] == "user":
             notification = []
             user_id = ""
@@ -1553,7 +1552,7 @@ def help():
                     format1 = i.split(":")
                     notification.append(format1)
             return render_template('help.html', notification=notification,
-                                       notification_counts=notification_counts)
+                                   notification_counts=notification_counts)
     except :
         return render_template('help.html')
 
@@ -1583,8 +1582,7 @@ def pdf_template(templatename) :
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link href='http://fonts.googleapis.com/css?family=Rokkitt:400,700|Lato:400,300' rel='stylesheet' type='text/css'>
 </head>
-<body>
-    <div class="page" data-size="A4">""")
+<body>""")
     nf.close()
     return response
 
@@ -1613,230 +1611,132 @@ def logout():
     return render_template('home.html')
 
 # Blog
-@app.route('/view_blogs')
-def viewblogs():
-    blogs = root.child('blogs').get()
-    list = []  # create a list to store all the publication objects
-    for blogid in blogs:
+# Articles
+@app.route('/articles')
+def articles():
+    # Get articles
+    articles = root.child('articles').get()
+    print(articles)
+    list = []
+    for articleid in articles:
+        all_articles = articles[articleid]
+        article = Articles(all_articles['title'], all_articles['author'],
+                           all_articles['body'])
+        article.set_articleid(articleid)
+        print(article.get_articleid())
+        list.append(article)
 
-        eachblog = blogs[blogid]
-
-        if eachblog['type'] == 'leisure':
-            leisure = Leisure(eachblog['title'], eachblog['publisher'], eachblog['status'],
-                                eachblog['created_by'], eachblog['category'], eachblog['type'],
-                                eachblog['frequency'])
-            leisure.set_blogid(blogid)
-            print(leisure.get_blogid())
-            list.append(leisure)
-        else:
-            business = Business(eachblog['title'], eachblog['publisher'], eachblog['status'],
-                        eachblog['created_by'], eachblog['category'], eachblog['type'],
-                        eachblog['synopsis'], eachblog['author'], eachblog['isbn'])
-            business.set_blogid(blogid)
-            list.append(business)
-    return render_template('view_all_blogs.html', publications=list)
+    return render_template('articles.html', articles=list)
 
 
-# WTForms validations
-class RequiredIf(object):
+#Single Article
+@app.route('/article/<string:id>/')
+def article(id):
+    # Get article
+    articles = root.child('articles').get()
+    list = []
+    for articleid in articles:
+        all_articles = articles[articleid]
+        article = Articles(all_articles['title'], all_articles['author'],
+                           all_articles['body'])
+        article.set_articleid(articleid)
+        print(article.get_articleid())
+        list.append(article)
 
-    def __init__(self, *args, **kwargs):
-        self.conditions = kwargs
-
-    def __call__(self, form, field):
-        for name, data in self.conditions.items():
-            if name not in form._fields:
-                validators.Optional()(field)
-            else:
-                condition_field = form._fields.get(name)
-                if condition_field.data == data:
-                    validators.DataRequired().__call__(form, field)
-                else:
-                    validators.Optional().__call__(form, field)
-
-
-class BlogForm(Form):
-    title = StringField('Title', [validators.Length(min=1, max=150), validators.DataRequired()])
-    blogtype = RadioField('Type Of Blog', choices=[('business', 'Business'), ('leisure', 'Leisure')], default='business')
-    category = SelectField('Caterory', [validators.DataRequired()],
-                           choices=[('', 'Select'), ('FANTASY', 'Fantasy'), ('FASHION', 'Fashion'),
-                                    ('THRILLER', 'Thriller'), ('CRIME', 'Crime'), ('BUSINESS', 'Business')],
-                           default='')
-    publisher = StringField('Publisher', [validators.Length(min=1, max=100), validators.DataRequired()])
-    status = SelectField('status', [validators.DataRequired()],
-                         choices=[('', 'Select'), ('P', 'Pending'), ('A', 'Available For Borrowing'),
-                                  ('R', 'Only For Reference')], default='')
-    isbn = StringField('ISBN No', [validators.Length(min=1, max=100), RequiredIf(pubtype='sbook')])
-    author = StringField('Author', [validators.Length(min=1, max=100), RequiredIf(pubtype='sbook')])
-    synopsis = TextAreaField('Synopsis', [validators.Length(min=1, max=100), RequiredIf(pubtype='sbook')])
-    frequency = RadioField('Frequency', [RequiredIf(pubtype='smag')],
-                           choices=[('D', 'Daily'), ('W', 'Weekly'), ('M', 'Monthly')])
+    return render_template('article.html', articles=list)
 
 
-@app.route('/new_blog', methods=['GET', 'POST'])
-def new():
-    form = BlogForm(request.form)
+# Article Form Class
+class ArticleForm(Form):
+    title = StringField('Title', [validators.Length(min=1, max=200)])
+    author = StringField('Author', [validators.Length(min=1, max=200)])
+    body = TextAreaField('Body', [validators.Length(min=30)])
+
+# Dashboard
+@app.route('/dashboard')
+def dashboard():
+    # Get article
+    articles = root.child('articles').get()
+    list = []
+    for articleid in articles:
+        all_articles = articles[articleid]
+        article = Articles(all_articles['title'], all_articles['author'],
+                           all_articles['body'])
+        article.set_articleid(articleid)
+        print(article.get_articleid())
+        list.append(article)
+
+    return render_template('dashboard.html', articles=list)
+
+# Add Article
+@app.route('/add_article', methods=['GET', 'POST'])
+def add_article():
+    form = ArticleForm(request.form)
     if request.method == 'POST' and form.validate():
-        if form.blogtype.data == 'leisure':
-            title = form.title.data
-            type = form.blogtype.data
-            category = form.category.data
-            status = form.status.data
-            frequency = form.frequency.data
-            publisher = form.publisher.data
-            created_by = "U001"  # hardcoded value
+        title = form.title.data
+        author = form.author.data
+        body = form.body.data
 
-            leisure = Leisure(title, publisher, status, created_by,
-                              category, type, frequency)
+        article = Articles(title, author, body)
 
-            leisure_db = root.child('blogs')
-            leisure_db.push({
-                'title': leisure.get_title(),
-                'type': leisure.get_type(),
-                'category': leisure.get_category(),
-                'status': leisure.get_status(),
-                'frequency': leisure.get_frequency(),
-                'publisher': leisure.get_publisher(),
-                'created_by': leisure.get_created_by(),
-                'create_date': leisure.get_created_date()
-            })
+        article_db = root.child('articles')
+        article_db.push({
+            'title': article.get_title(),
+            'author': article.get_author(),
+            'body': article.get_body(),
+            'create_date': article.get_created_date()
+        })
 
-            flash('Leisure Contents Inserted Successfully.', 'success')
+        flash('Article Created', 'success')
 
-        elif form.blogtype.data == 'business':
-            title = form.title.data
-            type = form.blogtype.data
-            category = form.category.data
-            status = form.status.data
-            isbn = form.isbn.data
-            author = form.author.data
-            synopsis = form.synopsis.data
-            publisher = form.publisher.data
-            created_by = "U0001"  # hardcoded value
+        return redirect(url_for('dashboard'))
 
-            business = Business(title, publisher, status, created_by, category, type,
-                        synopsis, author, isbn)
-            business_db = root.child('blogs')
-            business_db.push({
-                'title': business.get_title(),
-                'type': business.get_type(),
-                'category': business.get_category(),
-                'status': business.get_status(),
-                'author': business.get_author(),
-                'publisher': business.get_publisher(),
-                'isbn': business.get_isbnno(),
-                'synopsis': business.get_synopsis(),
-                'created_by': business.get_created_by(),
-                'create_date': business.get_created_date()
-            })
-
-            flash('Business Contents Insert Successfully.', 'success')
-        return redirect(url_for('view_blogs'))
-
-    return render_template('create_blog.html', form=form)
+    return render_template('add_article.html', form=form)
 
 
-@app.route('/update/<string:id>/', methods=['GET', 'POST'])
-def update_blog(id):
-    form = BlogForm(request.form)
+# Edit Article
+@app.route('/edit_article/<string:id>', methods=['GET', 'POST'])
+def edit_article(id):
+    form = ArticleForm(request.form)
     if request.method == 'POST' and form.validate():
-        if form.blogtype.data == 'smag':
-            title = form.title.data
-            type = form.blogtype.data
-            category = form.category.data
-            status = form.status.data
-            frequency = form.frequency.data
-            publisher = form.publisher.data
-            created_by = 'U0001'  # hardcoded value
-            leisure = Leisure(title, publisher, status, created_by, category, type, frequency)
+        title = form.title.data
+        author = form.author.data
+        body = form.body.data
 
-            # create the leisure object
-            leisure_db = root.child('blogs/' + db)
-            leisure_db.set({
-                'title': leisure.get_title(),
-                'type': leisure.get_type(),
-                'category': leisure.get_category(),
-                'status': leisure.get_status(),
-                'frequency': leisure.get_frequency(),
-                'publisher': leisure.get_publisher(),
-                'create_by': leisure.get_created_by(),
-                'create_data': leisure.get_created_date()
-            })
+        article = Articles(title, author, body)
+        article_db = root.child('articles/' + id)
+        article_db.set({
+            'title': article.get_title(),
+            'author': article.get_author(),
+            'body': article.get_body(),
+            'create_date': article.get_created_date()
+        })
 
-            flash('Leisure Contents Updated Successfully.', 'success')
+        flash('Article Updated', 'success')
 
-        elif form.blogtype.data == 'business':
-            title = form.title.data
-            type = form.blogtype.data
-            category = form.category.data
-            status = form.status.data
-            isbn = form.isbn.data
-            author = form.author.data
-            synopsis = form.synopsis.data
-            publisher = form.publisher.data
-            created_by = 'U0001'  # hardcoded value
-
-            business = Business(title, publisher, status, created_by, category, type
-                        , synopsis, author, isbn)
-            business_db = root.child('blogs/' + id)
-            business_db.set({
-                'title': business.get_title(),
-                'type': business.get_type(),
-                'category': business.get_category(),
-                'status': business.get_status(),
-                'author': business.get_author(),
-                'publisher': business.get_publisher(),
-                'isbn': business.get_isbnno(),
-                'synopsis': business.get_synopsis(),
-                'created_by': business.get_created_by(),
-                'create_date': business.get_created_date()
-            })
-
-            flash('Business Contents Updated Successfully', 'success')
-
-        return redirect(url_for('view_blogs'))
+        return redirect(url_for('dashboard'))
 
     else:
-        url = 'blogs/' + id
-        eachblog = root.child(url).get()
+        url = 'articles/' + id
+        eacharticle = root.child(url).get()
 
-        if eachblog['type'] == 'leisure':
-            leisure = Leisure(eachblog['title'], eachblog['publisher'], eachblog['status'],
-                                eachblog['created_by'], eachblog['category'], eachblog['type'],
-                                eachblog['frequency'])
+        article = Articles(eacharticle['title'], eacharticle['author'], eacharticle['body'])
 
-            leisure.set_blogid(id)
-            form.title.data = leisure.get_title()
-            form.blogtype.data = leisure.get_type()
-            form.category.data = leisure.get_category()
-            form.publisher.data = leisure.get_publisher()
-            form.status.data = leisure.get_status()
-            form.frequency.data = leisure.get_frequency()
+        article.set_articleid(id)
+        form.title.data = article.get_title()
+        form.author.data = article.get_author()
+        form.body.data = article.get_body()
 
-        elif eachblog['type'] == 'business':
-            business = Business(eachblog['title'], eachblog['publisher'], eachblog['status'],
-                        eachblog['created_by'], eachblog['category'], eachblog['type'],
-                        eachblog['synopsis'], eachblog['author'], eachblog['isbn'])
+    return render_template('edit_article.html', form=form)
 
-            business.set_blogid(id)
-            form.title.data = business.get_title()
-            form.blogtype.data = business.get_type()
-            form.category.data = business.get_category()
-            form.publisher.data = business.get_publisher()
-            form.status.data = business.get_status()
-            form.synopsis.data = business.get_synopsis()
-            form.author.data = business.get_author()
-            form.isbn.data = business.get_isbnno()
+# Delete Article
+@app.route('/delete_article/<string:id>', methods=['POST'])
+def delete_article(id):
+    article_db = root.child('articles/' + id)
+    article_db.delete()
+    flash('Article Deleted', 'success')
 
-    return render_template('update_blog.html', form=form)
-
-@app.route('/delete_blog/<string:id>', methods=['POST'])
-def delete_blog(id):
-    leisure_db = root.child('blogs/' + id)
-    leisure_db.delete()
-    flash('Blog Deleted', 'success')
-
-    return redirect(url_for('view_blogs'))
+    return redirect(url_for('dashboard'))
 
 
 
