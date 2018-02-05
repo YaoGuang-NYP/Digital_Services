@@ -45,6 +45,7 @@
 {% block inlinecss %}{% endblock %}
 
 {% include 'includes/_header.html' %}
+{% include 'includes/_message.html' %}
 
 {% block body %}{% endblock %}
 
@@ -65,6 +66,9 @@
   <script src="../static/js/counterup/counterup.min.js"></script>
   <script src="../static/js/superfish/hoverIntent.js"></script>
   <script src="../static/js/superfish/superfish.min.js"></script>
+
+  <script src="https://cdn.ckeditor.com/4.8.0/standard/ckeditor.js"></script>
+  <script type="text/javascript">CKEDITOR.replace('editor')</script>
 
   <!-- Contact Form JavaScript File -->
   <script src="../static/js/contactform.js"></script>
